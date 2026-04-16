@@ -6,20 +6,30 @@
     <style>
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #fff; text-align: center; height: 100vh; touch-action: manipulation; }
         
-        /* नाम और स्कोर के बीच गैप फिक्स किया गया */
-        .header-container { padding: 15px 0; background: rgba(0, 255, 0, 0.1); border-bottom: 3px solid #0f0; margin-bottom: 20px; }
-        .player-name { font-size: 28px; color: #0f0; font-weight: bold; text-shadow: 2px 2px #000; display: block; margin-bottom: 12px; letter-spacing: 2px; }
-        .score-row { display: flex; justify-content: space-around; font-size: 20px; color: #fff; font-weight: bold; }
+        /* हैडर का कलर नीला और हरा मिक्स किया है */
+        .header-box { padding: 12px; background: rgba(0, 255, 255, 0.05); border-bottom: 2px solid #0cf; margin-bottom: 15px; }
+        .player-name { font-size: 26px; color: #0f0; font-weight: bold; text-shadow: 0 0 10px #0f0; display: block; margin-bottom: 8px; }
+        .stats-row { display: flex; justify-content: space-around; font-size: 18px; color: #fff; font-weight: bold; }
         
-        canvas { display: block; border: 4px solid #f0f; box-shadow: 0 0 25px #f0f; margin: 10px auto; max-width: 95%; background: #050010; border-radius: 12px; }
-        h2 { margin: 10px 0; color: #0cf; text-shadow: 0 0 10px #0cf; font-size: 24px; }
+        /* यहाँ बॉर्डर को फिक्स किया गया है ताकि सफ़ेद पट्टी न दिखे */
+        canvas { 
+            display: block; 
+            border: 4px solid #f0f; 
+            box-shadow: 0 0 15px #f0f, inset 0 0 10px #0cf; 
+            margin: 10px auto; 
+            max-width: 92%; 
+            background: #050010; 
+            border-radius: 10px;
+        }
+        
+        h2 { margin: 10px 0; color: #fff; text-shadow: 0 0 8px #f0f; font-size: 22px; letter-spacing: 1px; }
     </style>
 </head>
 <body onclick="jump()" ontouchstart="jump()">
 
-    <div class="header-container">
+    <div class="header-box">
         <span class="player-name">⭐ MOKIBUL KHAN ⭐</span>
-        <div class="score-row">
+        <div class="stats-row">
             <span>SCORE: <span id="score" style="color:#0f0">0</span></span>
             <span>COINS: <span id="coins" style="color:#ff0">0</span></span>
         </div>
@@ -27,29 +37,24 @@
     
     <h2>MOKIBUL DHAMAKA 🌙</h2>
     <canvas id="gameCanvas"></canvas>
-    <p style="color: #ff0; font-weight: bold;">🔥 TAP ANYWHERE TO JUMP 🔥</p>
+    <p style="color: #0cf; font-weight: bold; margin-top: 5px; text-shadow: 0 0 5px #000;">🔥 TAP TO JUMP 🔥</p>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         canvas.width = 800; canvas.height = 350;
 
-        let score = 0, coinCount = 0, gameSpeed = 8.5; 
-        let isGameOver = false;
+        let score = 0, coinCount = 0, gameSpeed = 8.5, isGameOver = false;
 
         const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 16, gravity: 0.85, grounded: false };
         let obstacles = [], coins = [];
 
         function spawnEverything() {
             if (isGameOver) return;
-            // दुश्मन की दूरी एकदम सही
             obstacles.push({ x: canvas.width, y: 260, w: 42, h: 45 });
-            
-            // सिक्के
             if (Math.random() > 0.4) {
                 coins.push({ x: canvas.width + 450, y: 130 + Math.random() * 80, r: 16, collected: false });
             }
-            
             setTimeout(spawnEverything, 1700 + Math.random() * 1000); 
         }
 
@@ -65,7 +70,7 @@
                 if (obs.x + obs.w < 0) { obstacles.splice(i, 1); score += 10; }
                 if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.y + player.h > obs.y) {
                     isGameOver = true;
-                    alert("GAME OVER! 😂 \nMokibul's Final Score: " + score);
+                    alert("GAME OVER! 😂 \nFinal Score: " + score);
                     location.reload();
                 }
             });
@@ -74,9 +79,7 @@
                 c.x -= gameSpeed;
                 let dx = (player.x + 22) - c.x, dy = (player.y + 22) - c.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
-                if (dist < 40 && !c.collected) {
-                    c.collected = true; coinCount++; score += 50;
-                }
+                if (dist < 40 && !c.collected) { c.collected = true; coinCount++; score += 50; }
                 if (c.x + c.r < 0) coins.splice(i, 1);
             });
             
@@ -86,26 +89,22 @@
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Ground
-            ctx.fillStyle = "#333"; ctx.fillRect(0, 300, canvas.width, 50);
+            // जमीन का रंग थोड़ा गहरा नीला
+            ctx.fillStyle = "#111"; ctx.fillRect(0, 300, canvas.width, 50);
 
-            // Player
+            // प्लेयर (Neon Green)
             ctx.fillStyle = "#0f0"; ctx.shadowBlur = 15; ctx.shadowColor = "#0f0";
             ctx.fillRect(player.x, player.y, player.w, player.h);
 
-            // Obstacles
+            // दुश्मन (Red)
             ctx.fillStyle = "#f00"; ctx.shadowColor = "#f00"; ctx.shadowBlur = 10;
             obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
 
-            // Coins
+            // सिक्के (Gold)
             ctx.fillStyle = "#ff0"; ctx.shadowColor = "#ff0"; ctx.shadowBlur = 15;
-            coins.forEach(c => {
-                if (!c.collected) {
-                    ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2); ctx.fill();
-                }
-            });
+            coins.forEach(c => { if (!c.collected) { ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2); ctx.fill(); } });
+            
             ctx.shadowBlur = 0;
-
             update();
             requestAnimationFrame(draw);
         }
