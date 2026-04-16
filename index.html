@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MOKIBUL DRONE ESCAPE V2.0 - HD ROAD</title>
+    <title>MOKIBUL DRONE ESCAPE V3.0 - AI EDITION</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', monospace; color: #fff; text-transform: uppercase; }
@@ -30,6 +30,15 @@
         let score = 0, lane = 0, gameActive = true, speed = 0.05;
         let chaserDist = 100, isGhost = false, ghostTime = 0, objects = [];
         
+        // --- १. फोटो लोड करना (Loading Pixel Assets) ---
+        let coinImg = new Image();
+        coinImg.src = 'coin.png'; // पिक्सेल सिक्का
+        let playerImg = new Image();
+        playerImg.src = 'player.png'; // पिक्सेल बंदा
+        let coinLoaded = false, playerLoaded = false;
+        coinImg.onload = () => coinLoaded = true;
+        playerImg.onload = () => playerLoaded = true;
+
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -89,25 +98,16 @@
         }
 
         function draw() {
-            // Cyber Sky Grad
-            let sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            sky.addColorStop(0, "#010115"); sky.addColorStop(1, "#191970");
-            ctx.fillStyle = sky; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Background
+            ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const cx = canvas.width / 2, cy = canvas.height / 2;
 
-            // --- HD 3D ROAD DRAWING ---
-            ctx.fillStyle = "#111"; // Road base
-            ctx.beginPath();
-            ctx.moveTo(cx - 50, cy); ctx.lineTo(cx + 50, cy);
-            ctx.lineTo(cx + 600, canvas.height); ctx.lineTo(cx - 600, canvas.height);
-            ctx.fill();
-
-            // Neon Lane Lines
-            ctx.strokeStyle = isGhost ? "#fff" : "#0f0"; ctx.lineWidth = 3;
+            // Draw Road (3D Perspective)
+            ctx.strokeStyle = isGhost ? "#0cf" : "#0f0"; ctx.lineWidth = 2;
             for (let i = -1.5; i <= 1.5; i++) {
-                ctx.beginPath(); ctx.moveTo(cx + i * 33, cy);
-                ctx.lineTo(cx + i * 400, canvas.height); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(cx + i * 50, cy);
+                ctx.lineTo(cx + i * 500, canvas.height); ctx.stroke();
             }
 
             // Chaser Shadow Effect
@@ -119,7 +119,7 @@
                 ctx.fillStyle = chaserSky; ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
-            // Objects
+            // --- २. फोटो खींचना (Drawing Objects with Pixel Assets) ---
             objects.forEach(obj => {
                 let scale = 1 / obj.z;
                 let x = cx + (obj.lane * 150 * scale);
@@ -127,7 +127,7 @@
                 let size = 60 * scale;
 
                 if (obj.type === 'obs') {
-                    // Red Neon Hacker Spike
+                    // Red Obstacle (keeping basic for compatibility)
                     ctx.fillStyle = "#f00"; ctx.shadowBlur = 15; ctx.shadowColor = "#f00";
                     ctx.beginPath(); ctx.moveTo(x, y - size); ctx.lineTo(x + size/2, y); ctx.lineTo(x - size/2, y); ctx.fill();
                     ctx.shadowBlur = 0;
@@ -136,16 +136,25 @@
                     ctx.fillStyle = "#0cf"; ctx.shadowBlur = 15; ctx.shadowColor = "#0cf";
                     ctx.beginPath(); ctx.arc(x, y - size/2, size/2, 0, Math.PI*2); ctx.fill();
                     ctx.shadowBlur = 0;
-                } else {
-                    // Gold Coin
-                    ctx.fillStyle = "#ffd700"; ctx.beginPath(); ctx.arc(x, y - size/2, size/2, 0, Math.PI*2); ctx.fill();
+                } else if (obj.type === 'coin') {
+                    // पिक्सेल सिक्का खींचना
+                    if (coinLoaded) {
+                        ctx.drawImage(coinImg, x - size / 2, y - size, size, size);
+                    } else {
+                        // अगर लोड नहीं हुई, तो पुराना पीला गोला दिखाओ
+                        ctx.fillStyle = "gold"; ctx.beginPath(); ctx.arc(x, y - size/2, size/2, 0, Math.PI*2); ctx.fill();
+                    }
                 }
             });
 
-            // Player Neon Square
-            ctx.fillStyle = isGhost ? "#fff" : "#0f0"; ctx.shadowBlur = isGhost ? 20 : 0; ctx.shadowColor = "#0cf";
+            // --- ३. पिक्सेल बंदा खींचना (Drawing the Player) ---
             let pX = cx + (lane * 150), pY = canvas.height - 100;
-            ctx.fillRect(pX - 25, pY, 50, 50); ctx.shadowBlur = 0;
+            if (playerLoaded) {
+                ctx.drawImage(playerImg, pX - 25, pY, 50, 50);
+            } else {
+                ctx.fillStyle = isGhost ? "#fff" : "#0f0"; ctx.shadowBlur = isGhost ? 20 : 0; ctx.shadowColor = "#0cf";
+                ctx.fillRect(pX - 25, pY, 50, 50); ctx.shadowBlur = 0;
+            }
 
             requestAnimationFrame(() => { update(); draw(); });
         }
