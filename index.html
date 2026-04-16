@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MOKIBUL DRONE ESCAPE</title>
+    <title>MOKIBUL DRONE ESCAPE V2.0 - HD ROAD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', monospace; color: #fff; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', monospace; color: #fff; text-transform: uppercase; }
         canvas { display: block; }
         #ui { position: absolute; top: 10px; left: 10px; z-index: 10; pointer-events: none; }
-        .bar-container { width: 150px; height: 10px; background: #333; border: 1px solid #fff; margin-top: 5px; }
+        .bar-container { width: 150px; height: 10px; background: #222; border: 1px solid #0cf; margin-top: 5px; }
         #ghost-bar { width: 0%; height: 100%; background: #0cf; transition: width 0.1s; }
-        #chaser-alert { position: absolute; bottom: 20%; width: 100%; text-align: center; color: red; font-weight: bold; display: none; font-size: 24px; text-shadow: 0 0 10px red; }
+        #alert { position: absolute; bottom: 20%; width: 100%; text-align: center; color: #f00; font-weight: bold; display: none; font-size: 24px; text-shadow: 0 0 10px #f00; animation: flash 0.5s infinite; }
+        @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
 <body>
     <div id="ui">
         SCORE: <span id="score">0</span><br>
-        CHASER DISTANCE: <span id="c-dist">100</span>%
+        CHASER: <span id="c-dist">100</span>%
         <div class="bar-container"><div id="ghost-bar"></div></div>
-        <small id="status">POWER: NONE</small>
+        <small id="status">NONE</small>
     </div>
-    <div id="chaser-alert">⚠️ वह पीछे है! भाग! ⚠️</div>
+    <div id="alert">⚠️ खतरा पास है! ⚠️</div>
     <canvas id="gameCanvas"></canvas>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         
-        // Settings
-        let score = 0;
-        let lane = 0; // -1, 0, 1
-        let gameActive = true;
-        let speed = 0.05;
-        let chaserDist = 100; // 0 is game over
-        let isGhost = false;
-        let ghostTime = 0;
-
+        let score = 0, lane = 0, gameActive = true, speed = 0.05;
+        let chaserDist = 100, isGhost = false, ghostTime = 0, objects = [];
+        
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -42,10 +37,6 @@
         window.onresize = resize;
         resize();
 
-        // Assets
-        let objects = []; // Obstacles and Coins
-        
-        // Touch Controls
         let touchStartX = 0;
         window.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
         window.addEventListener('touchend', e => {
@@ -56,118 +47,108 @@
             }
         });
 
-        // Object Spawner
         function spawn() {
             if (!gameActive) return;
             let type = Math.random() > 0.1 ? 'obs' : 'power';
             if (Math.random() > 0.3) type = 'coin';
-            objects.push({
-                z: 10, // Distance
-                lane: Math.floor(Math.random() * 3) - 1,
-                type: type
-            });
+            objects.push({ z: 10, lane: Math.floor(Math.random() * 3) - 1, type: type });
             setTimeout(spawn, 1000 - Math.min(score, 500));
         }
         spawn();
 
         function update() {
             if (!gameActive) return;
-
-            speed += 0.00001;
-            score++;
+            speed += 0.00002; score++;
             
             if (isGhost) {
                 ghostTime -= 16;
                 document.getElementById("ghost-bar").style.width = (ghostTime/7000)*100 + "%";
-                if (ghostTime <= 0) {
-                    isGhost = false;
-                    document.getElementById("status").innerText = "POWER: NONE";
-                }
+                if (ghostTime <= 0) { isGhost = false; document.getElementById("status").innerText = "NONE"; }
             }
 
             objects.forEach((obj, i) => {
-                obj.z -= speed; // Move towards player
-                
-                // Collision check (when z is close to 0)
-                if (obj.z < 0.2 && obj.z > 0) {
-                    if (obj.lane === lane) {
-                        if (obj.type === 'obs' && !isGhost) {
-                            chaserDist -= 30; // Hit! Chaser gets closer
-                            objects.splice(i, 1);
-                            document.getElementById("chaser-alert").style.display = "block";
-                            setTimeout(() => document.getElementById("chaser-alert").style.display = "none", 1000);
-                        } else if (obj.type === 'power') {
-                            isGhost = true;
-                            ghostTime = 7000;
-                            document.getElementById("status").innerText = "POWER: GHOST MODE!";
-                            objects.splice(i, 1);
-                        } else if (obj.type === 'coin') {
-                            score += 500;
-                            objects.splice(i, 1);
-                        }
-                    }
+                obj.z -= speed;
+                if (obj.z < 0.2 && obj.z > 0 && obj.lane === lane) {
+                    if (obj.type === 'obs' && !isGhost) {
+                        chaserDist -= 30; objects.splice(i, 1);
+                        document.getElementById("alert").style.display = "block";
+                        setTimeout(() => document.getElementById("alert").style.display = "none", 1000);
+                    } else if (obj.type === 'power') {
+                        isGhost = true; ghostTime = 7000;
+                        document.getElementById("status").innerText = "GHOST MODE!"; objects.splice(i, 1);
+                    } else if (obj.type === 'coin') { score += 500; objects.splice(i, 1); }
                 }
                 if (obj.z < -1) objects.splice(i, 1);
             });
 
-            // Recover chaser distance slowly
-            if (chaserDist < 100) chaserDist += 0.05;
-            if (chaserDist <= 0) {
-                gameActive = false;
-                alert("पकड़े गए! SCORE: " + score);
-                location.reload();
-            }
+            if (chaserDist < 100) chaserDist += 0.04;
+            if (chaserDist <= 0) { gameActive = false; alert("पकड़े गए! SCORE: " + score); location.reload(); }
 
             document.getElementById("score").innerText = score;
             document.getElementById("c-dist").innerText = Math.floor(chaserDist);
         }
 
         function draw() {
-            // Background
-            ctx.fillStyle = "#000";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Cyber Sky Grad
+            let sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            sky.addColorStop(0, "#010115"); sky.addColorStop(1, "#191970");
+            ctx.fillStyle = sky; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
+            const cx = canvas.width / 2, cy = canvas.height / 2;
 
-            // Draw Road (3D Perspective)
-            ctx.strokeStyle = isGhost ? "#0cf" : "#0f0";
-            ctx.lineWidth = 2;
+            // --- HD 3D ROAD DRAWING ---
+            ctx.fillStyle = "#111"; // Road base
+            ctx.beginPath();
+            ctx.moveTo(cx - 50, cy); ctx.lineTo(cx + 50, cy);
+            ctx.lineTo(cx + 600, canvas.height); ctx.lineTo(cx - 600, canvas.height);
+            ctx.fill();
+
+            // Neon Lane Lines
+            ctx.strokeStyle = isGhost ? "#fff" : "#0f0"; ctx.lineWidth = 3;
             for (let i = -1.5; i <= 1.5; i++) {
-                ctx.beginPath();
-                ctx.moveTo(cx + i * 50, cy);
-                ctx.lineTo(cx + i * 500, canvas.height);
-                ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(cx + i * 33, cy);
+                ctx.lineTo(cx + i * 400, canvas.height); ctx.stroke();
             }
 
-            // Draw Objects
+            // Chaser Shadow Effect
+            if (chaserDist < 60) {
+                let p = (60 - chaserDist) / 60;
+                let chaserSky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                chaserSky.addColorStop(0, "rgba(20,0,0,"+p+")");
+                chaserSky.addColorStop(1, "rgba(0,0,0,0)");
+                ctx.fillStyle = chaserSky; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Objects
             objects.forEach(obj => {
                 let scale = 1 / obj.z;
                 let x = cx + (obj.lane * 150 * scale);
                 let y = cy + (100 * scale);
-                let size = 50 * scale;
+                let size = 60 * scale;
 
-                if (obj.type === 'obs') ctx.fillStyle = "red";
-                else if (obj.type === 'power') ctx.fillStyle = "#0cf";
-                else ctx.fillStyle = "gold";
-
-                ctx.fillRect(x - size / 2, y - size, size, size);
+                if (obj.type === 'obs') {
+                    // Red Neon Hacker Spike
+                    ctx.fillStyle = "#f00"; ctx.shadowBlur = 15; ctx.shadowColor = "#f00";
+                    ctx.beginPath(); ctx.moveTo(x, y - size); ctx.lineTo(x + size/2, y); ctx.lineTo(x - size/2, y); ctx.fill();
+                    ctx.shadowBlur = 0;
+                } else if (obj.type === 'power') {
+                    // Power Sphere
+                    ctx.fillStyle = "#0cf"; ctx.shadowBlur = 15; ctx.shadowColor = "#0cf";
+                    ctx.beginPath(); ctx.arc(x, y - size/2, size/2, 0, Math.PI*2); ctx.fill();
+                    ctx.shadowBlur = 0;
+                } else {
+                    // Gold Coin
+                    ctx.fillStyle = "#ffd700"; ctx.beginPath(); ctx.arc(x, y - size/2, size/2, 0, Math.PI*2); ctx.fill();
+                }
             });
 
-            // Draw Player
-            ctx.fillStyle = isGhost ? "#fff" : "#0f0";
-            ctx.shadowBlur = isGhost ? 20 : 0;
-            ctx.shadowColor = "#0cf";
-            let pX = cx + (lane * 150);
-            ctx.fillRect(pX - 25, canvas.height - 100, 50, 50);
-            ctx.shadowBlur = 0;
+            // Player Neon Square
+            ctx.fillStyle = isGhost ? "#fff" : "#0f0"; ctx.shadowBlur = isGhost ? 20 : 0; ctx.shadowColor = "#0cf";
+            let pX = cx + (lane * 150), pY = canvas.height - 100;
+            ctx.fillRect(pX - 25, pY, 50, 50); ctx.shadowBlur = 0;
 
-            requestAnimationFrame(() => {
-                update();
-                draw();
-            });
+            requestAnimationFrame(() => { update(); draw(); });
         }
-
         draw();
     </script>
 </body>
