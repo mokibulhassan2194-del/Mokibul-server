@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOKIBUL KHAN | SECURE SERVER</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
+        }
+
+        .scanner-line {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 65, 0.5);
+            position: absolute;
+            top: 0;
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .login-box {
+            border: 2px solid #00ff41;
+            padding: 30px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px #00ff41;
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 { font-size: 24px; letter-spacing: 5px; margin-bottom: 20px; }
+
+        input {
+            background: transparent;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 20px;
+            outline: none;
+            text-align: center;
+        }
+
+        button {
+            background: #00ff41;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: transparent;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            box-shadow: 0 0 15px #00ff41;
+        }
+
+        .owner-tag { margin-top: 15px; font-size: 12px; opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="scanner-line"></div>
+
+    <div class="login-box">
+        <h1>MOKIBUL KHAN SERVER</h1>
+        <p>[ SYSTEM STATUS: LOCKED ]</p>
+        <input type="password" id="key" placeholder="ENTER SECRET KEY...">
+        <br>
+        <button onclick="access()">ACCESS GRANTED</button>
+        <div class="owner-tag">CREATED BY: MOKIBUL-HACKER</div>
+    </div>
+
+    <script>
+        function access() {
+            let k = document.getElementById("key").value;
+            if(k === "MAKIBUL786") {
+                alert("ACCESS GRANTED! REDIRECTING TO MOKIBUL-GRAM...");
+                // यहाँ तू अपना अगला पेज डाल सकता है
+            } else {
+                alert("ACCESS DENIED! INTRUDER ALERT!");
+            }
+        }
+    </script>
+</body>
+</html>
 
