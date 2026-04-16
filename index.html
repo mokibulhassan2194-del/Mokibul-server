@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MOKIBUL DHAMAKA SERVER</title>
+    <title>MOKIBUL PRO SERVER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #fff; text-align: center; height: 100vh; touch-action: manipulation; }
-        canvas { display: block; border: 4px solid #f0f; box-shadow: 0 0 25px #f0f; margin: 10px auto; max-width: 95%; background: #050010; }
-        /* MOKIBUL special UI */
-        .mokibul-ui { position: absolute; width: 100%; top: 10px; font-size: 24px; font-weight: bold; color: #0f0; pointer-events: none; text-shadow: 2px 2px #000; display: flex; justify-content: space-around; }
-        h1 { margin-top: 50px; text-shadow: 0 0 10px #f0f; }
+        
+        /* UI को फिक्स किया गया है ताकि ओवरलैप न हो */
+        .header-box { padding: 10px; background: rgba(0, 255, 0, 0.1); border-bottom: 2px solid #0f0; margin-bottom: 10px; }
+        .mokibul-name { font-size: 26px; color: #0f0; font-weight: bold; text-shadow: 2px 2px #000; display: block; margin-bottom: 5px; }
+        .stats { display: flex; justify-content: space-around; font-size: 18px; color: #fff; }
+        
+        canvas { display: block; border: 4px solid #f0f; box-shadow: 0 0 20px #f0f; margin: 10px auto; max-width: 95%; background: #050010; border-radius: 8px; }
+        h2 { margin: 5px 0; color: #fff; text-shadow: 0 0 8px #f0f; font-size: 22px; }
     </style>
 </head>
 <body onclick="jump()" ontouchstart="jump()">
-    <div class="mokibul-ui">
-        <span>[ MOKIBUL ]</span>
-        <span>SCORE: <span id="score">0</span></span>
-        <span>COINS: <span id="coins">0</span></span>
+
+    <div class="header-box">
+        <span class="mokibul-name">⭐ MOKIBUL KHAN ⭐</span>
+        <div class="stats">
+            <span>SCORE: <span id="score" style="color:#0f0">0</span></span>
+            <span>COINS: <span id="coins" style="color:#ff0">0</span></span>
+        </div>
     </div>
     
-    <h1>MOKIBUL DHAMAKA <span style="font-size:40px;">🌙</span></h1>
+    <h2>MOKIBUL DHAMAKA 🌙</h2>
     <canvas id="gameCanvas"></canvas>
-    <p style="color: #ff0; font-weight: bold;">🔥 DODGE THE BLOCKS & COLLECT MOKIBUL COINS! 🔥</p>
+    <p style="color: #0cf; font-weight: bold; margin-top: 5px;">🔥 TAP ANYWHERE TO JUMP 🔥</p>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         canvas.width = 800; canvas.height = 350;
 
-        let score = 0, coinCount = 0, gameSpeed = 9; // स्पीड Fast है!
+        let score = 0, coinCount = 0, gameSpeed = 8.5; 
         let isGameOver = false;
 
-        const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 16, gravity: 0.9, grounded: false };
+        const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 15.5, gravity: 0.85, grounded: false };
         let obstacles = [], coins = [];
 
-        // दुश्मन पैदा करने का लॉजिक (Spacing बढ़ा दी है)
         function spawnEverything() {
             if (isGameOver) return;
-
-            // पहला दुश्मन
-            obstacles.push({ x: canvas.width, y: 260, w: 40, h: 45 });
-
-            // 'घना-घना' कम करने के लिए दूसरा बॉक्स कभी-कभी और बहुत दूर आएगा 😂
-            if (Math.random() > 0.7) { 
-                obstacles.push({ x: canvas.width + 600, y: 260, w: 40, h: 45 }); 
-            }
-
-            // सिक्के (Coins) जम्प करने वाले एरिया में
-            coins.push({ x: canvas.width + 350, y: 120 + Math.random() * 80, r: 16, collected: false });
+            // दुश्मन (Obstacles) की सही दूरी
+            obstacles.push({ x: canvas.width, y: 260, w: 42, h: 45 });
             
-            // नया पैदा होने का समय बढ़ा दिया (Spacing)
-            setTimeout(spawnEverything, 1500 + Math.random() * 1000); 
+            // सिक्के (Coins)
+            if (Math.random() > 0.4) {
+                coins.push({ x: canvas.width + 400, y: 130 + Math.random() * 80, r: 16, collected: false });
+            }
+            
+            // स्पॉन टाइमिंग को सुधारा गया ताकि 'घना' न लगे
+            setTimeout(spawnEverything, 1600 + Math.random() * 1200); 
         }
 
         function update() {
@@ -59,25 +61,22 @@
 
             if (player.y > 250) { player.y = 250; player.dy = 0; player.grounded = true; }
 
-            // Obstacles update & spacing check
             obstacles.forEach((obs, i) => {
                 obs.x -= gameSpeed;
                 if (obs.x + obs.w < 0) { obstacles.splice(i, 1); score += 10; }
                 if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.y + player.h > obs.y) {
                     isGameOver = true;
-                    alert("PHAT GAYA! 😂 Mokibul's Score: " + score);
+                    alert("GAME OVER! 😂 \nMokibul's Score: " + score);
                     location.reload();
                 }
             });
 
-            // Coins update with collect effect
             coins.forEach((c, i) => {
                 c.x -= gameSpeed;
                 let dx = (player.x + 22) - c.x, dy = (player.y + 22) - c.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
                 if (dist < 40 && !c.collected) {
-                    c.collected = true; coinCount++; score += 100; // कॉइन से ज़्यादा पॉइंट
-                    flashExplosion(c.x, c.y); 
+                    c.collected = true; coinCount++; score += 50;
                 }
                 if (c.x + c.r < 0) coins.splice(i, 1);
             });
@@ -86,25 +85,20 @@
             document.getElementById("coins").innerText = coinCount;
         }
 
-        // कॉइन कलेक्शन धमाका इफ़ेक्ट
-        function flashExplosion(x, y) {
-            ctx.fillStyle = "rgba(255, 255, 0, 0.6)"; ctx.beginPath(); ctx.arc(x, y, 60, 0, Math.PI*2); ctx.fill();
-        }
-
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             // Ground
-            ctx.fillStyle = "#222"; ctx.fillRect(0, 300, canvas.width, 50);
+            ctx.fillStyle = "#333"; ctx.fillRect(0, 300, canvas.width, 50);
 
-            // Draw Player (Neon Green)
+            // Player (Neon Green)
             ctx.fillStyle = "#0f0"; ctx.shadowBlur = 15; ctx.shadowColor = "#0f0";
             ctx.fillRect(player.x, player.y, player.w, player.h);
 
-            // Draw Obstacles (Red Neon)
+            // Obstacles (Red Neon)
             ctx.fillStyle = "#f00"; ctx.shadowColor = "#f00"; ctx.shadowBlur = 10;
             obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
 
-            // Draw Coins (Gold Sphere)
+            // Coins (Yellow)
             ctx.fillStyle = "#ff0"; ctx.shadowColor = "#ff0"; ctx.shadowBlur = 15;
             coins.forEach(c => {
                 if (!c.collected) {
