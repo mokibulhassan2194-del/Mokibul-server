@@ -1,116 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MOKIBUL NIGHT SERVER PRO</title>
+    <title>MOKIBUL DHAMAKA SERVER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        /* पूरे स्क्रीन पर टच काम करे इसके लिए बॉडी को ही बटन बना दिया */
-        body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #0f0; text-align: center; height: 100vh; touch-action: manipulation; }
-        canvas { display: block; border: 3px solid #0f0; box-shadow: 0 0 20px #0f0; margin: 10px auto; max-width: 95%; background: #05051a; }
-        h1 { margin: 10px 0; font-size: 24px; text-shadow: 2px 2px #555; }
-        .info { font-size: 20px; margin-bottom: 5px; color: #fff; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #fff; text-align: center; height: 100vh; touch-action: manipulation; }
+        canvas { display: block; border: 4px solid #f0f; box-shadow: 0 0 25px #f0f; margin: 10px auto; max-width: 95%; background: #050010; }
+        .ui { position: absolute; width: 100%; top: 15px; font-size: 22px; font-weight: bold; color: #0f0; pointer-events: none; text-shadow: 2px 2px #000; }
     </style>
 </head>
 <body onclick="jump()" ontouchstart="jump()">
-    <h1>MOKIBUL NIGHT SERVER 🌙</h1>
-    <div class="info">SCORE: <span id="score">0</span> | SPEED: <span id="speed">1.0</span>x</div>
+    <div class="ui">SCORE: <span id="score">0</span> | COINS: <span id="coins">0</span></div>
+    <h1>MOKIBUL DHAMAKA 🌙</h1>
     <canvas id="gameCanvas"></canvas>
-    <p style="color: #0cf;">TAP ANYWHERE ON SCREEN TO JUMP!</p>
+    <p style="color: #ff0;">🔥 COLLECT COINS & DODGE BLOCKS! 🔥</p>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-        
-        // मोबाइल के लिए सही साइज
-        canvas.width = 800;
-        canvas.height = 350;
+        canvas.width = 800; canvas.height = 350;
 
-        let score = 0;
-        let gameSpeed = 7; // पहले से ज्यादा फास्ट रफ्तार
+        let score = 0, coinCount = 0, gameSpeed = 9; // रफ़्तार एकदम तेज़!
         let isGameOver = false;
 
-        const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 14, gravity: 0.7, grounded: false };
-        let obstacles = [];
-        const stars = Array.from({ length: 60 }, () => ({ x: Math.random() * 800, y: Math.random() * 250, size: Math.random() * 2 }));
+        const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 15, gravity: 0.8, grounded: false };
+        let obstacles = [], coins = [];
 
-        // दुश्मन पैदा करने का लॉजिक (Double Box Chance)
-        function spawnObstacle() {
+        function spawnEverything() {
             if (isGameOver) return;
+            // दुश्मन (Blocks)
+            obstacles.push({ x: canvas.width, y: 260, w: 40, h: 45 });
+            if (Math.random() > 0.6) obstacles.push({ x: canvas.width + 300, y: 260, w: 40, h: 45 });
+
+            // सिक्के (Coins)
+            coins.push({ x: canvas.width + 150, y: 100 + Math.random() * 100, r: 15, collected: false });
             
-            // पहला बॉक्स
-            obstacles.push({ x: canvas.width, y: 260, w: 35, h: 45 });
-
-            // कभी-कभी एक साथ दूसरा बॉक्स (Double Obstacle) 😂
-            if (Math.random() > 0.7) { 
-                obstacles.push({ x: canvas.width + 40, y: 260, w: 35, h: 45 });
-            }
-
-            // रैंडम टाइमिंग ताकि खिलाड़ी चौंक जाए
-            let nextSpawn = Math.max(800, 1800 - (score * 10)); 
-            setTimeout(spawnObstacle, nextSpawn);
+            setTimeout(spawnEverything, 1200);
         }
 
         function update() {
             if (isGameOver) return;
-
             player.dy += player.gravity;
             player.y += player.dy;
 
-            if (player.y > 250) {
-                player.y = 250;
-                player.dy = 0;
-                player.grounded = true;
-            }
+            if (player.y > 250) { player.y = 250; player.dy = 0; player.grounded = true; }
 
+            // Update Obstacles
             obstacles.forEach((obs, i) => {
                 obs.x -= gameSpeed;
-                
-                if (obs.x + obs.w < 0) {
-                    obstacles.splice(i, 1);
-                    score++;
-                    if (score % 4 === 0) gameSpeed += 0.3; // धीरे-धीरे स्पीड बढ़ती रहेगी
-                }
-
-                // Collision Detection
-                if (player.x < obs.x + obs.w && player.x + player.w > obs.x &&
-                    player.y < obs.y + obs.h && player.y + player.h > obs.y) {
+                if (obs.x + obs.w < 0) { obstacles.splice(i, 1); score += 10; }
+                if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.y + player.h > obs.y) {
                     isGameOver = true;
-                    alert("PHAT GAYA! 😂 Final Score: " + score);
+                    alert("PHAT GAYA! 😂 Score: " + score);
                     location.reload();
                 }
             });
 
+            // Update Coins
+            coins.forEach((c, i) => {
+                c.x -= gameSpeed;
+                let dx = (player.x + 22) - c.x, dy = (player.y + 22) - c.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 40 && !c.collected) {
+                    c.collected = true; coinCount++; score += 50;
+                    createExplosion(c.x, c.y); // धमाका इफ़ेक्ट!
+                }
+            });
+            
             document.getElementById("score").innerText = score;
-            document.getElementById("speed").innerText = (gameSpeed / 7).toFixed(1);
+            document.getElementById("coins").innerText = coinCount;
+        }
+
+        function createExplosion(x, y) {
+            ctx.fillStyle = "#ff0";
+            ctx.beginPath(); ctx.arc(x, y, 40, 0, Math.PI*2); ctx.fill(); // हल्का सा धमाका फ्लैश
         }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Stars & Moon
-            ctx.fillStyle = "#fff";
-            stars.forEach(s => ctx.fillRect(s.x, s.y, s.size, s.size));
-            ctx.beginPath();
-            ctx.arc(700, 70, 35, 0, Math.PI * 2);
-            ctx.fill();
-
             // Ground
-            ctx.fillStyle = "#222";
-            ctx.fillRect(0, 295, canvas.width, 55);
+            ctx.fillStyle = "#222"; ctx.fillRect(0, 300, canvas.width, 50);
 
-            // Player (Neon Green)
-            ctx.fillStyle = "#0f0";
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = "#0f0";
+            // Draw Player
+            ctx.fillStyle = "#0f0"; ctx.shadowBlur = 15; ctx.shadowColor = "#0f0";
             ctx.fillRect(player.x, player.y, player.w, player.h);
-            ctx.shadowBlur = 0;
 
-            // Obstacles (Red Neon)
-            ctx.fillStyle = "#f00";
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = "#f00";
-            obstacles.forEach(obs => {
-                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+            // Draw Obstacles
+            ctx.fillStyle = "#f00"; ctx.shadowColor = "#f00";
+            obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
+
+            // Draw Coins (Yellow Circles)
+            ctx.fillStyle = "#ff0"; ctx.shadowColor = "#ff0";
+            coins.forEach(c => {
+                if (!c.collected) {
+                    ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2); ctx.fill();
+                }
             });
             ctx.shadowBlur = 0;
 
@@ -118,18 +102,8 @@
             requestAnimationFrame(draw);
         }
 
-        function jump() {
-            if (player.grounded && !isGameOver) {
-                player.dy = -player.jumpForce;
-                player.grounded = false;
-            }
-        }
-
-        // कीबोर्ड सपोर्ट
-        window.addEventListener("keydown", (e) => { if (e.code === "Space") jump(); });
-
-        spawnObstacle();
-        draw();
+        function jump() { if (player.grounded) { player.dy = -player.jumpForce; player.grounded = false; } }
+        spawnEverything(); draw();
     </script>
 </body>
 </html>
