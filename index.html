@@ -1,90 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mokibul Hill Climber</title>
+    <title>Mokibul HD Climber</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        body { margin: 0; background: #87CEEB; overflow: hidden; font-family: sans-serif; }
-        canvas { display: block; background: linear-gradient(#87CEEB, #E0F6FF); }
-        .stats { position: absolute; top: 10px; left: 10px; font-weight: bold; font-size: 20px; color: #333; }
+        body { margin: 0; background: #222; overflow: hidden; font-family: 'Arial', sans-serif; }
+        canvas { display: block; touch-action: none; }
+        .ui { position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 2px solid #fff; }
     </style>
 </head>
 <body>
-    <div class="stats">Distance: <span id="dist">0</span>m</div>
+    <div class="ui">Distance: <span id="dist">0</span>m</div>
     <canvas id="gameCanvas"></canvas>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
 
-        let distance = 0;
-        let speed = 0;
-        let carY = 0;
-        let rotation = 0;
-        let isGas = false;
-
-        // पहाड़ों का नक्शा (Terrain points)
-        let points = [];
-        for (let i = 0; i < 1000; i++) {
-            points.push(Math.sin(i * 0.1) * 30 + Math.cos(i * 0.05) * 50 + 400);
+        // Screen Adjustments
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+        window.onresize = resize;
+        resize();
 
         let scrollX = 0;
+        let speed = 0;
+        let isGas = false;
 
-        // Input
-        window.addEventListener("mousedown", () => isGas = true);
-        window.addEventListener("mouseup", () => isGas = false);
-        window.addEventListener("touchstart", () => isGas = true);
-        window.addEventListener("touchend", () => isGas = false);
+        // Smooth Terrain Generation
+        let points = [];
+        let y = canvas.height / 1.5;
+        for (let i = 0; i < 5000; i++) {
+            y += Math.sin(i * 0.05) * 10 + (Math.random() - 0.5) * 5;
+            points.push(y);
+        }
+
+        // Controls
+        window.onmousedown = window.ontouchstart = () => isGas = true;
+        window.onmouseup = window.ontouchend = () => isGas = false;
 
         function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 1. HD Sky Gradient
+            let sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            sky.addColorStop(0, "#00b4db");
+            sky.addColorStop(1, "#90e0ef");
+            ctx.fillStyle = sky;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 1. ज़मीन (Terrain) बनाना
-            ctx.fillStyle = "#4a7a2a";
+            // 2. Draw Sun
+            ctx.fillStyle = "#fffc00";
+            ctx.beginPath();
+            ctx.arc(canvas.width - 80, 80, 40, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 3. Smooth Terrain with Grass
             ctx.beginPath();
             ctx.moveTo(0, canvas.height);
             for (let i = 0; i < canvas.width; i++) {
-                let worldX = i + scrollX;
-                let pIndex = Math.floor(worldX / 10);
-                let y = points[pIndex];
-                ctx.lineTo(i, y);
+                let pIndex = Math.floor((i + scrollX) / 2);
+                ctx.lineTo(i, points[pIndex]);
             }
             ctx.lineTo(canvas.width, canvas.height);
+            
+            // Ground Color (Soil)
+            let ground = ctx.createLinearGradient(0, canvas.height/2, 0, canvas.height);
+            ground.addColorStop(0, "#5d4037");
+            ground.addColorStop(1, "#3e2723");
+            ctx.fillStyle = ground;
             ctx.fill();
+            
+            // Grass Line
+            ctx.strokeStyle = "#2e7d32";
+            ctx.lineWidth = 10;
+            ctx.stroke();
 
-            // 2. गाड़ी की पोजीशन (Car Physics)
+            // 4. Car Logic
             let carX = 100;
-            let currentPointIndex = Math.floor((carX + scrollX) / 10);
-            let groundY = points[currentPointIndex];
-            
-            if (isGas) speed += 0.2;
-            else speed *= 0.98; // Friction
-            
-            if (speed > 10) speed = 10;
-            scrollX += speed;
-            distance = Math.floor(scrollX / 10);
-            document.getElementById("dist").innerText = distance;
+            let currentP = Math.floor((carX + scrollX) / 2);
+            let carY = points[currentP] - 15;
 
-            // 3. गाड़ी बनाना (Red Car)
+            if (isGas) speed += 0.3;
+            else speed *= 0.96;
+            
+            if (speed > 15) speed = 15;
+            scrollX += speed;
+
+            // 5. High Graphics Car
             ctx.save();
-            ctx.translate(carX, groundY - 20);
+            ctx.translate(carX, carY);
             
-            // बॉडी
-            ctx.fillStyle = "red";
-            ctx.fillRect(-20, -10, 40, 15);
-            ctx.fillStyle = "black";
-            ctx.fillRect(-15, -20, 25, 10); // छत
+            // Car Body (Red)
+            ctx.fillStyle = "#d32f2f";
+            ctx.fillRect(-25, -15, 50, 20);
+            ctx.fillStyle = "#000"; // Window
+            ctx.fillRect(-10, -25, 20, 10);
             
-            // पहिये
+            // Wheels
+            ctx.fillStyle = "#333";
             ctx.beginPath();
-            ctx.arc(-15, 8, 8, 0, Math.PI * 2);
-            ctx.arc(15, 8, 8, 0, Math.PI * 2);
+            ctx.arc(-15, 10, 10, 0, Math.PI*2);
+            ctx.arc(15, 10, 10, 0, Math.PI*2);
             ctx.fill();
             
             ctx.restore();
 
+            document.getElementById("dist").innerText = Math.floor(scrollX / 10);
             requestAnimationFrame(draw);
         }
 
