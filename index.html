@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MOKIBUL PRO RUNNER</title>
+    <title>MOKIBUL JUNGLE RUN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; color: #fff; }
@@ -10,14 +10,18 @@
     </style>
 </head>
 <body>
-    <div id="ui">SCORE: <span id="score">0</span> | CHASER: <span id="c-dist">100</span>%</div>
+    <div id="ui">SCORE: <span id="score">0</span></div>
     <canvas id="gameCanvas"></canvas>
-
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-        let score = 0, lane = 0, gameActive = true, speed = 0.06;
-        let chaserDist = 100, objects = [], lineOffset = 0;
+        let score = 0, lane = 0, speed = 0.08, gameActive = true;
+        let objects = [], roadOffset = 0;
+
+        let roadImg = new Image();
+        roadImg.src = 'road.png'; 
+        let roadLoaded = false;
+        roadImg.onload = () => roadLoaded = true;
 
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
@@ -34,68 +38,52 @@
 
         function spawn() {
             if (!gameActive) return;
-            objects.push({ z: 10, lane: Math.floor(Math.random() * 3) - 1, type: Math.random() > 0.2 ? 'obs' : 'coin' });
-            setTimeout(spawn, 800);
+            objects.push({ z: 10, lane: Math.floor(Math.random() * 3) - 1 });
+            setTimeout(spawn, 900);
         }
         spawn();
 
         function draw() {
-            ctx.fillStyle = "#050510"; // Dark Sky
+            ctx.fillStyle = "#050510"; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             const cx = canvas.width / 2, cy = canvas.height / 2;
 
-            // --- DRAWING THE ROAD ---
-            ctx.fillStyle = "#222"; // Gray Road
-            ctx.beginPath();
-            ctx.moveTo(cx - 40, cy); ctx.lineTo(cx + 40, cy);
-            ctx.lineTo(cx + 500, canvas.height); ctx.lineTo(cx - 500, canvas.height);
-            ctx.fill();
-
-            // Road Borders (Green Neon)
-            ctx.strokeStyle = "#0f0"; ctx.lineWidth = 3;
-            ctx.beginPath(); ctx.moveTo(cx - 40, cy); ctx.lineTo(cx - 500, canvas.height); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(cx + 40, cy); ctx.lineTo(cx + 500, canvas.height); ctx.stroke();
-
-            // Moving Road Lines (This makes it look like it's moving!)
-            lineOffset += speed * 50;
-            if (lineOffset > 100) lineOffset = 0;
-            ctx.strokeStyle = "rgba(255,255,255,0.3)";
-            for (let i = 0; i < 10; i++) {
-                let z = 10 - ((i * 1 + lineOffset/20) % 10);
-                let scale = 1 / z;
-                let y = cy + (100 * scale);
-                ctx.beginPath(); ctx.moveTo(cx - 5 * scale, y); ctx.lineTo(cx + 5 * scale, y); ctx.stroke();
+            if (roadLoaded) {
+                roadOffset += speed * 40;
+                if (roadOffset > 100) roadOffset = 0;
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(cx - 40, cy); ctx.lineTo(cx + 40, cy);
+                ctx.lineTo(cx + 500, canvas.height); ctx.lineTo(cx - 500, canvas.height);
+                ctx.clip();
+                for(let i=-1; i<2; i++) {
+                    ctx.drawImage(roadImg, cx - 300, cy + (i * canvas.height) + (roadOffset * 10), 600, canvas.height);
+                }
+                ctx.restore();
             }
 
-            // Update & Draw Objects
             objects.forEach((obj, i) => {
                 obj.z -= speed;
                 let scale = 1 / obj.z;
                 let x = cx + (obj.lane * 180 * scale);
-                let y = cy + (100 * scale);
-                let size = 60 * scale;
-
+                let y = cy + (120 * scale);
+                let size = 70 * scale;
                 if (obj.z > 0.1) {
-                    ctx.fillStyle = obj.type === 'obs' ? "red" : "gold";
+                    ctx.fillStyle = "red";
                     ctx.fillRect(x - size/2, y - size, size, size);
                 }
-
                 if (obj.z < 0.2 && obj.z > 0 && obj.lane === lane) {
-                    if (obj.type === 'obs') { chaserDist -= 20; objects.splice(i,1); }
-                    else { score += 100; objects.splice(i,1); }
+                    gameActive = false;
+                    alert("खेला खत्म! स्कोर: " + score);
+                    location.reload();
                 }
-                if (obj.z < 0) objects.splice(i, 1);
+                if (obj.z < 0) { objects.splice(i, 1); score += 50; }
             });
 
-            // Player
             ctx.fillStyle = "#0cf";
             ctx.fillRect(cx + (lane * 120) - 20, canvas.height - 80, 40, 40);
 
-            if (chaserDist <= 0) { alert("पकड़े गए!"); location.reload(); gameActive = false; }
             document.getElementById("score").innerText = score;
-            document.getElementById("c-dist").innerText = Math.floor(chaserDist);
-
             if (gameActive) requestAnimationFrame(draw);
         }
         draw();
