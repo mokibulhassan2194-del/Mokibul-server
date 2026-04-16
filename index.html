@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mokibul Hacker Game</title>
+    <title>Mokibul Night Hacker</title>
     <style>
-        body { margin: 0; background: #111; color: #0f0; font-family: monospace; text-align: center; overflow: hidden; }
-        #gameCanvas { border: 2px solid #0f0; background: #000; margin-top: 50px; }
-        h1 { text-shadow: 0 0 10px #0f0; }
+        body { margin: 0; background: #050505; color: #0f0; font-family: 'Courier New', monospace; text-align: center; overflow: hidden; }
+        canvas { border: 2px solid #333; background: linear-gradient(#001, #002); margin-top: 30px; box-shadow: 0 0 20px #0f0; }
+        .info { font-size: 20px; text-shadow: 0 0 5px #0f0; }
     </style>
 </head>
 <body>
-    <h1>MOKIBUL GAME SERVER</h1>
+    <h1 style="color: #fff;">MOKIBUL NIGHT SERVER 🌙</h1>
+    <div class="info">Score: <span id="score">0</span> | Speed: <span id="speed">1x</span></div>
+    <canvas id="gameCanvas" width="600" height="250"></canvas>
     <p>Press "SPACE" or Tap to Jump!</p>
-    <canvas id="gameCanvas" width="600" height="200"></canvas>
-    <h2 id="score">Score: 0</h2>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-        let score = 0;
-        let player = { x: 50, y: 150, w: 30, h: 30, dy: 0, jump: -10, ground: 150 };
-        let enemies = [];
-        let gameActive = true;
 
-        // Player Jump
+        let score = 0;
+        let gameActive = true;
+        let gameSpeed = 5;
+        let frameCount = 0;
+
+        // Player settings
+        let player = { x: 50, y: 200, w: 30, h: 30, dy: 0, jump: -12, ground: 200 };
+        
+        // Stars background
+        let stars = [];
+        for(let i=0; i<50; i++) {
+            stars.push({x: Math.random()*600, y: Math.random()*150, size: Math.random()*2});
+        }
+
+        let enemies = [];
+        let nextEnemyFrame = 0; // दुश्मन के बीच गैप रखने के लिए
+
         function doJump() {
             if (player.y === player.ground) player.dy = player.jump;
         }
@@ -31,36 +43,64 @@
 
         function update() {
             if (!gameActive) return;
+            frameCount++;
 
-            // Physics
-            player.dy += 0.5; // Gravity
+            // Level Hard करना: हर 10 स्कोर के बाद स्पीड बढ़ाना
+            gameSpeed = 5 + Math.floor(score / 10);
+            document.getElementById("speed").innerText = (gameSpeed/5).toFixed(1) + "x";
+
+            // Gravity
+            player.dy += 0.6;
             player.y += player.dy;
             if (player.y > player.ground) { player.y = player.ground; player.dy = 0; }
 
-            // Enemies logic
-            if (Math.random() < 0.02) enemies.push({ x: 600, y: 160, w: 20, h: 20 });
-            
+            // दुश्मन पैदा करना (Logic: कम से कम 40-60 frames का गैप हो)
+            if (frameCount > nextEnemyFrame) {
+                enemies.push({ x: 600, y: 210, w: 25, h: 25 });
+                // अगला दुश्मन कब आएगा (Random गैप ताकि अचानक 3-4 न आएं)
+                nextEnemyFrame = frameCount + Math.random() * 100 + (60 - gameSpeed * 2);
+            }
+
             enemies.forEach((en, index) => {
-                en.x -= 5;
-                // Collision Detection
+                en.x -= gameSpeed;
+                
+                // Collision
                 if (player.x < en.x + en.w && player.x + player.w > en.x &&
                     player.y < en.y + en.h && player.y + player.h > en.y) {
                     gameActive = false;
-                    alert("VIRUS DETECTED! Game Over. Score: " + score);
+                    alert("SYSTEM CRASHED! Score: " + score);
                     location.reload();
                 }
-                if (en.x < -20) { enemies.splice(index, 1); score++; }
+                if (en.x < -30) { enemies.splice(index, 1); score++; }
             });
-            document.getElementById("score").innerText = "Score: " + score;
+            document.getElementById("score").innerText = score;
         }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Draw Player (Green Box)
+
+            // 1. चाँद (Moon) बनाना
+            ctx.fillStyle = "#fffce0";
+            ctx.beginPath();
+            ctx.arc(500, 50, 25, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 15; ctx.shadowColor = "#fff";
+
+            // 2. तारे (Stars) बनाना
+            ctx.fillStyle = "#fff";
+            ctx.shadowBlur = 0;
+            stars.forEach(s => ctx.fillRect(s.x, s.y, s.size, s.size));
+
+            // 3. ज़मीन (Floor)
+            ctx.fillStyle = "#222";
+            ctx.fillRect(0, 230, 600, 20);
+
+            // 4. खिलाड़ी (Hacker Box)
             ctx.fillStyle = "#0f0";
             ctx.fillRect(player.x, player.y, player.w, player.h);
-            // Draw Enemies (Red Virus)
-            ctx.fillStyle = "#f00";
+
+            // 5. दुश्मन (Red Virus)
+            ctx.fillStyle = "#f33";
             enemies.forEach(en => ctx.fillRect(en.x, en.y, en.w, en.h));
         }
 
