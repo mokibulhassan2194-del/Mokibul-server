@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mokibul HD Climber</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mokibul Hill Racer Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=landscape">
     <style>
         body { margin: 0; background: #222; overflow: hidden; font-family: 'Arial', sans-serif; }
-        canvas { display: block; touch-action: none; }
-        .ui { position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 2px solid #fff; }
+        canvas { display: block; touch-action: none; background: linear-gradient(#1a2a6c, #b21f1f, #fdbb2d); }
+        .ui { position: absolute; top: 15px; left: 15px; color: white; background: rgba(0,0,0,0.6); padding: 12px; border-radius: 8px; border: 1px solid #0f0; font-size: 18px; }
+        .rotate-msg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; text-align: center; padding-top: 20%; z-index: 100; }
+        @media (orientation: portrait) { .rotate-msg { display: block; } }
     </style>
 </head>
 <body>
-    <div class="ui">Distance: <span id="dist">0</span>m</div>
+    <div class="rotate-msg">🔄 भाई, फोन को टेढ़ा (Landscape) कर ले गेम खेलने के लिए!</div>
+    <div class="ui">Distance: <span id="dist">0</span>m | Speed: <span id="spd">0</span></div>
     <canvas id="gameCanvas"></canvas>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
-        // Screen Adjustments
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -28,88 +30,84 @@
         let scrollX = 0;
         let speed = 0;
         let isGas = false;
-
-        // Smooth Terrain Generation
         let points = [];
-        let y = canvas.height / 1.5;
-        for (let i = 0; i < 5000; i++) {
-            y += Math.sin(i * 0.05) * 10 + (Math.random() - 0.5) * 5;
-            points.push(y);
+
+        // शुरूआती रास्ता बनाना
+        for (let i = 0; i < 2000; i++) {
+            points.push(canvas.height / 1.5 + Math.sin(i * 0.08) * 40 + Math.cos(i * 0.04) * 30);
         }
 
-        // Controls
         window.onmousedown = window.ontouchstart = () => isGas = true;
         window.onmouseup = window.ontouchend = () => isGas = false;
 
         function draw() {
-            // 1. HD Sky Gradient
-            let sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            sky.addColorStop(0, "#00b4db");
-            sky.addColorStop(1, "#90e0ef");
-            ctx.fillStyle = sky;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. High Graphics Sky
+            let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, "#000428");
+            grad.addColorStop(1, "#004e92");
+            ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. Draw Sun
-            ctx.fillStyle = "#fffc00";
-            ctx.beginPath();
-            ctx.arc(canvas.width - 80, 80, 40, 0, Math.PI * 2);
-            ctx.fill();
+            // 2. Infinite Road Logic
+            let carX = 150;
+            let currentIdx = Math.floor((carX + scrollX) / 2);
+            
+            // अगर रास्ता खत्म होने वाला हो, तो और पॉइंट्स जोड़ दो
+            if (currentIdx > points.length - 1000) {
+                for (let i = 0; i < 500; i++) {
+                    let lastY = points[points.length - 1];
+                    points.push(lastY + Math.sin(points.length * 0.08) * 20);
+                }
+            }
 
-            // 3. Smooth Terrain with Grass
+            // 3. Draw Terrain
             ctx.beginPath();
             ctx.moveTo(0, canvas.height);
             for (let i = 0; i < canvas.width; i++) {
-                let pIndex = Math.floor((i + scrollX) / 2);
-                ctx.lineTo(i, points[pIndex]);
+                let pIdx = Math.floor((i + scrollX) / 2);
+                ctx.lineTo(i, points[pIdx] || canvas.height/1.5);
             }
             ctx.lineTo(canvas.width, canvas.height);
             
-            // Ground Color (Soil)
             let ground = ctx.createLinearGradient(0, canvas.height/2, 0, canvas.height);
-            ground.addColorStop(0, "#5d4037");
-            ground.addColorStop(1, "#3e2723");
+            ground.addColorStop(0, "#388E3C"); // Grass
+            ground.addColorStop(0.1, "#5D4037"); // Dirt
             ctx.fillStyle = ground;
             ctx.fill();
-            
-            // Grass Line
-            ctx.strokeStyle = "#2e7d32";
-            ctx.lineWidth = 10;
-            ctx.stroke();
 
-            // 4. Car Logic
-            let carX = 100;
-            let currentP = Math.floor((carX + scrollX) / 2);
-            let carY = points[currentP] - 15;
-
-            if (isGas) speed += 0.3;
-            else speed *= 0.96;
-            
-            if (speed > 15) speed = 15;
+            // 4. Movement
+            if (isGas) speed += 0.25;
+            else speed *= 0.97;
+            if (speed > 12) speed = 12;
             scrollX += speed;
 
-            // 5. High Graphics Car
+            // 5. Car Physics
+            let carY = (points[currentIdx] || canvas.height/1.5) - 15;
+            
             ctx.save();
             ctx.translate(carX, carY);
             
-            // Car Body (Red)
-            ctx.fillStyle = "#d32f2f";
-            ctx.fillRect(-25, -15, 50, 20);
-            ctx.fillStyle = "#000"; // Window
-            ctx.fillRect(-10, -25, 20, 10);
+            // Car Body
+            ctx.fillStyle = "#FF0000";
+            ctx.fillRect(-25, -15, 50, 18);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(-10, -28, 20, 15); // Glass
             
-            // Wheels
-            ctx.fillStyle = "#333";
+            // Wheels (Animation)
+            ctx.fillStyle = "#222";
             ctx.beginPath();
-            ctx.arc(-15, 10, 10, 0, Math.PI*2);
-            ctx.arc(15, 10, 10, 0, Math.PI*2);
+            ctx.arc(-15, 8, 10, 0, Math.PI*2);
+            ctx.arc(15, 8, 10, 0, Math.PI*2);
             ctx.fill();
             
             ctx.restore();
 
             document.getElementById("dist").innerText = Math.floor(scrollX / 10);
+            document.getElementById("spd").innerText = Math.floor(speed * 10);
             requestAnimationFrame(draw);
         }
-
         draw();
     </script>
 </body>
