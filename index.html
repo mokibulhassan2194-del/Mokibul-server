@@ -1,118 +1,132 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MOKIBUL NIGHT SERVER</title>
+    <title>MOKIBUL NIGHT SERVER PRO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #0f0; text-align: center; }
-        canvas { display: block; border: 3px solid #0f0; box-shadow: 0 0 20px #0f0; margin: 20px auto; max-width: 90%; }
-        h1 { margin-top: 20px; text-shadow: 2px 2px #555; }
-        .info { font-size: 18px; margin-bottom: 10px; }
+        /* पूरे स्क्रीन पर टच काम करे इसके लिए बॉडी को ही बटन बना दिया */
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #0f0; text-align: center; height: 100vh; touch-action: manipulation; }
+        canvas { display: block; border: 3px solid #0f0; box-shadow: 0 0 20px #0f0; margin: 10px auto; max-width: 95%; background: #05051a; }
+        h1 { margin: 10px 0; font-size: 24px; text-shadow: 2px 2px #555; }
+        .info { font-size: 20px; margin-bottom: 5px; color: #fff; }
     </style>
 </head>
-<body>
+<body onclick="jump()" ontouchstart="jump()">
     <h1>MOKIBUL NIGHT SERVER 🌙</h1>
-    <div class="info">Score: <span id="score">0</span> | Speed: <span id="speed">1.0</span>x</div>
+    <div class="info">SCORE: <span id="score">0</span> | SPEED: <span id="speed">1.0</span>x</div>
     <canvas id="gameCanvas"></canvas>
-    <p>Press 'SPACE' or Tap to Jump!</p>
+    <p style="color: #0cf;">TAP ANYWHERE ON SCREEN TO JUMP!</p>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
+        
+        // मोबाइल के लिए सही साइज
         canvas.width = 800;
-        canvas.height = 300;
+        canvas.height = 350;
 
         let score = 0;
-        let gameSpeed = 5;
+        let gameSpeed = 7; // पहले से ज्यादा फास्ट रफ्तार
         let isGameOver = false;
 
-        const player = { x: 50, y: 200, w: 40, h: 40, dy: 0, jumpForce: 12, gravity: 0.6, grounded: false };
-        const obstacles = [];
-        const stars = Array.from({ length: 50 }, () => ({ x: Math.random() * 800, y: Math.random() * 200, size: Math.random() * 2 }));
+        const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 14, gravity: 0.7, grounded: false };
+        let obstacles = [];
+        const stars = Array.from({ length: 60 }, () => ({ x: Math.random() * 800, y: Math.random() * 250, size: Math.random() * 2 }));
 
+        // दुश्मन पैदा करने का लॉजिक (Double Box Chance)
         function spawnObstacle() {
             if (isGameOver) return;
-            obstacles.push({ x: canvas.width, y: 210, w: 30, h: 40 });
-            setTimeout(spawnObstacle, 1500 + Math.random() * 2000);
+            
+            // पहला बॉक्स
+            obstacles.push({ x: canvas.width, y: 260, w: 35, h: 45 });
+
+            // कभी-कभी एक साथ दूसरा बॉक्स (Double Obstacle) 😂
+            if (Math.random() > 0.7) { 
+                obstacles.push({ x: canvas.width + 40, y: 260, w: 35, h: 45 });
+            }
+
+            // रैंडम टाइमिंग ताकि खिलाड़ी चौंक जाए
+            let nextSpawn = Math.max(800, 1800 - (score * 10)); 
+            setTimeout(spawnObstacle, nextSpawn);
         }
 
         function update() {
             if (isGameOver) return;
 
-            // Gravity
             player.dy += player.gravity;
             player.y += player.dy;
 
-            if (player.y > 200) {
-                player.y = 200;
+            if (player.y > 250) {
+                player.y = 250;
                 player.dy = 0;
                 player.grounded = true;
             }
 
-            // Move Obstacles
             obstacles.forEach((obs, i) => {
                 obs.x -= gameSpeed;
+                
                 if (obs.x + obs.w < 0) {
                     obstacles.splice(i, 1);
                     score++;
-                    if (score % 5 === 0) gameSpeed += 0.5;
+                    if (score % 4 === 0) gameSpeed += 0.3; // धीरे-धीरे स्पीड बढ़ती रहेगी
                 }
 
-                // Collision
+                // Collision Detection
                 if (player.x < obs.x + obs.w && player.x + player.w > obs.x &&
                     player.y < obs.y + obs.h && player.y + player.h > obs.y) {
                     isGameOver = true;
-                    alert("GAME OVER! Final Score: " + score);
+                    alert("PHAT GAYA! 😂 Final Score: " + score);
                     location.reload();
                 }
             });
 
             document.getElementById("score").innerText = score;
-            document.getElementById("speed").innerText = (gameSpeed / 5).toFixed(1);
+            document.getElementById("speed").innerText = (gameSpeed / 7).toFixed(1);
         }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Sky & Moon
-            ctx.fillStyle = "#05051a";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Stars & Moon
             ctx.fillStyle = "#fff";
             stars.forEach(s => ctx.fillRect(s.x, s.y, s.size, s.size));
-            
             ctx.beginPath();
-            ctx.arc(700, 60, 30, 0, Math.PI * 2);
+            ctx.arc(700, 70, 35, 0, Math.PI * 2);
             ctx.fill();
 
             // Ground
-            ctx.fillStyle = "#333";
-            ctx.fillRect(0, 240, canvas.width, 60);
+            ctx.fillStyle = "#222";
+            ctx.fillRect(0, 295, canvas.width, 55);
 
-            // Player (Green Square)
+            // Player (Neon Green)
             ctx.fillStyle = "#0f0";
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "#0f0";
             ctx.fillRect(player.x, player.y, player.w, player.h);
-            ctx.strokeStyle = "#fff";
-            ctx.strokeRect(player.x, player.y, player.w, player.h);
+            ctx.shadowBlur = 0;
 
-            // Obstacles (Red Square)
+            // Obstacles (Red Neon)
             ctx.fillStyle = "#f00";
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = "#f00";
             obstacles.forEach(obs => {
                 ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
             });
+            ctx.shadowBlur = 0;
 
             update();
             requestAnimationFrame(draw);
         }
 
         function jump() {
-            if (player.grounded) {
+            if (player.grounded && !isGameOver) {
                 player.dy = -player.jumpForce;
                 player.grounded = false;
             }
         }
 
+        // कीबोर्ड सपोर्ट
         window.addEventListener("keydown", (e) => { if (e.code === "Space") jump(); });
-        canvas.addEventListener("touchstart", (e) => { e.preventDefault(); jump(); });
 
         spawnObstacle();
         draw();
