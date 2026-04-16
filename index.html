@@ -1,111 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mokibul Night Hacker</title>
+    <title>Mokibul Hill Climber</title>
     <style>
-        body { margin: 0; background: #050505; color: #0f0; font-family: 'Courier New', monospace; text-align: center; overflow: hidden; }
-        canvas { border: 2px solid #333; background: linear-gradient(#001, #002); margin-top: 30px; box-shadow: 0 0 20px #0f0; }
-        .info { font-size: 20px; text-shadow: 0 0 5px #0f0; }
+        body { margin: 0; background: #87CEEB; overflow: hidden; font-family: sans-serif; }
+        canvas { display: block; background: linear-gradient(#87CEEB, #E0F6FF); }
+        .stats { position: absolute; top: 10px; left: 10px; font-weight: bold; font-size: 20px; color: #333; }
     </style>
 </head>
 <body>
-    <h1 style="color: #fff;">MOKIBUL NIGHT SERVER 🌙</h1>
-    <div class="info">Score: <span id="score">0</span> | Speed: <span id="speed">1x</span></div>
-    <canvas id="gameCanvas" width="600" height="250"></canvas>
-    <p>Press "SPACE" or Tap to Jump!</p>
+    <div class="stats">Distance: <span id="dist">0</span>m</div>
+    <canvas id="gameCanvas"></canvas>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        let score = 0;
-        let gameActive = true;
-        let gameSpeed = 5;
-        let frameCount = 0;
+        let distance = 0;
+        let speed = 0;
+        let carY = 0;
+        let rotation = 0;
+        let isGas = false;
 
-        // Player settings
-        let player = { x: 50, y: 200, w: 30, h: 30, dy: 0, jump: -12, ground: 200 };
-        
-        // Stars background
-        let stars = [];
-        for(let i=0; i<50; i++) {
-            stars.push({x: Math.random()*600, y: Math.random()*150, size: Math.random()*2});
+        // पहाड़ों का नक्शा (Terrain points)
+        let points = [];
+        for (let i = 0; i < 1000; i++) {
+            points.push(Math.sin(i * 0.1) * 30 + Math.cos(i * 0.05) * 50 + 400);
         }
 
-        let enemies = [];
-        let nextEnemyFrame = 0; // दुश्मन के बीच गैप रखने के लिए
+        let scrollX = 0;
 
-        function doJump() {
-            if (player.y === player.ground) player.dy = player.jump;
-        }
-        document.addEventListener("keydown", (e) => { if(e.code === "Space") doJump(); });
-        canvas.addEventListener("touchstart", doJump);
-
-        function update() {
-            if (!gameActive) return;
-            frameCount++;
-
-            // Level Hard करना: हर 10 स्कोर के बाद स्पीड बढ़ाना
-            gameSpeed = 5 + Math.floor(score / 10);
-            document.getElementById("speed").innerText = (gameSpeed/5).toFixed(1) + "x";
-
-            // Gravity
-            player.dy += 0.6;
-            player.y += player.dy;
-            if (player.y > player.ground) { player.y = player.ground; player.dy = 0; }
-
-            // दुश्मन पैदा करना (Logic: कम से कम 40-60 frames का गैप हो)
-            if (frameCount > nextEnemyFrame) {
-                enemies.push({ x: 600, y: 210, w: 25, h: 25 });
-                // अगला दुश्मन कब आएगा (Random गैप ताकि अचानक 3-4 न आएं)
-                nextEnemyFrame = frameCount + Math.random() * 100 + (60 - gameSpeed * 2);
-            }
-
-            enemies.forEach((en, index) => {
-                en.x -= gameSpeed;
-                
-                // Collision
-                if (player.x < en.x + en.w && player.x + player.w > en.x &&
-                    player.y < en.y + en.h && player.y + player.h > en.y) {
-                    gameActive = false;
-                    alert("SYSTEM CRASHED! Score: " + score);
-                    location.reload();
-                }
-                if (en.x < -30) { enemies.splice(index, 1); score++; }
-            });
-            document.getElementById("score").innerText = score;
-        }
+        // Input
+        window.addEventListener("mousedown", () => isGas = true);
+        window.addEventListener("mouseup", () => isGas = false);
+        window.addEventListener("touchstart", () => isGas = true);
+        window.addEventListener("touchend", () => isGas = false);
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 1. चाँद (Moon) बनाना
-            ctx.fillStyle = "#fffce0";
+            // 1. ज़मीन (Terrain) बनाना
+            ctx.fillStyle = "#4a7a2a";
             ctx.beginPath();
-            ctx.arc(500, 50, 25, 0, Math.PI * 2);
+            ctx.moveTo(0, canvas.height);
+            for (let i = 0; i < canvas.width; i++) {
+                let worldX = i + scrollX;
+                let pIndex = Math.floor(worldX / 10);
+                let y = points[pIndex];
+                ctx.lineTo(i, y);
+            }
+            ctx.lineTo(canvas.width, canvas.height);
             ctx.fill();
-            ctx.shadowBlur = 15; ctx.shadowColor = "#fff";
 
-            // 2. तारे (Stars) बनाना
-            ctx.fillStyle = "#fff";
-            ctx.shadowBlur = 0;
-            stars.forEach(s => ctx.fillRect(s.x, s.y, s.size, s.size));
+            // 2. गाड़ी की पोजीशन (Car Physics)
+            let carX = 100;
+            let currentPointIndex = Math.floor((carX + scrollX) / 10);
+            let groundY = points[currentPointIndex];
+            
+            if (isGas) speed += 0.2;
+            else speed *= 0.98; // Friction
+            
+            if (speed > 10) speed = 10;
+            scrollX += speed;
+            distance = Math.floor(scrollX / 10);
+            document.getElementById("dist").innerText = distance;
 
-            // 3. ज़मीन (Floor)
-            ctx.fillStyle = "#222";
-            ctx.fillRect(0, 230, 600, 20);
+            // 3. गाड़ी बनाना (Red Car)
+            ctx.save();
+            ctx.translate(carX, groundY - 20);
+            
+            // बॉडी
+            ctx.fillStyle = "red";
+            ctx.fillRect(-20, -10, 40, 15);
+            ctx.fillStyle = "black";
+            ctx.fillRect(-15, -20, 25, 10); // छत
+            
+            // पहिये
+            ctx.beginPath();
+            ctx.arc(-15, 8, 8, 0, Math.PI * 2);
+            ctx.arc(15, 8, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
 
-            // 4. खिलाड़ी (Hacker Box)
-            ctx.fillStyle = "#0f0";
-            ctx.fillRect(player.x, player.y, player.w, player.h);
-
-            // 5. दुश्मन (Red Virus)
-            ctx.fillStyle = "#f33";
-            enemies.forEach(en => ctx.fillRect(en.x, en.y, en.w, en.h));
+            requestAnimationFrame(draw);
         }
 
-        function loop() { update(); draw(); requestAnimationFrame(loop); }
-        loop();
+        draw();
     </script>
 </body>
 </html>
