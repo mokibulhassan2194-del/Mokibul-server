@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mokibul Real Smooth Racer</title>
+    <title>Mokibul Ultra Smooth Racer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; }
         canvas { display: block; touch-action: none; }
-        .ui { position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 5px; font-size: 18px; border: 1px solid #fff; }
+        .ui { position: absolute; top: 10px; left: 10px; color: #0f0; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 8px; border: 2px solid #0f0; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -29,26 +29,27 @@
         let isGas = false;
         let points = [];
 
-        // --- असली स्मूथ पहाड़ का जादू यहाँ है ---
-        let y = canvas.height / 1.5;
-        for (let i = 0; i < 10000; i++) {
-            // हमने Sin और Cos को बहुत धीमा (0.01) कर दिया ताकि पहाड़ चौड़े बनें
-            y = (canvas.height / 1.5) + Math.sin(i * 0.02) * 60 + Math.sin(i * 0.01) * 40;
-            points.push(y);
+        // --- पहाड़ बनाने का नया और असली फॉर्मूला ---
+        // यहाँ हमने i * 0.01 किया है ताकि पहाड़ बहुत चौड़े और आराम से ऊपर-नीचे हों
+        for (let i = 0; i < 20000; i++) {
+            let h = (canvas.height / 1.5) + 
+                    Math.sin(i * 0.01) * 80 + // बड़े पहाड़
+                    Math.cos(i * 0.005) * 40;  // हल्का उतार-चढ़ाव
+            points.push(h);
         }
 
         window.onmousedown = window.ontouchstart = () => isGas = true;
         window.onmouseup = window.ontouchend = () => isGas = false;
 
         function draw() {
-            // 1. सुन्दर आसमान
+            // 1. प्रीमियम डार्क स्काई
             let sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            sky.addColorStop(0, "#1e3c72");
-            sky.addColorStop(1, "#2a5298");
+            sky.addColorStop(0, "#020111");
+            sky.addColorStop(1, "#191970");
             ctx.fillStyle = sky;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. रास्ता खींचना
+            // 2. स्मूथ रास्ता खींचना
             ctx.beginPath();
             ctx.moveTo(0, canvas.height);
             for (let i = 0; i < canvas.width; i++) {
@@ -57,41 +58,42 @@
             }
             ctx.lineTo(canvas.width, canvas.height);
             
-            // घास और मिट्टी वाला रंग
+            // घास और मिट्टी
             let ground = ctx.createLinearGradient(0, canvas.height/2, 0, canvas.height);
-            ground.addColorStop(0, "#2ecc71"); // ऊपर हरी घास
-            ground.addColorStop(0.1, "#795548"); // नीचे भूरी मिट्टी
+            ground.addColorStop(0, "#27ae60"); // हरी घास
+            ground.addColorStop(0.1, "#3e2723"); // गहरी मिट्टी
             ctx.fillStyle = ground;
             ctx.fill();
 
-            // 3. गाड़ी की फिजिक्स
-            let carX = 100;
-            let currentIdx = Math.floor(carX + scrollX);
-            let carY = (points[currentIdx] || canvas.height/1.5) - 20;
-
-            if (isGas) speed += 0.2;
+            // 3. रफ़्तार और मूवमेंट
+            if (isGas) speed += 0.15;
             else speed *= 0.98;
-            if (speed > 12) speed = 12;
+            if (speed > 15) speed = 15;
             scrollX += speed;
 
-            // 4. लाल गाड़ी (The Car)
+            // 4. गाड़ी की पोजीशन
+            let carX = 150;
+            let currentIdx = Math.floor(carX + scrollX);
+            let carY = (points[currentIdx] || canvas.height/1.5) - 15;
+
+            // गाड़ी को पहाड़ के हिसाब से टेढ़ा करना
+            let angle = Math.atan2(points[currentIdx + 5] - points[currentIdx - 5], 10);
+
             ctx.save();
             ctx.translate(carX, carY);
-            
-            // गाड़ी का एंगल (रास्ते के हिसाब से थोड़ा झुकेगी)
-            let angle = (points[currentIdx+5] - points[currentIdx-5]) / 10;
             ctx.rotate(angle);
-
-            ctx.fillStyle = "#e74c3c"; // लाल बॉडी
-            ctx.fillRect(-25, -15, 50, 20);
-            ctx.fillStyle = "#333"; // खिड़की
-            ctx.fillRect(-10, -25, 20, 10);
             
-            // पहिये
+            // गाड़ी की बॉडी
+            ctx.fillStyle = "#ff0000";
+            ctx.fillRect(-25, -15, 50, 18);
             ctx.fillStyle = "#000";
+            ctx.fillRect(-10, -28, 20, 15); // शीशा
+            
+            // पहिये (काले गोल)
+            ctx.fillStyle = "#222";
             ctx.beginPath();
-            ctx.arc(-15, 10, 10, 0, Math.PI*2);
-            ctx.arc(15, 10, 10, 0, Math.PI*2);
+            ctx.arc(-15, 8, 10, 0, Math.PI*2);
+            ctx.arc(15, 8, 10, 0, Math.PI*2);
             ctx.fill();
             
             ctx.restore();
