@@ -1,105 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOKIBUL KHAN | SECURE SERVER</title>
+    <title>Mokibul Hacker Game</title>
     <style>
-        body {
-            background-color: #050505;
-            color: #00ff41;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
-        }
-
-        .scanner-line {
-            width: 100%;
-            height: 2px;
-            background: rgba(0, 255, 65, 0.5);
-            position: absolute;
-            top: 0;
-            animation: scan 3s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
-        }
-
-        .login-box {
-            border: 2px solid #00ff41;
-            padding: 30px;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 0 20px #00ff41;
-            text-align: center;
-            z-index: 10;
-        }
-
-        h1 { font-size: 24px; letter-spacing: 5px; margin-bottom: 20px; }
-
-        input {
-            background: transparent;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            padding: 10px;
-            width: 80%;
-            margin-bottom: 20px;
-            outline: none;
-            text-align: center;
-        }
-
-        button {
-            background: #00ff41;
-            color: black;
-            border: none;
-            padding: 10px 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background: transparent;
-            color: #00ff41;
-            border: 1px solid #00ff41;
-            box-shadow: 0 0 15px #00ff41;
-        }
-
-        .owner-tag { margin-top: 15px; font-size: 12px; opacity: 0.7; }
+        body { margin: 0; background: #111; color: #0f0; font-family: monospace; text-align: center; overflow: hidden; }
+        #gameCanvas { border: 2px solid #0f0; background: #000; margin-top: 50px; }
+        h1 { text-shadow: 0 0 10px #0f0; }
     </style>
 </head>
 <body>
-    <div class="scanner-line"></div>
-
-    <div class="login-box">
-        <h1>MOKIBUL KHAN SERVER</h1>
-        <p>[ SYSTEM STATUS: LOCKED ]</p>
-        <input type="password" id="key" placeholder="ENTER SECRET KEY...">
-        <br>
-        <button onclick="access()">ACCESS GRANTED</button>
-        <div class="owner-tag">CREATED BY: MOKIBUL-HACKER</div>
-    </div>
+    <h1>MOKIBUL GAME SERVER</h1>
+    <p>Press "SPACE" or Tap to Jump!</p>
+    <canvas id="gameCanvas" width="600" height="200"></canvas>
+    <h2 id="score">Score: 0</h2>
 
     <script>
-        function access() {
-            let k = document.getElementById("key").value;
-            if(k === "MAKIBUL786") {
-                alert("ACCESS GRANTED! REDIRECTING TO MOKIBUL-GRAM...");
-                // यहाँ तू अपना अगला पेज डाल सकता है
-            } else {
-                alert("ACCESS DENIED! INTRUDER ALERT!");
-            }
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        let score = 0;
+        let player = { x: 50, y: 150, w: 30, h: 30, dy: 0, jump: -10, ground: 150 };
+        let enemies = [];
+        let gameActive = true;
+
+        // Player Jump
+        function doJump() {
+            if (player.y === player.ground) player.dy = player.jump;
         }
+        document.addEventListener("keydown", (e) => { if(e.code === "Space") doJump(); });
+        canvas.addEventListener("touchstart", doJump);
+
+        function update() {
+            if (!gameActive) return;
+
+            // Physics
+            player.dy += 0.5; // Gravity
+            player.y += player.dy;
+            if (player.y > player.ground) { player.y = player.ground; player.dy = 0; }
+
+            // Enemies logic
+            if (Math.random() < 0.02) enemies.push({ x: 600, y: 160, w: 20, h: 20 });
+            
+            enemies.forEach((en, index) => {
+                en.x -= 5;
+                // Collision Detection
+                if (player.x < en.x + en.w && player.x + player.w > en.x &&
+                    player.y < en.y + en.h && player.y + player.h > en.y) {
+                    gameActive = false;
+                    alert("VIRUS DETECTED! Game Over. Score: " + score);
+                    location.reload();
+                }
+                if (en.x < -20) { enemies.splice(index, 1); score++; }
+            });
+            document.getElementById("score").innerText = "Score: " + score;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Draw Player (Green Box)
+            ctx.fillStyle = "#0f0";
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+            // Draw Enemies (Red Virus)
+            ctx.fillStyle = "#f00";
+            enemies.forEach(en => ctx.fillRect(en.x, en.y, en.w, en.h));
+        }
+
+        function loop() { update(); draw(); requestAnimationFrame(loop); }
+        loop();
     </script>
 </body>
 </html>
-
