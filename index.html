@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MOKIBUL PRO SERVER</title>
+    <title>MOKIBUL PRO GAMER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #fff; text-align: center; height: 100vh; touch-action: manipulation; }
         
-        /* UI को फिक्स किया गया है ताकि ओवरलैप न हो */
-        .header-box { padding: 10px; background: rgba(0, 255, 0, 0.1); border-bottom: 2px solid #0f0; margin-bottom: 10px; }
-        .mokibul-name { font-size: 26px; color: #0f0; font-weight: bold; text-shadow: 2px 2px #000; display: block; margin-bottom: 5px; }
-        .stats { display: flex; justify-content: space-around; font-size: 18px; color: #fff; }
+        /* नाम और स्कोर के बीच गैप फिक्स किया गया */
+        .header-container { padding: 15px 0; background: rgba(0, 255, 0, 0.1); border-bottom: 3px solid #0f0; margin-bottom: 20px; }
+        .player-name { font-size: 28px; color: #0f0; font-weight: bold; text-shadow: 2px 2px #000; display: block; margin-bottom: 12px; letter-spacing: 2px; }
+        .score-row { display: flex; justify-content: space-around; font-size: 20px; color: #fff; font-weight: bold; }
         
-        canvas { display: block; border: 4px solid #f0f; box-shadow: 0 0 20px #f0f; margin: 10px auto; max-width: 95%; background: #050010; border-radius: 8px; }
-        h2 { margin: 5px 0; color: #fff; text-shadow: 0 0 8px #f0f; font-size: 22px; }
+        canvas { display: block; border: 4px solid #f0f; box-shadow: 0 0 25px #f0f; margin: 10px auto; max-width: 95%; background: #050010; border-radius: 12px; }
+        h2 { margin: 10px 0; color: #0cf; text-shadow: 0 0 10px #0cf; font-size: 24px; }
     </style>
 </head>
 <body onclick="jump()" ontouchstart="jump()">
 
-    <div class="header-box">
-        <span class="mokibul-name">⭐ MOKIBUL KHAN ⭐</span>
-        <div class="stats">
+    <div class="header-container">
+        <span class="player-name">⭐ MOKIBUL KHAN ⭐</span>
+        <div class="score-row">
             <span>SCORE: <span id="score" style="color:#0f0">0</span></span>
             <span>COINS: <span id="coins" style="color:#ff0">0</span></span>
         </div>
@@ -27,7 +27,7 @@
     
     <h2>MOKIBUL DHAMAKA 🌙</h2>
     <canvas id="gameCanvas"></canvas>
-    <p style="color: #0cf; font-weight: bold; margin-top: 5px;">🔥 TAP ANYWHERE TO JUMP 🔥</p>
+    <p style="color: #ff0; font-weight: bold;">🔥 TAP ANYWHERE TO JUMP 🔥</p>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
@@ -37,21 +37,20 @@
         let score = 0, coinCount = 0, gameSpeed = 8.5; 
         let isGameOver = false;
 
-        const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 15.5, gravity: 0.85, grounded: false };
+        const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 16, gravity: 0.85, grounded: false };
         let obstacles = [], coins = [];
 
         function spawnEverything() {
             if (isGameOver) return;
-            // दुश्मन (Obstacles) की सही दूरी
+            // दुश्मन की दूरी एकदम सही
             obstacles.push({ x: canvas.width, y: 260, w: 42, h: 45 });
             
-            // सिक्के (Coins)
+            // सिक्के
             if (Math.random() > 0.4) {
-                coins.push({ x: canvas.width + 400, y: 130 + Math.random() * 80, r: 16, collected: false });
+                coins.push({ x: canvas.width + 450, y: 130 + Math.random() * 80, r: 16, collected: false });
             }
             
-            // स्पॉन टाइमिंग को सुधारा गया ताकि 'घना' न लगे
-            setTimeout(spawnEverything, 1600 + Math.random() * 1200); 
+            setTimeout(spawnEverything, 1700 + Math.random() * 1000); 
         }
 
         function update() {
@@ -66,7 +65,7 @@
                 if (obs.x + obs.w < 0) { obstacles.splice(i, 1); score += 10; }
                 if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.y + player.h > obs.y) {
                     isGameOver = true;
-                    alert("GAME OVER! 😂 \nMokibul's Score: " + score);
+                    alert("GAME OVER! 😂 \nMokibul's Final Score: " + score);
                     location.reload();
                 }
             });
@@ -90,15 +89,15 @@
             // Ground
             ctx.fillStyle = "#333"; ctx.fillRect(0, 300, canvas.width, 50);
 
-            // Player (Neon Green)
+            // Player
             ctx.fillStyle = "#0f0"; ctx.shadowBlur = 15; ctx.shadowColor = "#0f0";
             ctx.fillRect(player.x, player.y, player.w, player.h);
 
-            // Obstacles (Red Neon)
+            // Obstacles
             ctx.fillStyle = "#f00"; ctx.shadowColor = "#f00"; ctx.shadowBlur = 10;
             obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
 
-            // Coins (Yellow)
+            // Coins
             ctx.fillStyle = "#ff0"; ctx.shadowColor = "#ff0"; ctx.shadowBlur = 15;
             coins.forEach(c => {
                 if (!c.collected) {
