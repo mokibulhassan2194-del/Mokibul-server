@@ -1,91 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MOKIBUL JUNGLE RUN</title>
+    <title>MOKIBUL NIGHT SERVER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; color: #fff; }
-        canvas { display: block; }
-        #ui { position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 5px; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #0f0; text-align: center; }
+        canvas { display: block; border: 3px solid #0f0; box-shadow: 0 0 20px #0f0; margin: 20px auto; max-width: 90%; }
+        h1 { margin-top: 20px; text-shadow: 2px 2px #555; }
+        .info { font-size: 18px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <div id="ui">SCORE: <span id="score">0</span></div>
+    <h1>MOKIBUL NIGHT SERVER 🌙</h1>
+    <div class="info">Score: <span id="score">0</span> | Speed: <span id="speed">1.0</span>x</div>
     <canvas id="gameCanvas"></canvas>
+    <p>Press 'SPACE' or Tap to Jump!</p>
+
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-        let score = 0, lane = 0, speed = 0.08, gameActive = true;
-        let objects = [], roadOffset = 0;
+        canvas.width = 800;
+        canvas.height = 300;
 
-        let roadImg = new Image();
-        roadImg.src = 'road.png'; 
-        let roadLoaded = false;
-        roadImg.onload = () => roadLoaded = true;
+        let score = 0;
+        let gameSpeed = 5;
+        let isGameOver = false;
 
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
+        const player = { x: 50, y: 200, w: 40, h: 40, dy: 0, jumpForce: 12, gravity: 0.6, grounded: false };
+        const obstacles = [];
+        const stars = Array.from({ length: 50 }, () => ({ x: Math.random() * 800, y: Math.random() * 200, size: Math.random() * 2 }));
 
-        let touchStartX = 0;
-        window.ontouchstart = e => touchStartX = e.touches[0].clientX;
-        window.ontouchend = e => {
-            let diff = e.changedTouches[0].clientX - touchStartX;
-            if (Math.abs(diff) > 30) {
-                if (diff > 0 && lane < 1) lane++;
-                else if (diff < 0 && lane > -1) lane--;
-            }
-        };
-
-        function spawn() {
-            if (!gameActive) return;
-            objects.push({ z: 10, lane: Math.floor(Math.random() * 3) - 1 });
-            setTimeout(spawn, 900);
+        function spawnObstacle() {
+            if (isGameOver) return;
+            obstacles.push({ x: canvas.width, y: 210, w: 30, h: 40 });
+            setTimeout(spawnObstacle, 1500 + Math.random() * 2000);
         }
-        spawn();
 
-        function draw() {
-            ctx.fillStyle = "#050510"; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            const cx = canvas.width / 2, cy = canvas.height / 2;
+        function update() {
+            if (isGameOver) return;
 
-            if (roadLoaded) {
-                roadOffset += speed * 40;
-                if (roadOffset > 100) roadOffset = 0;
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(cx - 40, cy); ctx.lineTo(cx + 40, cy);
-                ctx.lineTo(cx + 500, canvas.height); ctx.lineTo(cx - 500, canvas.height);
-                ctx.clip();
-                for(let i=-1; i<2; i++) {
-                    ctx.drawImage(roadImg, cx - 300, cy + (i * canvas.height) + (roadOffset * 10), 600, canvas.height);
-                }
-                ctx.restore();
+            // Gravity
+            player.dy += player.gravity;
+            player.y += player.dy;
+
+            if (player.y > 200) {
+                player.y = 200;
+                player.dy = 0;
+                player.grounded = true;
             }
 
-            objects.forEach((obj, i) => {
-                obj.z -= speed;
-                let scale = 1 / obj.z;
-                let x = cx + (obj.lane * 180 * scale);
-                let y = cy + (120 * scale);
-                let size = 70 * scale;
-                if (obj.z > 0.1) {
-                    ctx.fillStyle = "red";
-                    ctx.fillRect(x - size/2, y - size, size, size);
+            // Move Obstacles
+            obstacles.forEach((obs, i) => {
+                obs.x -= gameSpeed;
+                if (obs.x + obs.w < 0) {
+                    obstacles.splice(i, 1);
+                    score++;
+                    if (score % 5 === 0) gameSpeed += 0.5;
                 }
-                if (obj.z < 0.2 && obj.z > 0 && obj.lane === lane) {
-                    gameActive = false;
-                    alert("खेला खत्म! स्कोर: " + score);
+
+                // Collision
+                if (player.x < obs.x + obs.w && player.x + player.w > obs.x &&
+                    player.y < obs.y + obs.h && player.y + player.h > obs.y) {
+                    isGameOver = true;
+                    alert("GAME OVER! Final Score: " + score);
                     location.reload();
                 }
-                if (obj.z < 0) { objects.splice(i, 1); score += 50; }
             });
 
-            ctx.fillStyle = "#0cf";
-            ctx.fillRect(cx + (lane * 120) - 20, canvas.height - 80, 40, 40);
-
             document.getElementById("score").innerText = score;
-            if (gameActive) requestAnimationFrame(draw);
+            document.getElementById("speed").innerText = (gameSpeed / 5).toFixed(1);
         }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Sky & Moon
+            ctx.fillStyle = "#05051a";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#fff";
+            stars.forEach(s => ctx.fillRect(s.x, s.y, s.size, s.size));
+            
+            ctx.beginPath();
+            ctx.arc(700, 60, 30, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Ground
+            ctx.fillStyle = "#333";
+            ctx.fillRect(0, 240, canvas.width, 60);
+
+            // Player (Green Square)
+            ctx.fillStyle = "#0f0";
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+            ctx.strokeStyle = "#fff";
+            ctx.strokeRect(player.x, player.y, player.w, player.h);
+
+            // Obstacles (Red Square)
+            ctx.fillStyle = "#f00";
+            obstacles.forEach(obs => {
+                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+            });
+
+            update();
+            requestAnimationFrame(draw);
+        }
+
+        function jump() {
+            if (player.grounded) {
+                player.dy = -player.jumpForce;
+                player.grounded = false;
+            }
+        }
+
+        window.addEventListener("keydown", (e) => { if (e.code === "Space") jump(); });
+        canvas.addEventListener("touchstart", (e) => { e.preventDefault(); jump(); });
+
+        spawnObstacle();
         draw();
     </script>
 </body>
