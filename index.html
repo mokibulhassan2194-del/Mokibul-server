@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MOKIBUL DHAMAKA</title>
     <style>
-        /* ब्राउज़र को हिलने से रोकने के लिए */
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; background: #000; touch-action: none;
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden; /* स्क्रीन हिलना बंद */
+            background-color: #000;
+            touch-action: none; /* टच करने पर पेज नहीं हिलेगा */
         }
-        canvas { 
-            display: block; background: #111; 
-            border-bottom: 5px solid #0f0; 
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            background: #111;
         }
         #ui {
             position: absolute; top: 10px; left: 10px;
-            color: #0f0; font-family: Arial; font-size: 20px;
-            text-shadow: 2px 2px #000; pointer-events: none;
+            color: #0f0; font-family: 'Courier New', Courier, monospace;
+            font-size: 22px; font-weight: bold;
+            pointer-events: none; /* UI पर टच काम नहीं करेगा, सीधा गेम पर करेगा */
         }
     </style>
 </head>
 <body>
 
-    <div id="ui">MOKIBUL DHAMAKA <br> Score: <span id="score">0</span></div>
+    <div id="ui">MOKIBUL DHAMAKA <br> SCORE: <span id="score">0</span></div>
     <canvas id="game"></canvas>
 
     <script>
@@ -35,37 +40,54 @@
         canvas.height = window.innerHeight;
 
         let score = 0;
-        let gameSpeed = 4;
-        let gravity = 0.6;
+        let gameSpeed = 5;
+        let gravity = 0.8;
         
         let player = {
-            x: 50, y: canvas.height - 100,
-            w: 40, h: 40, dy: 0, jump: 15, grounded: false
+            x: 50,
+            y: canvas.height - 150,
+            w: 40, h: 60, // थोड़ा लंबा 'इंसान' जैसा साइज
+            dy: 0,
+            jump: 16,
+            grounded: false
         };
 
         let obstacles = [];
 
         function spawnObstacle() {
-            let size = Math.random() * (60 - 20) + 20;
+            let h = Math.random() * (80 - 30) + 30;
             obstacles.push({
-                x: canvas.width, y: canvas.height - size,
-                w: 30, h: size
+                x: canvas.width,
+                y: canvas.height - h,
+                w: 30, h: h
             });
         }
 
-        function handleJump() {
+        function jump() {
             if (player.grounded) {
                 player.dy = -player.jump;
                 player.grounded = false;
             }
         }
 
-        // कहीं भी टच या क्लिक करो, काम करेगा!
-        window.addEventListener("touchstart", (e) => { e.preventDefault(); handleJump(); }, {passive: false});
-        window.addEventListener("mousedown", handleJump);
+        // मोबाइल टच फिक्स
+        window.addEventListener("touchstart", function(e) {
+            e.preventDefault(); // ब्राउज़र का डिफ़ॉल्ट हिलना बंद
+            jump();
+        }, {passive: false});
 
-        function update() {
+        window.addEventListener("mousedown", jump);
+
+        function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Ground Line
+            ctx.strokeStyle = "#0f0";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height - 2);
+            ctx.lineTo(canvas.width, canvas.height - 2);
+            ctx.stroke();
 
             // Player Physics
             player.dy += gravity;
@@ -77,15 +99,17 @@
                 player.grounded = true;
             }
 
-            // Draw Player (Mokibul Hero)
+            // Draw Character (Blue Body, Yellow Head)
             ctx.fillStyle = "#007bff"; 
-            ctx.fillRect(player.x, player.y, player.w, player.h);
-            ctx.fillStyle = "#ffd700"; // Head
-            ctx.fillRect(player.x + 5, player.y - 15, 30, 20);
+            ctx.fillRect(player.x, player.y + 20, player.w, player.h - 20); // Body
+            ctx.fillStyle = "#ffd700"; 
+            ctx.fillRect(player.x + 5, player.y, 30, 25); // Head
 
             // Obstacles
-            if (Math.random() < 0.02) {
-                if(obstacles.length == 0 || obstacles[obstacles.length-1].x < canvas.width - 200) spawnObstacle();
+            if (Math.random() < 0.015) {
+                if(obstacles.length == 0 || obstacles[obstacles.length-1].x < canvas.width - 250) {
+                    spawnObstacle();
+                }
             }
 
             for (let i = obstacles.length - 1; i >= 0; i--) {
@@ -95,24 +119,27 @@
                 ctx.fillStyle = "red";
                 ctx.fillRect(o.x, o.y, o.w, o.h);
 
-                // Collision
+                // Collision Detection
                 if (player.x < o.x + o.w && player.x + player.w > o.x &&
                     player.y < o.y + o.h && player.y + player.h > o.y) {
-                    location.reload(); // Game Over
+                    score = 0;
+                    gameSpeed = 5;
+                    obstacles = [];
+                    scoreEl.innerText = score;
                 }
 
                 if (o.x + o.w < 0) {
                     obstacles.splice(i, 1);
                     score++;
                     scoreEl.innerText = score;
-                    gameSpeed += 0.05;
+                    gameSpeed += 0.1;
                 }
             }
 
-            requestAnimationFrame(update);
+            requestAnimationFrame(gameLoop);
         }
 
-        update();
+        gameLoop();
     </script>
 </body>
 </html>
