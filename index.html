@@ -2,158 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOKIBUL DHAMAKA - Updated</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>MOKIBUL DHAMAKA</title>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #0a0a0a;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+        /* ब्राउज़र को हिलने से रोकने के लिए */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; background: #000; touch-action: none;
         }
-        canvas {
-            border: 4px solid #00FF00;
-            box-shadow: 0 0 20px #00FF00;
-            background-color: #111;
+        canvas { 
+            display: block; background: #111; 
+            border-bottom: 5px solid #0f0; 
         }
-        h1 {
-            color: #00FF00;
-            text-shadow: 2px 2px #FF0000;
-            margin-bottom: 10px;
-        }
-        .instructions {
-            color: white;
-            margin-top: 10px;
+        #ui {
+            position: absolute; top: 10px; left: 10px;
+            color: #0f0; font-family: Arial; font-size: 20px;
+            text-shadow: 2px 2px #000; pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <h1>MOKIBUL DHAMAKA 🚀</h1>
-    <canvas id="gameCanvas"></canvas>
-    <div class="instructions">Space या Screen Tap करो कूदने के लिए!</div>
+    <div id="ui">MOKIBUL DHAMAKA <br> Score: <span id="score">0</span></div>
+    <canvas id="game"></canvas>
 
     <script>
-        const canvas = document.getElementById("gameCanvas");
+        const canvas = document.getElementById("game");
         const ctx = canvas.getContext("2d");
+        const scoreEl = document.getElementById("score");
 
-        canvas.width = 400;
-        canvas.height = 300;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        // 1. Player (Insan) Ka System
+        let score = 0;
+        let gameSpeed = 4;
+        let gravity = 0.6;
+        
         let player = {
-            x: 50,
-            y: 200,
-            width: 30,
-            height: 40,
-            dy: 0,
-            jumpForce: 10, // Easy Jump
-            gravity: 0.5,
-            grounded: false
+            x: 50, y: canvas.height - 100,
+            w: 40, h: 40, dy: 0, jump: 15, grounded: false
         };
 
         let obstacles = [];
-        let score = 0;
-        let gameSpeed = 3; // Easy Speed
-        let frame = 0;
 
-        // Jump Control
-        function jump() {
+        function spawnObstacle() {
+            let size = Math.random() * (60 - 20) + 20;
+            obstacles.push({
+                x: canvas.width, y: canvas.height - size,
+                w: 30, h: size
+            });
+        }
+
+        function handleJump() {
             if (player.grounded) {
-                player.dy = -player.jumpForce;
+                player.dy = -player.jump;
                 player.grounded = false;
             }
         }
 
-        window.addEventListener("keydown", (e) => { if (e.code === "Space") jump(); });
-        canvas.addEventListener("touchstart", jump);
-
-        function drawPlayer() {
-            // Insan Ka Sir (Head)
-            ctx.fillStyle = "#FFD700"; 
-            ctx.fillRect(player.x + 5, player.y - 15, 20, 20);
-            // Insan Ka Sharir (Body)
-            ctx.fillStyle = "#007BFF";
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-            // Aankhen (Eyes)
-            ctx.fillStyle = "black";
-            ctx.fillRect(player.x + 15, player.y - 10, 3, 3);
-        }
-
-        function createObstacle() {
-            if (frame % 90 === 0) { // Obstacle thoda gap mein aayenge (Easy)
-                obstacles.push({
-                    x: canvas.width,
-                    y: 260,
-                    width: 20,
-                    height: 40,
-                    color: "#FF0000"
-                });
-            }
-        }
-
-        function drawObstacles() {
-            obstacles.forEach((obs, index) => {
-                obs.x -= gameSpeed;
-                ctx.fillStyle = obs.color;
-                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-
-                // Collision Detection (Takkar)
-                if (
-                    player.x < obs.x + obs.width &&
-                    player.x + player.width > obs.x &&
-                    player.y < obs.y + obs.height &&
-                    player.y + player.height > obs.y
-                ) {
-                    alert("Dhamaka Ho Gaya! Score: " + score);
-                    resetGame();
-                }
-
-                if (obs.x + obs.width < 0) {
-                    obstacles.splice(index, 1);
-                    score++;
-                    if (score % 5 === 0) gameSpeed += 0.2; // Speed thodi dheere badhegi
-                }
-            });
-        }
-
-        function resetGame() {
-            player.y = 200;
-            player.dy = 0;
-            obstacles = [];
-            score = 0;
-            gameSpeed = 3;
-            frame = 0;
-        }
+        // कहीं भी टच या क्लिक करो, काम करेगा!
+        window.addEventListener("touchstart", (e) => { e.preventDefault(); handleJump(); }, {passive: false});
+        window.addEventListener("mousedown", handleJump);
 
         function update() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Physics
-            player.dy += player.gravity;
+            // Player Physics
+            player.dy += gravity;
             player.y += player.dy;
 
-            if (player.y + player.height > 300) {
-                player.y = 300 - player.height;
+            if (player.y + player.h > canvas.height) {
+                player.y = canvas.height - player.h;
                 player.dy = 0;
                 player.grounded = true;
             }
 
-            drawPlayer();
-            createObstacle();
-            drawObstacles();
+            // Draw Player (Mokibul Hero)
+            ctx.fillStyle = "#007bff"; 
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+            ctx.fillStyle = "#ffd700"; // Head
+            ctx.fillRect(player.x + 5, player.y - 15, 30, 20);
 
-            // Score Board
-            ctx.fillStyle = "white";
-            ctx.font = "20px Arial";
-            ctx.fillText("Score: " + score, 10, 25);
+            // Obstacles
+            if (Math.random() < 0.02) {
+                if(obstacles.length == 0 || obstacles[obstacles.length-1].x < canvas.width - 200) spawnObstacle();
+            }
 
-            frame++;
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                let o = obstacles[i];
+                o.x -= gameSpeed;
+
+                ctx.fillStyle = "red";
+                ctx.fillRect(o.x, o.y, o.w, o.h);
+
+                // Collision
+                if (player.x < o.x + o.w && player.x + player.w > o.x &&
+                    player.y < o.y + o.h && player.y + player.h > o.y) {
+                    location.reload(); // Game Over
+                }
+
+                if (o.x + o.w < 0) {
+                    obstacles.splice(i, 1);
+                    score++;
+                    scoreEl.innerText = score;
+                    gameSpeed += 0.05;
+                }
+            }
+
             requestAnimationFrame(update);
         }
 
