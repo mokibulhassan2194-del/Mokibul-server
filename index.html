@@ -1,109 +1,163 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MOKIBUL DHAMAKA SERVER</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOKIBUL DHAMAKA - Updated</title>
     <style>
-        body { margin: 0; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; color: #fff; text-align: center; height: 100vh; touch-action: manipulation; }
-        canvas { display: block; border: 4px solid #f0f; box-shadow: 0 0 25px #f0f; margin: 10px auto; max-width: 95%; background: #050010; }
-        .ui { position: absolute; width: 100%; top: 15px; font-size: 22px; font-weight: bold; color: #0f0; pointer-events: none; text-shadow: 2px 2px #000; }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0a0a0a;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        canvas {
+            border: 4px solid #00FF00;
+            box-shadow: 0 0 20px #00FF00;
+            background-color: #111;
+        }
+        h1 {
+            color: #00FF00;
+            text-shadow: 2px 2px #FF0000;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            color: white;
+            margin-top: 10px;
+        }
     </style>
 </head>
-<body onclick="jump()" ontouchstart="jump()">
-    <div class="ui">SCORE: <span id="score">0</span> | COINS: <span id="coins">0</span></div>
-    <h1>MOKIBUL DHAMAKA 🌙</h1>
+<body>
+
+    <h1>MOKIBUL DHAMAKA 🚀</h1>
     <canvas id="gameCanvas"></canvas>
-    <p style="color: #ff0;">🔥 COLLECT COINS & DODGE BLOCKS! 🔥</p>
+    <div class="instructions">Space या Screen Tap करो कूदने के लिए!</div>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-        canvas.width = 800; canvas.height = 350;
 
-        let score = 0, coinCount = 0, gameSpeed = 9; // रफ़्तार एकदम तेज़!
-        let isGameOver = false;
+        canvas.width = 400;
+        canvas.height = 300;
 
-        const player = { x: 80, y: 250, w: 45, h: 45, dy: 0, jumpForce: 15, gravity: 0.8, grounded: false };
-        let obstacles = [], coins = [];
+        // 1. Player (Insan) Ka System
+        let player = {
+            x: 50,
+            y: 200,
+            width: 30,
+            height: 40,
+            dy: 0,
+            jumpForce: 10, // Easy Jump
+            gravity: 0.5,
+            grounded: false
+        };
 
-        function spawnEverything() {
-            if (isGameOver) return;
-            // दुश्मन (Blocks)
-            obstacles.push({ x: canvas.width, y: 260, w: 40, h: 45 });
-            if (Math.random() > 0.6) obstacles.push({ x: canvas.width + 300, y: 260, w: 40, h: 45 });
+        let obstacles = [];
+        let score = 0;
+        let gameSpeed = 3; // Easy Speed
+        let frame = 0;
 
-            // सिक्के (Coins)
-            coins.push({ x: canvas.width + 150, y: 100 + Math.random() * 100, r: 15, collected: false });
-            
-            setTimeout(spawnEverything, 1200);
+        // Jump Control
+        function jump() {
+            if (player.grounded) {
+                player.dy = -player.jumpForce;
+                player.grounded = false;
+            }
+        }
+
+        window.addEventListener("keydown", (e) => { if (e.code === "Space") jump(); });
+        canvas.addEventListener("touchstart", jump);
+
+        function drawPlayer() {
+            // Insan Ka Sir (Head)
+            ctx.fillStyle = "#FFD700"; 
+            ctx.fillRect(player.x + 5, player.y - 15, 20, 20);
+            // Insan Ka Sharir (Body)
+            ctx.fillStyle = "#007BFF";
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            // Aankhen (Eyes)
+            ctx.fillStyle = "black";
+            ctx.fillRect(player.x + 15, player.y - 10, 3, 3);
+        }
+
+        function createObstacle() {
+            if (frame % 90 === 0) { // Obstacle thoda gap mein aayenge (Easy)
+                obstacles.push({
+                    x: canvas.width,
+                    y: 260,
+                    width: 20,
+                    height: 40,
+                    color: "#FF0000"
+                });
+            }
+        }
+
+        function drawObstacles() {
+            obstacles.forEach((obs, index) => {
+                obs.x -= gameSpeed;
+                ctx.fillStyle = obs.color;
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+
+                // Collision Detection (Takkar)
+                if (
+                    player.x < obs.x + obs.width &&
+                    player.x + player.width > obs.x &&
+                    player.y < obs.y + obs.height &&
+                    player.y + player.height > obs.y
+                ) {
+                    alert("Dhamaka Ho Gaya! Score: " + score);
+                    resetGame();
+                }
+
+                if (obs.x + obs.width < 0) {
+                    obstacles.splice(index, 1);
+                    score++;
+                    if (score % 5 === 0) gameSpeed += 0.2; // Speed thodi dheere badhegi
+                }
+            });
+        }
+
+        function resetGame() {
+            player.y = 200;
+            player.dy = 0;
+            obstacles = [];
+            score = 0;
+            gameSpeed = 3;
+            frame = 0;
         }
 
         function update() {
-            if (isGameOver) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Physics
             player.dy += player.gravity;
             player.y += player.dy;
 
-            if (player.y > 250) { player.y = 250; player.dy = 0; player.grounded = true; }
+            if (player.y + player.height > 300) {
+                player.y = 300 - player.height;
+                player.dy = 0;
+                player.grounded = true;
+            }
 
-            // Update Obstacles
-            obstacles.forEach((obs, i) => {
-                obs.x -= gameSpeed;
-                if (obs.x + obs.w < 0) { obstacles.splice(i, 1); score += 10; }
-                if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.y + player.h > obs.y) {
-                    isGameOver = true;
-                    alert("PHAT GAYA! 😂 Score: " + score);
-                    location.reload();
-                }
-            });
+            drawPlayer();
+            createObstacle();
+            drawObstacles();
 
-            // Update Coins
-            coins.forEach((c, i) => {
-                c.x -= gameSpeed;
-                let dx = (player.x + 22) - c.x, dy = (player.y + 22) - c.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                if (dist < 40 && !c.collected) {
-                    c.collected = true; coinCount++; score += 50;
-                    createExplosion(c.x, c.y); // धमाका इफ़ेक्ट!
-                }
-            });
-            
-            document.getElementById("score").innerText = score;
-            document.getElementById("coins").innerText = coinCount;
+            // Score Board
+            ctx.fillStyle = "white";
+            ctx.font = "20px Arial";
+            ctx.fillText("Score: " + score, 10, 25);
+
+            frame++;
+            requestAnimationFrame(update);
         }
 
-        function createExplosion(x, y) {
-            ctx.fillStyle = "#ff0";
-            ctx.beginPath(); ctx.arc(x, y, 40, 0, Math.PI*2); ctx.fill(); // हल्का सा धमाका फ्लैश
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Ground
-            ctx.fillStyle = "#222"; ctx.fillRect(0, 300, canvas.width, 50);
-
-            // Draw Player
-            ctx.fillStyle = "#0f0"; ctx.shadowBlur = 15; ctx.shadowColor = "#0f0";
-            ctx.fillRect(player.x, player.y, player.w, player.h);
-
-            // Draw Obstacles
-            ctx.fillStyle = "#f00"; ctx.shadowColor = "#f00";
-            obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
-
-            // Draw Coins (Yellow Circles)
-            ctx.fillStyle = "#ff0"; ctx.shadowColor = "#ff0";
-            coins.forEach(c => {
-                if (!c.collected) {
-                    ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2); ctx.fill();
-                }
-            });
-            ctx.shadowBlur = 0;
-
-            update();
-            requestAnimationFrame(draw);
-        }
-
-        function jump() { if (player.grounded) { player.dy = -player.jumpForce; player.grounded = false; } }
-        spawnEverything(); draw();
+        update();
     </script>
 </body>
 </html>
