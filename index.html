@@ -3,36 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MOKIBUL DHAMAKA</title>
+    <title>MOKIBUL DHAMAKA CLASSIC</title>
     <style>
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            overflow: hidden; /* स्क्रीन हिलना बंद */
-            background-color: #000;
-            touch-action: none; /* टच करने पर पेज नहीं हिलेगा */
+        /* गेम को हिलने से रोकने के लिए */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; background: #000; touch-action: none;
         }
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-            background: #111;
+        canvas { 
+            display: block; background: #111; 
         }
-        #ui {
+        #scoreBoard {
             position: absolute; top: 10px; left: 10px;
-            color: #0f0; font-family: 'Courier New', Courier, monospace;
-            font-size: 22px; font-weight: bold;
-            pointer-events: none; /* UI पर टच काम नहीं करेगा, सीधा गेम पर करेगा */
+            color: #0f0; font-family: Arial, sans-serif; font-size: 24px;
         }
     </style>
 </head>
 <body>
 
-    <div id="ui">MOKIBUL DHAMAKA <br> SCORE: <span id="score">0</span></div>
-    <canvas id="game"></canvas>
+    <div id="scoreBoard">SCORE: <span id="score">0</span></div>
+    <canvas id="gameCanvas"></canvas>
 
     <script>
-        const canvas = document.getElementById("game");
+        const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         const scoreEl = document.getElementById("score");
 
@@ -41,28 +34,16 @@
 
         let score = 0;
         let gameSpeed = 5;
-        let gravity = 0.8;
+        let gravity = 0.6;
         
         let player = {
-            x: 50,
-            y: canvas.height - 150,
-            w: 40, h: 60, // थोड़ा लंबा 'इंसान' जैसा साइज
-            dy: 0,
-            jump: 16,
-            grounded: false
+            x: 50, y: canvas.height - 50,
+            w: 40, h: 40, dy: 0, jump: 12, grounded: false
         };
 
         let obstacles = [];
 
-        function spawnObstacle() {
-            let h = Math.random() * (80 - 30) + 30;
-            obstacles.push({
-                x: canvas.width,
-                y: canvas.height - h,
-                w: 30, h: h
-            });
-        }
-
+        // कूदने का फंक्शन
         function jump() {
             if (player.grounded) {
                 player.dy = -player.jump;
@@ -70,26 +51,18 @@
             }
         }
 
-        // मोबाइल टच फिक्स
+        // टच और क्लिक कंट्रोल (बिना किसी रुकावट के)
         window.addEventListener("touchstart", function(e) {
-            e.preventDefault(); // ब्राउज़र का डिफ़ॉल्ट हिलना बंद
+            e.preventDefault();
             jump();
         }, {passive: false});
 
         window.addEventListener("mousedown", jump);
 
-        function gameLoop() {
+        function update() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Ground Line
-            ctx.strokeStyle = "#0f0";
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height - 2);
-            ctx.lineTo(canvas.width, canvas.height - 2);
-            ctx.stroke();
-
-            // Player Physics
+            // प्लेयर की हलचल
             player.dy += gravity;
             player.y += player.dy;
 
@@ -99,16 +72,14 @@
                 player.grounded = true;
             }
 
-            // Draw Character (Blue Body, Yellow Head)
+            // प्लेयर बनाना (Classic Blue Box)
             ctx.fillStyle = "#007bff"; 
-            ctx.fillRect(player.x, player.y + 20, player.w, player.h - 20); // Body
-            ctx.fillStyle = "#ffd700"; 
-            ctx.fillRect(player.x + 5, player.y, 30, 25); // Head
+            ctx.fillRect(player.x, player.y, player.w, player.h);
 
-            // Obstacles
-            if (Math.random() < 0.015) {
-                if(obstacles.length == 0 || obstacles[obstacles.length-1].x < canvas.width - 250) {
-                    spawnObstacle();
+            // बाधाएं (Obstacles) बनाना
+            if (Math.random() < 0.02) {
+                if(obstacles.length == 0 || obstacles[obstacles.length-1].x < canvas.width - 200) {
+                    obstacles.push({ x: canvas.width, y: canvas.height - 40, w: 25, h: 40 });
                 }
             }
 
@@ -119,7 +90,7 @@
                 ctx.fillStyle = "red";
                 ctx.fillRect(o.x, o.y, o.w, o.h);
 
-                // Collision Detection
+                // टकराने पर गेम खत्म
                 if (player.x < o.x + o.w && player.x + player.w > o.x &&
                     player.y < o.y + o.h && player.y + player.h > o.y) {
                     score = 0;
@@ -136,10 +107,10 @@
                 }
             }
 
-            requestAnimationFrame(gameLoop);
+            requestAnimationFrame(update);
         }
 
-        gameLoop();
+        update();
     </script>
 </body>
 </html>
