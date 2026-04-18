@@ -3,66 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker Dashboard v3.0</title>
+    <title>TERMINAL_DASHBOARD</title>
     <style>
+        * { box-sizing: border-box; }
         body, html {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background: black;
             color: #00FF41;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Courier New', monospace;
+            height: 100%; width: 100%;
             overflow: hidden;
-            height: 100%;
         }
 
-        /* Container for 3 Layers */
+        /* 3 Layer Grid */
         .dashboard {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             height: 100vh;
             width: 100vw;
-            border: 2px solid #333;
         }
 
         .layer {
-            flex: 1;
-            border-right: 1px solid #00FF41;
             position: relative;
+            border-right: 1px solid #004400;
             overflow: hidden;
-            padding: 10px;
-            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
-        .layer:last-child { border-right: none; }
-
         .title {
+            font-size: 10px;
+            background: #004400;
+            color: white;
+            padding: 5px;
             text-align: center;
-            background: #003300;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
+            letter-spacing: 1px;
             font-weight: bold;
         }
 
-        /* Layer 1: Brute Force */
-        #brute-force { font-size: 0.8rem; }
-        .cracking-text { color: #ff0000; }
-
-        /* Layer 2: C-Matrix */
-        canvas {
-            position: absolute;
-            top: 30px;
-            left: 0;
-            z-index: -1;
+        /* Content Areas */
+        #brute-force, #logs {
+            padding: 5px;
+            font-size: 11px;
+            line-height: 1.2;
+            word-break: break-all;
         }
 
-        /* Layer 3: System Logs */
-        #logs { font-size: 0.7rem; color: #00ccff; }
+        .cracking-text { color: #FF3131; font-weight: bold; margin: 2px 0; }
+        .log-entry { color: #00CCFF; margin: 2px 0; }
+
+        /* Matrix Canvas Fix */
+        #matrix {
+            position: absolute;
+            top: 25px; /* Title ke niche */
+            left: 0;
+            width: 100%;
+            height: calc(100% - 25px);
+        }
     </style>
 </head>
 <body>
 
 <div class="dashboard">
     <div class="layer">
-        <div class="title">BRUTE_FORCE_ATTACK</div>
+        <div class="title">BRUTE_FORCE</div>
         <div id="brute-force"></div>
     </div>
 
@@ -78,31 +82,37 @@
 </div>
 
 <script>
-    // --- 1. Brute Force Logic ---
+    // 1. Brute Force
     const bruteDiv = document.getElementById('brute-force');
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-    function startBruteForce() {
-        setInterval(() => {
-            let pass = "";
-            for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            bruteDiv.innerHTML = `<p class="cracking-text">TRYING: ${pass}</p>` + bruteDiv.innerHTML;
-            if(bruteDiv.children.length > 25) bruteDiv.removeChild(bruteDiv.lastChild);
-        }, 100);
-    }
+    const chars = "ABCDEFGHIJKLM0123456789#$@*";
+    setInterval(() => {
+        let pass = "";
+        for(let i=0; i<8; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+        const p = document.createElement('div');
+        p.className = 'cracking-text';
+        p.innerText = `TRY: ${pass}`;
+        bruteDiv.prepend(p);
+        if(bruteDiv.children.length > 30) bruteDiv.removeChild(bruteDiv.lastChild);
+    }, 150);
 
-    // --- 2. C-Matrix Logic ---
+    // 2. Matrix Fix (Responsive)
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth / 3;
-    canvas.height = window.innerHeight;
 
-    const matrixChars = "0101010101ABCDEFHIJKLMNOPQRSTUVXYZ";
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
+    function resizeCanvas() {
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const matrixChars = "0101010101XYZ#@$";
+    const fontSize = 14;
+    let columns = canvas.width / fontSize;
+    let drops = Array(Math.floor(columns)).fill(1);
 
     function drawMatrix() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "#0F0";
         ctx.font = fontSize + "px monospace";
@@ -114,30 +124,19 @@
             drops[i]++;
         }
     }
-
-    // --- 3. System Logs Logic ---
-    const logDiv = document.getElementById('logs');
-    const messages = [
-        "[INFO] Initializing handshake...",
-        "[SUCCESS] Connection established",
-        "[WARN] Packet loss detected in sector 7",
-        "[INFO] Downloading user_data.db...",
-        "[CRITICAL] Firewall bypass active",
-        "[INFO] Encrypting local files...",
-        "[ACCESS] Root permission granted"
-    ];
-    function startLogs() {
-        setInterval(() => {
-            const msg = messages[Math.floor(Math.random() * messages.length)];
-            logDiv.innerHTML = `<p>> ${msg}</p>` + logDiv.innerHTML;
-            if(logDiv.children.length > 30) logDiv.removeChild(logDiv.lastChild);
-        }, 600);
-    }
-
-    // Run All
-    startBruteForce();
     setInterval(drawMatrix, 50);
-    startLogs();
+
+    // 3. System Logs
+    const logDiv = document.getElementById('logs');
+    const msgs = ["[OK] Bypass", "[!!] Warning", "[>>] Fetching", "[OK] Root Access", "[INFO] Connected"];
+    setInterval(() => {
+        const m = msgs[Math.floor(Math.random() * msgs.length)];
+        const p = document.createElement('div');
+        p.className = 'log-entry';
+        p.innerText = `> ${m}`;
+        logDiv.prepend(p);
+        if(logDiv.children.length > 35) logDiv.removeChild(logDiv.lastChild);
+    }, 500);
 </script>
 
 </body>
