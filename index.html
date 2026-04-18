@@ -1,1 +1,68 @@
-😭😭😭😭 i ma finished 😭😭😭😭
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Verification</title>
+    <style>
+        body { background-color: black; color: #0f0; font-family: 'Courier New', Courier, monospace; overflow: hidden; }
+        #console { padding: 20px; font-size: 14px; line-height: 1.5; }
+        .red { color: red; font-weight: bold; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+    <div id="console"></div>
+
+    <script>
+        const logs = [
+            "> [START] Initiating Instagram Security Bypass...",
+            "> Connecting to Meta Servers (IP: 157.240.22.35)...",
+            "> Connection Established.",
+            "> Scanning for Target Profile...",
+            "> Profile Found: @User_ID_00234",
+            "> Vulnerability Detected: CVE-2024-X89",
+            "> Exploiting Buffer Overflow...",
+            "> Bypass Successful.",
+            "> Accessing Private Messages...",
+            "> Accessing Media & Photos...",
+            "> [SYSTEM] Fetching Device Location...",
+            "> Location Found: Unknown Sector",
+            "> Downloading Data (45%)...",
+            "> Downloading Data (89%)...",
+            "> [ERROR] System Detected Security Breach!",
+            "> Running Counter-Script...",
+            "> [CRITICAL] DEVICE HAS BEEN COMPROMISED!",
+            "-------------------------------------------",
+            "!!! WARNING: MOKIBUL HACKER DETECTED !!!",
+            "-------------------------------------------"
+        ];
+
+        let i = 0;
+        const consoleDiv = document.getElementById('console');
+
+        function printLog() {
+            if (i < logs.length) {
+                const p = document.createElement('p');
+                p.textContent = logs[i];
+                if (logs[i].includes('CRITICAL') || logs[i].includes('WARNING')) {
+                    p.className = 'red';
+                }
+                consoleDiv.appendChild(p);
+                window.scrollTo(0, document.body.scrollHeight);
+                i++;
+                setTimeout(printLog, 800);
+            } else {
+                const final = document.createElement('h2');
+                final.innerHTML = "<span class='red blink'>ALL FILES ENCRYPTED!<br>PAY 1000 TK TO MOKIBUL TO UNLOCK YOUR PHONE!</span>";
+                final.style.textAlign = "center";
+                consoleDiv.appendChild(final);
+            }
+        }
+
+        printLog();
+    </script>
+</body>
+</html>
+
