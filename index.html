@@ -3,66 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Verification</title>
+    <title>Hacker Dashboard v3.0</title>
     <style>
-        body { background-color: black; color: #0f0; font-family: 'Courier New', Courier, monospace; overflow: hidden; }
-        #console { padding: 20px; font-size: 14px; line-height: 1.5; }
-        .red { color: red; font-weight: bold; }
-        .blink { animation: blinker 1s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0; } }
+        body, html {
+            margin: 0;
+            padding: 0;
+            background: black;
+            color: #00FF41;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* Container for 3 Layers */
+        .dashboard {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            border: 2px solid #333;
+        }
+
+        .layer {
+            flex: 1;
+            border-right: 1px solid #00FF41;
+            position: relative;
+            overflow: hidden;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .layer:last-child { border-right: none; }
+
+        .title {
+            text-align: center;
+            background: #003300;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Layer 1: Brute Force */
+        #brute-force { font-size: 0.8rem; }
+        .cracking-text { color: #ff0000; }
+
+        /* Layer 2: C-Matrix */
+        canvas {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Layer 3: System Logs */
+        #logs { font-size: 0.7rem; color: #00ccff; }
     </style>
 </head>
 <body>
-    <div id="console"></div>
 
-    <script>
-        const logs = [
-            "> [START] Initiating Instagram Security Bypass...",
-            "> Connecting to Meta Servers (IP: 157.240.22.35)...",
-            "> Connection Established.",
-            "> Scanning for Target Profile...",
-            "> Profile Found: @User_ID_00234",
-            "> Vulnerability Detected: CVE-2024-X89",
-            "> Exploiting Buffer Overflow...",
-            "> Bypass Successful.",
-            "> Accessing Private Messages...",
-            "> Accessing Media & Photos...",
-            "> [SYSTEM] Fetching Device Location...",
-            "> Location Found: Unknown Sector",
-            "> Downloading Data (45%)...",
-            "> Downloading Data (89%)...",
-            "> [ERROR] System Detected Security Breach!",
-            "> Running Counter-Script...",
-            "> [CRITICAL] DEVICE HAS BEEN COMPROMISED!",
-            "-------------------------------------------",
-            "!!! WARNING: MOKIBUL HACKER DETECTED !!!",
-            "-------------------------------------------"
-        ];
+<div class="dashboard">
+    <div class="layer">
+        <div class="title">BRUTE_FORCE_ATTACK</div>
+        <div id="brute-force"></div>
+    </div>
 
-        let i = 0;
-        const consoleDiv = document.getElementById('console');
+    <div class="layer">
+        <div class="title">MATRIX_CORE</div>
+        <canvas id="matrix"></canvas>
+    </div>
 
-        function printLog() {
-            if (i < logs.length) {
-                const p = document.createElement('p');
-                p.textContent = logs[i];
-                if (logs[i].includes('CRITICAL') || logs[i].includes('WARNING')) {
-                    p.className = 'red';
-                }
-                consoleDiv.appendChild(p);
-                window.scrollTo(0, document.body.scrollHeight);
-                i++;
-                setTimeout(printLog, 800);
-            } else {
-                const final = document.createElement('h2');
-                final.innerHTML = "<span class='red blink'>ALL FILES ENCRYPTED!<br>PAY 1000 TK TO MOKIBUL TO UNLOCK YOUR PHONE!</span>";
-                final.style.textAlign = "center";
-                consoleDiv.appendChild(final);
-            }
+    <div class="layer">
+        <div class="title">SYSTEM_LOGS</div>
+        <div id="logs"></div>
+    </div>
+</div>
+
+<script>
+    // --- 1. Brute Force Logic ---
+    const bruteDiv = document.getElementById('brute-force');
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+    function startBruteForce() {
+        setInterval(() => {
+            let pass = "";
+            for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            bruteDiv.innerHTML = `<p class="cracking-text">TRYING: ${pass}</p>` + bruteDiv.innerHTML;
+            if(bruteDiv.children.length > 25) bruteDiv.removeChild(bruteDiv.lastChild);
+        }, 100);
+    }
+
+    // --- 2. C-Matrix Logic ---
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth / 3;
+    canvas.height = window.innerHeight;
+
+    const matrixChars = "0101010101ABCDEFHIJKLMNOPQRSTUVXYZ";
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function drawMatrix() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#0F0";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
         }
+    }
 
-        printLog();
-    </script>
+    // --- 3. System Logs Logic ---
+    const logDiv = document.getElementById('logs');
+    const messages = [
+        "[INFO] Initializing handshake...",
+        "[SUCCESS] Connection established",
+        "[WARN] Packet loss detected in sector 7",
+        "[INFO] Downloading user_data.db...",
+        "[CRITICAL] Firewall bypass active",
+        "[INFO] Encrypting local files...",
+        "[ACCESS] Root permission granted"
+    ];
+    function startLogs() {
+        setInterval(() => {
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            logDiv.innerHTML = `<p>> ${msg}</p>` + logDiv.innerHTML;
+            if(logDiv.children.length > 30) logDiv.removeChild(logDiv.lastChild);
+        }, 600);
+    }
+
+    // Run All
+    startBruteForce();
+    setInterval(drawMatrix, 50);
+    startLogs();
+</script>
+
 </body>
 </html>
-
