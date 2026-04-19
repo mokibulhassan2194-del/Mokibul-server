@@ -2,92 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TERMINAL - MOKIBUL KHAN</title>
+    <title>MOKIBUL PRIVATE VAULT</title>
     <style>
-        body { background: black; color: #0f0; font-family: 'Courier New', monospace; overflow: hidden; margin: 0; }
-        .header { text-align: center; border-bottom: 2px solid #0f0; padding: 10px; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #0f0; background: rgba(0,255,0,0.1); }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 85vh; gap: 5px; padding: 5px; }
-        .box { border: 1px solid #0f0; padding: 8px; overflow: hidden; position: relative; font-size: 11px; background: rgba(0,0,0,0.8); }
-        .box-title { position: absolute; top: 0; right: 0; background: #0f0; color: black; padding: 1px 8px; font-weight: bold; font-size: 10px; }
-        .scanner-text { line-height: 1.4; white-space: nowrap; }
-        span.target-name { color: #fff; text-shadow: 0 0 5px #fff; font-weight: bold; }
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; flex-direction: column; }
+        #lock-screen { text-align: center; border: 2px solid #0f0; padding: 30px; box-shadow: 0 0 20px #0f0; }
+        input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 10px; text-align: center; font-size: 18px; outline: none; margin-top: 10px; }
+        button { background: #0f0; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        #gallery { display: none; width: 90%; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+        .grid img { width: 100%; border: 2px solid #0f0; }
+        #ban-message { color: red; font-size: 20px; font-weight: bold; display: none; text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="header" id="main-header">SYSTEM OVERRIDE BY: MOKIBUL KHAN v3.0</div>
+    <div id="ban-message">
+        <h1>[!] ACCESS DENIED [!]</h1>
+        <p>YOUR IP ADDRESS HAS BEEN BLACKLISTED BY MOKIBUL KHAN.</p>
+        <p>REASON: MULTIPLE FAILED ATTEMPTS</p>
+        <p>SECURITY LOCK: 10 HOURS REMAINING</p>
+    </div>
 
-<div class="grid">
-    <div class="box">
-        <div class="box-title">TARGET_IDENTIFICATION</div>
-        <div id="brute" class="scanner-text"></div>
+    <div id="lock-screen">
+        <h2>MOKIBUL SECURITY SYSTEM</h2>
+        <p>ENTER ENCRYPTION KEY:</p>
+        <input type="password" id="pass" placeholder="****">
+        <br>
+        <button onclick="checkPass()">DECRYPT</button>
+        <p id="tries" style="font-size: 12px; color: yellow;"></p>
     </div>
-    <div class="box">
-        <div class="box-title">SYSTEM_EXPLOIT</div>
-        <div id="logs" class="scanner-text"></div>
+
+    <div id="gallery">
+        <h1>WELCOME, MOKIBUL KHAN</h1>
+        <div class="grid">
+            <img src="https://via.placeholder.com/150" alt="Secret 1">
+            <img src="https://via.placeholder.com/150" alt="Secret 2">
+            <img src="https://via.placeholder.com/150" alt="Secret 3">
+        </div>
+        <button onclick="location.reload()">LOCK SYSTEM</button>
     </div>
-    <div class="box">
-        <div class="box-title">DATA_EXTRACTION</div>
-        <div id="db" class="scanner-text" style="color: #ff4500;"></div>
-    </div>
-    <div class="box">
-        <div class="box-title">MOKIBUL_SAT_LINK</div>
-        <div id="sat" class="scanner-text" style="color: #00ffff;"></div>
-    </div>
-</div>
 
 <script>
-    // मकीबुल भाई, यहाँ से नाम पूछने वाला जादू शुरू होता है
-    let target = prompt("ENTER ACCESS KEY OR USERNAME TO PROCEED:", "Guest");
-    if (target == null || target == "") { target = "Unknown_Subject"; }
-    
-    document.getElementById('main-header').innerHTML = `TARGET ACQUIRED: <span class="target-name">${target.toUpperCase()}</span> | SECURED BY MOKIBUL KHAN`;
+    const correctPass = "1234"; // मकीबुल भाई, यहाँ अपना असली पासवर्ड लिख दे
+    let attempts = localStorage.getItem('attempts') || 0;
+    let banTime = localStorage.getItem('banTime');
 
-    function randomText(element, sentences, speed) {
-        setInterval(() => {
-            let p = document.createElement('div');
-            let text = sentences[Math.floor(Math.random() * sentences.length)];
-            // नाम को बीच में घुसाना
-            text = text.replace("{name}", `<span class="target-name">${target}</span>`);
-            p.innerHTML = text;
-            element.prepend(p);
-            if (element.children.length > 25) element.lastChild.remove();
-        }, speed);
+    // चेक करें कि क्या बंदा पहले से बैन है
+    if (banTime && Date.now() < banTime) {
+        document.getElementById('lock-screen').style.display = 'none';
+        document.getElementById('ban-message').style.display = 'block';
     }
 
-    const bruteTexts = [
-        "[!] SCANNING DEVICE: {name}_MOBILE...",
-        "[+] IP FOUND: 103.${Math.floor(Math.random()*255)}.1.${Math.floor(Math.random()*255)}",
-        "[!] BYPASSING {name}'S FIREWALL...",
-        "[!] UPLOADING KEYLOGGER TO {name}..."
-    ];
-    
-    const logTexts = [
-        "> [OK] ACCESSING {name}'S GALLERY...",
-        "> [WARN] FIREWALL DETECTED IN SECTOR 7",
-        "> [SUCCESS] {name}_WHATSAPP_DATABASE LINKED",
-        "> [OK] MOKIBUL KHAN GRANTED ROOT ACCESS"
-    ];
+    function checkPass() {
+        let input = document.getElementById('pass').value;
 
-    const dbTexts = [
-        "EXTRACTING: {name}_private_keys.dat",
-        "DELETING {name}'S BROWSER_HISTORY...",
-        "CRACKING PASSWORD FOR {name}...",
-        "DOWNLOAD COMPLETE: {name}_social_data.zip"
-    ];
+        if (input === correctPass) {
+            localStorage.setItem('attempts', 0); // रिसेट
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('gallery').style.display = 'block';
+        } else {
+            attempts++;
+            localStorage.setItem('attempts', attempts);
+            document.getElementById('tries').innerText = `Attempts Left: ${3 - attempts}`;
 
-    const satTexts = [
-        "SAT-LINK ACTIVE: TARGETING {name}...",
-        "MOKIBUL_KHAN: INJECTING PAYLOAD...",
-        "COORDINATES FOUND: NEAR {name}'S AREA",
-        "SYSTEM STATUS: {name} IS UNDER CONTROL"
-    ];
-
-    randomText(document.getElementById('brute'), bruteTexts, 600);
-    randomText(document.getElementById('logs'), logTexts, 900);
-    randomText(document.getElementById('db'), dbTexts, 700);
-    randomText(document.getElementById('sat'), satTexts, 1200);
+            if (attempts >= 3) {
+                // 10 घंटे का बैन (10 * 60 * 60 * 1000 मिलीसेकंड्स)
+                let tenHours = Date.now() + (10 * 60 * 60 * 1000);
+                localStorage.setItem('banTime', tenHours);
+                location.reload(); // पेज रिफ्रेश करो बैन दिखाने के लिए
+            } else {
+                alert("WRONG PASSWORD! SYSTEM ALERT SENT TO MOKIBUL.");
+            }
+        }
+    }
 </script>
-
 </body>
 </html>
