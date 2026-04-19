@@ -2,52 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MOKIBUL PRIVATE VAULT</title>
     <style>
-        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; flex-direction: column; }
-        #lock-screen { text-align: center; border: 2px solid #0f0; padding: 30px; box-shadow: 0 0 20px #0f0; }
-        input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 10px; text-align: center; font-size: 18px; outline: none; margin-top: 10px; }
-        button { background: #0f0; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        #gallery { display: none; width: 90%; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-        .grid img { width: 100%; border: 2px solid #0f0; }
-        #ban-message { color: red; font-size: 20px; font-weight: bold; display: none; text-align: center; }
+        body { background: #000; color: #0f0; font-family: 'Arial', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
+        
+        #lock-screen { text-align: center; border: 3px solid #0f0; padding: 40px 20px; width: 85%; box-shadow: 0 0 30px #0f0; border-radius: 15px; }
+        
+        h2 { font-size: 28px; text-shadow: 0 0 10px #0f0; margin-bottom: 20px; }
+        
+        input { background: #111; border: 2px solid #0f0; color: #0f0; padding: 15px; text-align: center; font-size: 20px; width: 80%; border-radius: 10px; margin-bottom: 20px; outline: none; }
+        
+        button { background: #0f0; color: #000; border: none; padding: 15px 30px; cursor: pointer; font-weight: bold; font-size: 18px; border-radius: 10px; width: 85%; text-transform: uppercase; }
+
+        #gallery { display: none; width: 100%; padding: 20px; text-align: center; }
+        
+        .gallery-header { font-size: 24px; color: #fff; margin-bottom: 20px; border-bottom: 2px solid #0f0; padding-bottom: 10px; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 10px; }
+        
+        .grid img { width: 100%; height: 180px; object-fit: cover; border: 2px solid #0f0; border-radius: 8px; transition: 0.3s; }
+        
+        .grid img:active { transform: scale(1.1); border-color: white; }
+
+        #ban-message { color: red; font-size: 22px; font-weight: bold; display: none; text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
 
     <div id="ban-message">
-        <h1>[!] ACCESS DENIED [!]</h1>
-        <p>YOUR IP ADDRESS HAS BEEN BLACKLISTED BY MOKIBUL KHAN.</p>
-        <p>REASON: MULTIPLE FAILED ATTEMPTS</p>
-        <p>SECURITY LOCK: 10 HOURS REMAINING</p>
+        <h1>[!] ACCESS DENIED</h1>
+        <p>IP BLACKLISTED BY MOKIBUL KHAN</p>
+        <p>LOCKOUT: 10 HOURS</p>
     </div>
 
     <div id="lock-screen">
-        <h2>MOKIBUL SECURITY SYSTEM</h2>
-        <p>ENTER ENCRYPTION KEY:</p>
-        <input type="password" id="pass" placeholder="****">
+        <h2>SECURE LOGIN</h2>
+        <p style="color: #888;">ENTER ACCESS KEY</p>
+        <input type="password" id="pass" placeholder="Enter Password">
         <br>
-        <button onclick="checkPass()">DECRYPT</button>
-        <p id="tries" style="font-size: 12px; color: yellow;"></p>
+        <button onclick="checkPass()">ENTER VAULT</button>
+        <p id="tries" style="margin-top: 15px; color: yellow; font-weight: bold;"></p>
     </div>
 
     <div id="gallery">
-        <h1>WELCOME, MOKIBUL KHAN</h1>
+        <div class="gallery-header">MOKIBUL'S SECRET COLLECTION</div>
         <div class="grid">
-            <img src="https://via.placeholder.com/150" alt="Secret 1">
-            <img src="https://via.placeholder.com/150" alt="Secret 2">
-            <img src="https://via.placeholder.com/150" alt="Secret 3">
+            <img src="https://via.placeholder.com/300" onclick="alert('Photo 1 Selected')">
+            <img src="https://via.placeholder.com/300" onclick="alert('Photo 2 Selected')">
+            <img src="https://via.placeholder.com/300" onclick="alert('Photo 3 Selected')">
+            <img src="https://via.placeholder.com/300" onclick="alert('Photo 4 Selected')">
         </div>
-        <button onclick="location.reload()">LOCK SYSTEM</button>
+        <br>
+        <button style="background: red; color: white;" onclick="location.reload()">LOCK & EXIT</button>
     </div>
 
 <script>
-    const correctPass = "1234"; // मकीबुल भाई, यहाँ अपना असली पासवर्ड लिख दे
+    // तेरा माँगा हुआ पासवर्ड
+    const correctPass = "Mokibul@2017"; 
+    
     let attempts = localStorage.getItem('attempts') || 0;
     let banTime = localStorage.getItem('banTime');
 
-    // चेक करें कि क्या बंदा पहले से बैन है
     if (banTime && Date.now() < banTime) {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('ban-message').style.display = 'block';
@@ -57,21 +73,20 @@
         let input = document.getElementById('pass').value;
 
         if (input === correctPass) {
-            localStorage.setItem('attempts', 0); // रिसेट
+            localStorage.setItem('attempts', 0);
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('gallery').style.display = 'block';
         } else {
             attempts++;
             localStorage.setItem('attempts', attempts);
-            document.getElementById('tries').innerText = `Attempts Left: ${3 - attempts}`;
+            document.getElementById('tries').innerText = `ATTEMPTS REMAINING: ${3 - attempts}`;
 
             if (attempts >= 3) {
-                // 10 घंटे का बैन (10 * 60 * 60 * 1000 मिलीसेकंड्स)
                 let tenHours = Date.now() + (10 * 60 * 60 * 1000);
                 localStorage.setItem('banTime', tenHours);
-                location.reload(); // पेज रिफ्रेश करो बैन दिखाने के लिए
+                location.reload();
             } else {
-                alert("WRONG PASSWORD! SYSTEM ALERT SENT TO MOKIBUL.");
+                alert("ACCESS DENIED!");
             }
         }
     }
