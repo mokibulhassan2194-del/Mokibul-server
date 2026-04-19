@@ -2,141 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL_DASHBOARD</title>
+    <title>TERMINAL - MOKIBUL KHAN</title>
     <style>
-        * { box-sizing: border-box; }
-        body, html {
-            margin: 0; padding: 0;
-            background: black;
-            color: #00FF41;
-            font-family: 'Courier New', monospace;
-            height: 100%; width: 100%;
-            overflow: hidden;
-        }
-
-        /* 3 Layer Grid */
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        .layer {
-            position: relative;
-            border-right: 1px solid #004400;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .title {
-            font-size: 10px;
-            background: #004400;
-            color: white;
-            padding: 5px;
-            text-align: center;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
-
-        /* Content Areas */
-        #brute-force, #logs {
-            padding: 5px;
-            font-size: 11px;
-            line-height: 1.2;
-            word-break: break-all;
-        }
-
-        .cracking-text { color: #FF3131; font-weight: bold; margin: 2px 0; }
-        .log-entry { color: #00CCFF; margin: 2px 0; }
-
-        /* Matrix Canvas Fix */
-        #matrix {
-            position: absolute;
-            top: 25px; /* Title ke niche */
-            left: 0;
-            width: 100%;
-            height: calc(100% - 25px);
-        }
+        body { background: black; color: #0f0; font-family: 'Courier New', monospace; overflow: hidden; margin: 0; }
+        .header { text-align: center; border-bottom: 2px solid #0f0; padding: 10px; font-size: 24px; font-weight: bold; text-shadow: 0 0 10px #0f0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 90vh; gap: 10px; padding: 10px; }
+        .box { border: 1px solid #0f0; padding: 10px; overflow: hidden; position: relative; font-size: 12px; }
+        .box-title { position: absolute; top: 0; right: 0; background: #0f0; color: black; padding: 2px 10px; font-weight: bold; }
+        .scanner-text { line-height: 1.5; white-space: nowrap; }
+        @keyframes scan { 0% { transform: translateY(100%); } 100% { transform: translateY(-100%); } }
     </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <div class="layer">
-        <div class="title">BRUTE_FORCE</div>
-        <div id="brute-force"></div>
+<div class="header">SYSTEM OVERRIDE BY: MOKIBUL KHAN v2.0</div>
+
+<div class="grid">
+    <div class="box">
+        <div class="box-title">IP_BRUTE_FORCE</div>
+        <div id="brute" class="scanner-text"></div>
     </div>
 
-    <div class="layer">
-        <div class="title">MATRIX_CORE</div>
-        <canvas id="matrix"></canvas>
+    <div class="box">
+        <div class="box-title">ENCRYPTED_LOGS</div>
+        <div id="logs" class="scanner-text"></div>
     </div>
 
-    <div class="layer">
-        <div class="title">SYSTEM_LOGS</div>
-        <div id="logs"></div>
+    <div class="box">
+        <div class="box-title">DATABASE_BREACH</div>
+        <div id="db" class="scanner-text" style="color: red;"></div>
+    </div>
+
+    <div class="box">
+        <div class="box-title">MOKIBUL_SAT_LINK</div>
+        <div id="sat" class="scanner-text" style="color: aqua;"></div>
     </div>
 </div>
 
 <script>
-    // 1. Brute Force
-    const bruteDiv = document.getElementById('brute-force');
-    const chars = "ABCDEFGHIJKLM0123456789#$@*";
-    setInterval(() => {
-        let pass = "";
-        for(let i=0; i<8; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-        const p = document.createElement('div');
-        p.className = 'cracking-text';
-        p.innerText = `TRY: ${pass}`;
-        bruteDiv.prepend(p);
-        if(bruteDiv.children.length > 30) bruteDiv.removeChild(bruteDiv.lastChild);
-    }, 150);
-
-    // 2. Matrix Fix (Responsive)
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-
-    function resizeCanvas() {
-        canvas.width = canvas.parentElement.offsetWidth;
-        canvas.height = canvas.parentElement.offsetHeight;
+    function randomText(element, sentences, speed) {
+        setInterval(() => {
+            let p = document.createElement('div');
+            p.innerText = sentences[Math.floor(Math.random() * sentences.length)];
+            element.prepend(p);
+            if (element.children.length > 20) element.lastChild.remove();
+        }, speed);
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
 
-    const matrixChars = "0101010101XYZ#@$";
-    const fontSize = 14;
-    let columns = canvas.width / fontSize;
-    let drops = Array(Math.floor(columns)).fill(1);
+    const bruteTexts = ["[!] TRYING: 192.168.1.1...", "[!] BYPASSING SALT...", "[+] TOKEN FOUND: " + Math.random().toString(36).substr(2, 9), "[!] EXPLOITING PORT 4444..."];
+    const logTexts = ["> [OK] CONNECTION SECURE", "> [WARN] FIREWALL DETECTED", "> [CRITICAL] BYPASSING GOVT_FIREWALL", "> [SUCCESS] ROOT ACCESS GRANTED"];
+    const dbTexts = ["EXTRACTING: cc_data.sql", "UPLOADING MALWARE...", "DELETING SERVER BACKUP...", "PASSWORD CRACKED: ********"];
+    const satTexts = ["CONNECTING TO SAT-09...", "LOCATING COORDINATES...", "TARGET: ENCRYPTED_SERVER", "MOKIBUL_KHAN: ACCESS VERIFIED"];
 
-    function drawMatrix() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#0F0";
-        ctx.font = fontSize + "px monospace";
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
-        }
-    }
-    setInterval(drawMatrix, 50);
-
-    // 3. System Logs
-    const logDiv = document.getElementById('logs');
-    const msgs = ["[OK] Bypass", "[!!] Warning", "[>>] Fetching", "[OK] Root Access", "[INFO] Connected"];
-    setInterval(() => {
-        const m = msgs[Math.floor(Math.random() * msgs.length)];
-        const p = document.createElement('div');
-        p.className = 'log-entry';
-        p.innerText = `> ${m}`;
-        logDiv.prepend(p);
-        if(logDiv.children.length > 35) logDiv.removeChild(logDiv.lastChild);
-    }, 500);
+    randomText(document.getElementById('brute'), bruteTexts, 500);
+    randomText(document.getElementById('logs'), logTexts, 800);
+    randomText(document.getElementById('db'), dbTexts, 600);
+    randomText(document.getElementById('sat'), satTexts, 1000);
 </script>
 
 </body>
