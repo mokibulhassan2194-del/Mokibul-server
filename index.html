@@ -15,36 +15,41 @@
         input { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #dbdbdb; border-radius: 5px; background: #fafafa; }
         .btn { width: 100%; padding: 12px; background: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; margin-top: 10px; cursor: pointer; }
 
-        /* Main App Section */
+        /* Main App Header */
         #main-app { display: none; height: 100vh; flex-direction: column; }
         .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; font-size: 1.2rem; background: #fff; justify-content: space-between; }
         .content { flex: 1; overflow-y: auto; padding-bottom: 60px; background: #fff; }
 
-        /* Stories Section */
+        /* --- HOME PAGE STYLE --- */
         .stories { display: flex; overflow-x: auto; padding: 10px; gap: 10px; border-bottom: 1px solid #dbdbdb; scrollbar-width: none; }
         .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #d62976; background: #eee; }
-
-        /* Post Style */
         .post { background: #fff; border-bottom: 1px solid #dbdbdb; margin-bottom: 10px; }
         .post-header { padding: 10px; display: flex; align-items: center; font-weight: bold; gap: 10px; font-size: 14px; }
         .user-avatar { width: 30px; height: 30px; border-radius: 50%; background: #ddd; }
-        .p-img { width: 100%; aspect-ratio: 1/1; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 14px; }
+        .p-img { width: 100%; aspect-ratio: 1/1; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; }
         .actions { padding: 12px; font-size: 22px; display: flex; gap: 15px; }
-        .like-btn { cursor: pointer; }
         .liked { color: red; }
 
-        /* Profile Style */
+        /* --- SEARCH PAGE STYLE --- */
+        #search-page { display: none; padding-top: 10px; }
+        .search-bar-container { padding: 0 10px 10px 10px; }
+        .search-input { width: 100%; padding: 8px 12px; border: none; border-radius: 10px; background: #efefef; font-size: 14px; outline: none; }
+        .explore-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .explore-item { aspect-ratio: 1/1; background: #eee; border: 0.5px solid #fff; }
+
+        /* --- PROFILE PAGE STYLE --- */
         #profile-page { display: none; }
-        .profile-info { padding: 20px; display: flex; align-items: center; gap: 30px; }
-        .profile-pic { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, orange, red); border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-        .stats { display: flex; gap: 20px; text-align: center; font-size: 13px; }
-        .bio { padding: 0 20px 20px; font-size: 14px; border-bottom: 1px solid #dbdbdb; }
+        .profile-info { padding: 20px; display: flex; align-items: center; gap: 20px; }
+        .profile-pic { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, orange, red); }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
         .grid-item { aspect-ratio: 1/1; background: #eee; }
 
         /* Bottom Nav */
-        .nav { height: 55px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; }
+        .nav { height: 55px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; z-index: 10; }
         .nav-item { font-size: 24px; cursor: pointer; }
+
+        /* Page Display Control */
+        .active { display: block !important; }
     </style>
 </head>
 <body>
@@ -62,47 +67,35 @@
         <div class="header" id="h-title">Max Ful <span>📷</span></div>
         
         <div class="content">
-            <div id="home-page">
+            <div id="home-page" class="active">
                 <div class="stories">
-                    <div class="story-circle"></div><div class="story-circle"></div><div class="story-circle"></div>
-                    <div class="story-circle"></div><div class="story-circle"></div><div class="story-circle"></div>
+                    <div class="story-circle"></div><div class="story-circle"></div><div class="story-circle"></div><div class="story-circle"></div>
                 </div>
-
                 <div class="post">
                     <div class="post-header"><div class="user-avatar"></div> makibul_official</div>
-                    <div class="p-img">Max Ful Post 1</div>
-                    <div class="actions">
-                        <span class="like-btn" onclick="toggleLike(this)">❤️</span>
-                        <span>💬</span><span>✈️</span>
-                    </div>
+                    <div class="p-img">Home Post Content</div>
+                    <div class="actions"><span onclick="this.classList.toggle('liked')">❤️</span> <span>💬</span></div>
                 </div>
+            </div>
 
-                <div class="post">
-                    <div class="post-header"><div class="user-avatar"></div> maki_hacker</div>
-                    <div class="p-img">Max Ful Post 2</div>
-                    <div class="actions">
-                        <span class="like-btn" onclick="toggleLike(this)">❤️</span>
-                        <span>💬</span><span>✈️</span>
-                    </div>
+            <div id="search-page">
+                <div class="search-bar-container">
+                    <input type="text" class="search-input" placeholder="🔍 Search">
+                </div>
+                <div class="explore-grid">
+                    <div class="explore-item"></div><div class="explore-item"></div><div class="explore-item"></div>
+                    <div class="explore-item"></div><div class="explore-item"></div><div class="explore-item"></div>
+                    <div class="explore-item"></div><div class="explore-item"></div><div class="explore-item"></div>
+                    <div class="explore-item"></div><div class="explore-item"></div><div class="explore-item"></div>
                 </div>
             </div>
 
             <div id="profile-page">
                 <div class="profile-info">
                     <div class="profile-pic"></div>
-                    <div class="stats">
-                        <div><strong>15</strong><br>Posts</div>
-                        <div><strong>500</strong><br>Followers</div>
-                        <div><strong>200</strong><br>Following</div>
-                    </div>
-                </div>
-                <div class="bio">
-                    <strong>Makibul Official</strong><br>
-                    Singer | Coder | Dreamer 🎸<br>
-                    Never give up on your vibes!
+                    <div><strong>makibul_official</strong><br>15 Posts | 500 Followers</div>
                 </div>
                 <div class="grid">
-                    <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
                     <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
                     <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
                 </div>
@@ -111,7 +104,7 @@
 
         <div class="nav">
             <div class="nav-item" onclick="nav('home')">🏠</div>
-            <div class="nav-item">🔍</div>
+            <div class="nav-item" onclick="nav('search')">🔍</div>
             <div class="nav-item">➕</div>
             <div class="nav-item">🎬</div>
             <div class="nav-item" onclick="nav('profile')">👤</div>
@@ -124,17 +117,20 @@
             document.getElementById('main-app').style.display = 'flex';
         }
 
-        function toggleLike(btn) {
-            btn.classList.toggle('liked');
-        }
-
         function nav(page) {
+            // Sab pages chhupa do
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('search-page').style.display = 'none';
+            document.getElementById('profile-page').style.display = 'none';
+
+            // Sirf click wala page dikhao
             if(page === 'home') {
                 document.getElementById('home-page').style.display = 'block';
-                document.getElementById('profile-page').style.display = 'none';
-                document.getElementById('h-title').innerHTML = 'Max Ful <span>📷</span>';
-            } else {
-                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('h-title').innerText = 'Max Ful';
+            } else if(page === 'search') {
+                document.getElementById('search-page').style.display = 'block';
+                document.getElementById('h-title').innerText = 'Explore';
+            } else if(page === 'profile') {
                 document.getElementById('profile-page').style.display = 'block';
                 document.getElementById('h-title').innerText = 'makibul_official';
             }
