@@ -3,200 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Ful | Login</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fafafa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-card {
-            background-color: white;
-            border: 1px solid #dbdbdb;
-            width: 350px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .logo {
-            font-size: 35px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            color: #262626;
-            letter-spacing: -1px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #dbdbdb;
-            border-radius: 3px;
-            background-color: #fafafa;
-            box-sizing: border-box; /* इससे पैडिंग अंदर ही रहती है */
-        }
-        .login-btn {
-            width: 100%;
-            padding: 8px;
-            background-color: #0095f6;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .login-btn:hover {
-            background-color: #1877f2;
-        }
-        .divider {
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            color: #8e8e8e;
-            font-size: 13px;
-        }
-        .divider::before, .divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #dbdbdb;
-            margin: 0 10px;
-        }
-        .fb-login {
-            color: #385185;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-            text-decoration: none;
-        }
-        .forgot {
-            font-size: 12px;
-            color: #00376b;
-            margin-top: 20px;
-            display: block;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="login-card">
-        <div class="logo">Max Ful</div>
-        
-        <form id="loginForm">
-            <input type="text" placeholder="Phone number, username, or email" required>
-            <input type="password" placeholder="Password" required>
-            <button type="submit" class="login-btn">Log In</button>
-        </form>
-
-        <div class="divider">OR</div>
-
-        <a href="#" class="fb-login">Log in with Facebook</a>
-        <a href="#" class="forgot">Forgot password?</a>
-    </div>
-
-</body>
-</html><script>
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // पेज को फालतू में रीलोड होने से रोकेगा
-
-    // यहाँ हम अपना एक "Fake" यूजरनेम और पासवर्ड सेट कर रहे हैं टेस्टिंग के लिए
-    const correctUser = "maki123";
-    const correctPass = "bhai786";
-
-    // जो यूजर ने टाइप किया वो उठाओ
-    const userInput = document.querySelectorAll('input')[0].value;
-    const passInput = document.querySelectorAll('input')[1].value;
-
-    if(userInput === correctUser && passInput === correctPass) {
-        alert("लॉगिन कामयाब! स्वागत है मकीबुल भाई।");
-        window.location.href = "index.html"; // यह तुझे प्रोफाइल पेज पर ले जाएगा
-    } else {
-        alert("गलत पासवर्ड! भाई ध्यान से टाइप कर।");
-    }
-});
-        </script><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Max Ful | Profile</title>
     <style>
-        body { font-family: sans-serif; background-color: #fafafa; margin: 0; padding-bottom: 50px; }
-        .nav { background: white; border-bottom: 1px solid #dbdbdb; padding: 10px; text-align: center; font-weight: bold; font-size: 22px; position: sticky; top: 0; z-index: 100; }
+        * { box-sizing: border-box; }
+        body { font-family: sans-serif; background-color: #fafafa; margin: 0; }
         
-        .profile-header { max-width: 600px; margin: 20px auto; display: flex; padding: 10px; align-items: center; }
-        .p-pic { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #dc2743); padding: 3px; }
-        .p-pic img { width: 100%; height: 100%; border-radius: 50%; background: white; }
+        /* ऊपर की पट्टी */
+        .nav { background: white; border-bottom: 1px solid #dbdbdb; padding: 10px; text-align: center; font-weight: bold; font-size: 20px; position: sticky; top: 0; z-index: 100; }
         
-        .p-stats { margin-left: 20px; flex-grow: 1; }
-        .user-name { font-size: 20px; font-weight: 300; margin-bottom: 10px; }
-        .stat-counts { display: flex; gap: 15px; font-size: 14px; }
-        
-        .bio { max-width: 600px; margin: 10px auto; padding: 0 15px; font-size: 14px; line-height: 1.5; }
-        
-        /* Highlight Section */
-        .highlights { max-width: 600px; margin: 20px auto; display: flex; gap: 15px; overflow-x: auto; padding: 10px; }
-        .h-item { text-align: center; font-size: 11px; }
-        .h-circle { width: 56px; height: 56px; border-radius: 50%; border: 1px solid #dbdbdb; background: #eee; margin-bottom: 5px; }
+        /* मोबाइल के लिए कंटेनर */
+        .main-content { max-width: 500px; margin: 0 auto; background: white; min-height: 100vh; }
 
-        .btn-container { max-width: 600px; margin: 10px auto; display: flex; gap: 5px; padding: 0 10px; }
-        .btn { flex: 1; padding: 7px; border: 1px solid #dbdbdb; border-radius: 4px; background: white; font-weight: bold; font-size: 13px; cursor: pointer; }
+        .profile-section { display: flex; padding: 20px; align-items: center; }
+        .p-pic { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #dc2743); padding: 3px; flex-shrink: 0; }
+        .p-pic img { width: 100%; height: 100%; border-radius: 50%; background: white; border: 2px solid white; }
+        
+        .p-stats { margin-left: 20px; display: flex; justify-content: space-around; flex-grow: 1; text-align: center; font-size: 13px; }
+        .p-stats b { display: block; font-size: 16px; }
+        
+        .bio-section { padding: 0 20px 15px; font-size: 14px; }
+        
+        .btn-group { display: flex; gap: 10px; padding: 0 20px; margin-bottom: 20px; }
+        .action-btn { flex: 1; padding: 8px; border: 1px solid #dbdbdb; border-radius: 5px; background: #efefef; font-weight: bold; font-size: 13px; cursor: pointer; border: none; }
 
-        /* Video Grid */
-        .video-grid { max-width: 600px; margin: 20px auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
-        .v-card { background: #333; aspect-ratio: 1/1; position: relative; overflow: hidden; }
-        .v-card video { width: 100%; height: 100%; object-fit: cover; }
+        .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #fafafa; }
+        .v-item { background: #000; aspect-ratio: 1/1; }
+        .v-item video { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
 
     <div class="nav">Max Ful</div>
 
-    <div class="profile-header">
-        <div class="p-pic"><img src="https://via.placeholder.com/150"></div>
-        <div class="p-stats">
-            <div class="user-name">makibul_official</div>
-            <div class="stat-counts">
-                <span><b>15</b> posts</span>
-                <span><b>500</b> followers</span>
-                <span><b>200</b> following</span>
+    <div class="main-content">
+        <div class="profile-section">
+            <div class="p-pic">
+                <img src="https://via.placeholder.com/150" alt="Maki">
+            </div>
+            <div class="p-stats">
+                <div><b>15</b> posts</div>
+                <div><b>500</b> followers</div>
+                <div><b>200</b> following</div>
             </div>
         </div>
-    </div>
 
-    <div class="bio">
-        <b>Makibul Hassan</b><br>
-        Singer | Coder | Dreamer 🎸💻<br>
-        Bhai, mehnat jaari hai! Check my songs below.
-    </div>
+        <div class="bio-section">
+            <b>Makibul Hassan</b><br>
+            Singer | Coder | Dreamer 🎸💻<br>
+            Bhai, mehnat jaari hai!
+        </div>
 
-    <div class="btn-container">
-        <button class="btn">Edit Profile</button>
-        <button class="btn">Share Profile</button>
-        <button class="btn">My Songs 🎤</button>
-    </div>
+        <div class="btn-group">
+            <button class="action-btn">Edit Profile</button>
+            <button class="action-btn">Share Profile</button>
+        </div>
 
-    <div class="highlights">
-        <div class="h-item"><div class="h-circle"></div>Best</div>
-        <div class="h-item"><div class="h-circle"></div>Guitar</div>
-        <div class="h-item"><div class="h-circle"></div>Coding</div>
-    </div>
-
-    <div class="video-grid">
-        <div class="v-card"><video src="2956.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video></div>
-        <div class="v-card"><video src="2962.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video></div>
-        <div class="v-card"></div>
-        <div class="v-card"></div>
-        <div class="v-card"></div>
-        <div class="v-card"></div>
+        <div class="video-grid">
+            <div class="v-item"><video src="2956.mp4" controls></video></div>
+            <div class="v-item"><video src="2962.mp4" controls></video></div>
+            <div class="v-item"><video src="2957.mp4" controls></video></div>
+        </div>
     </div>
 
 </body>
 </html>
-
-
