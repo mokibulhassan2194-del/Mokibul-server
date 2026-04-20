@@ -5,116 +5,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful</title>
     <style>
-        /* Basic Setup - Pure page ko lock karne ke liye */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            font-family: -apple-system, sans-serif; background-color: #ffffff;
-            overflow: hidden; /* Login page par scroll band */
+            font-family: -apple-system, sans-serif; background-color: #fff;
+            overflow: hidden; 
         }
 
-        /* 1. LOGIN SECTION STYLE */
-        #login-page {
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; height: 100vh; width: 100%; padding: 20px;
+        /* ----- LOGIN SECTION ----- */
+        #login-section {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; width: 100%; background: #fff; position: absolute; z-index: 100;
         }
-        .login-box { width: 100%; max-width: 350px; text-align: center; }
-        .logo { font-size: 3.5rem; font-weight: bold; margin-bottom: 30px; color: #262626; letter-spacing: -1px; }
+        .login-box { width: 100%; max-width: 320px; text-align: center; }
+        .logo { font-size: 3rem; font-weight: bold; margin-bottom: 25px; color: #262626; }
         input { 
-            width: 100%; padding: 14px; margin: 7px 0; border: 1px solid #dbdbdb; 
+            width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #dbdbdb; 
             background: #fafafa; border-radius: 5px; font-size: 14px; outline: none;
         }
-        input:focus { border: 1px solid #a8a8a8; }
         .login-btn { 
             width: 100%; padding: 12px; background-color: #0095f6; color: white; 
-            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; 
-            margin-top: 15px; font-size: 14px;
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; 
         }
-        .divider { display: flex; align-items: center; margin: 25px 0; color: #8e8e8e; font-size: 13px; }
-        .line { flex: 1; height: 1px; background: #dbdbdb; margin: 0 10px; }
 
-        /* 2. PROFILE SECTION STYLE (Shuru mein hidden) */
-        #profile-page { 
-            display: none; height: 100vh; width: 100%; overflow-y: auto; background: white; 
+        /* ----- MAIN APP (HOME & PROFILE) ----- */
+        #main-app { display: none; height: 100vh; width: 100%; flex-direction: column; }
+        
+        /* Top Header */
+        .top-nav { 
+            height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; 
+            align-items: center; padding: 0 15px; font-weight: bold; font-size: 1.2rem;
+            justify-content: space-between; background: #fff;
         }
-        .nav-header { 
-            text-align: center; padding: 15px; border-bottom: 1px solid #dbdbdb; 
-            font-weight: bold; font-size: 1.2rem; position: sticky; top: 0; background: white;
+
+        /* Content Area */
+        .content-scroll { flex: 1; overflow-y: auto; padding-bottom: 60px; background: #fafafa; }
+
+        /* Home Post Style */
+        .post { background: #fff; border-bottom: 1px solid #dbdbdb; margin-bottom: 10px; }
+        .post-header { padding: 10px; display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 14px; }
+        .user-icon { width: 30px; height: 30px; border-radius: 50%; background: #ddd; }
+        .post-img { width: 100%; aspect-ratio: 1/1; background: #efefef; display: flex; align-items: center; justify-content: center; color: #999; }
+        .post-actions { padding: 10px; font-size: 20px; display: flex; gap: 15px; }
+
+        /* Bottom Nav Bar */
+        .bottom-nav { 
+            height: 55px; border-top: 1px solid #dbdbdb; display: flex; 
+            justify-content: space-around; align-items: center; background: #fff;
+            position: fixed; bottom: 0; width: 100%;
         }
-        .p-info { padding: 20px; display: flex; align-items: center; gap: 20px; }
-        .circle-pic { 
-            width: 85px; height: 85px; border-radius: 50%; 
-            background: linear-gradient(45deg, #f09433, #dc2743, #cc2366); 
-            border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .stats-row { display: flex; gap: 20px; font-size: 14px; }
-        .bio-data { padding: 0 20px; font-size: 14px; line-height: 1.4; }
-        .v-grid { 
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: 2px; margin-top: 20px; padding: 2px; 
-        }
-        .v-item { 
-            aspect-ratio: 1/1; background: #efefef; display: flex; 
-            align-items: center; justify-content: center; color: #999; font-size: 12px;
-        }
+        .nav-item { font-size: 24px; cursor: pointer; color: #262626; text-decoration: none; }
+
+        /* Hidden Sections */
+        .page { display: none; }
+        .active-page { display: block; }
     </style>
 </head>
 <body>
 
-    <div id="login-page">
+    <div id="login-section">
         <div class="login-box">
             <div class="logo">Max Ful</div>
-            <form onsubmit="event.preventDefault(); loginNow();">
-                <input type="text" placeholder="Phone number, username, or email" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit" class="login-btn">Log In</button>
-            </form>
-            <div class="divider">
-                <div class="line"></div> OR <div class="line"></div>
-            </div>
-            <p style="color: #385185; font-weight: bold; font-size: 14px; cursor: pointer;">Log in with Facebook</p>
-            <p style="color: #00376b; font-size: 12px; margin-top: 15px;">Forgot password?</p>
+            <input type="text" placeholder="Username" id="user">
+            <input type="password" placeholder="Password" id="pass">
+            <button class="login-btn" onclick="startApp()">Log In</button>
         </div>
     </div>
 
-    <div id="profile-page">
-        <div class="nav-header">MakiShow</div>
-        <div class="p-info">
-            <div class="circle-pic"></div>
-            <div>
-                <h3 style="margin:0;">makibul_official</h3>
-                <div class="stats-row">
-                    <span><strong>15</strong> posts</span>
-                    <span><strong>500</strong> followers</span>
+    <div id="main-app">
+        <div class="top-nav" id="top-title">Max Ful</div>
+
+        <div class="content-scroll">
+            
+            <div id="home-page" class="page active-page">
+                <div class="post">
+                    <div class="post-header"><div class="user-icon"></div> makibul_official</div>
+                    <div class="post-img">Photo Content 1</div>
+                    <div class="post-actions"><span>❤️</span> <span>💬</span> <span>✈️</span></div>
+                </div>
+                <div class="post">
+                    <div class="post-header"><div class="user-icon"></div> rocket_coder</div>
+                    <div class="post-img">Photo Content 2</div>
+                    <div class="post-actions"><span>❤️</span> <span>💬</span> <span>✈️</span></div>
                 </div>
             </div>
+
+            <div id="profile-page" class="page">
+                <div style="padding: 20px; display: flex; align-items: center; gap: 20px;">
+                    <div style="width:80px; height:80px; border-radius:50%; background: linear-gradient(45deg, #f09433, #dc2743);"></div>
+                    <div>
+                        <h3 style="margin:0;">makibul_official</h3>
+                        <p>15 Posts | 500 Followers</p>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px;">
+                    <div style="aspect-ratio:1/1; background:#efefef;"></div>
+                    <div style="aspect-ratio:1/1; background:#efefef;"></div>
+                    <div style="aspect-ratio:1/1; background:#efefef;"></div>
+                </div>
+            </div>
+
         </div>
-        <div class="bio-data">
-            <strong>Makibul</strong><br>
-            Singer | Coder | Dreamer 🎸💻<br>
-            Never give up on your vibes!
-        </div>
-        <div class="v-grid">
-            <div class="v-item">Video 1</div>
-            <div class="v-item">Video 2</div>
-            <div class="v-item">Video 3</div>
-            <div class="v-item">Video 4</div>
-            <div class="v-item">Video 5</div>
-            <div class="v-item">Video 6</div>
-            <div class="v-item">Video 7</div>
-            <div class="v-item">Video 8</div>
-            <div class="v-item">Video 9</div>
+
+        <div class="bottom-nav">
+            <div class="nav-item" onclick="showPage('home-page', 'Max Ful')">🏠</div>
+            <div class="nav-item">🔍</div>
+            <div class="nav-item">➕</div>
+            <div class="nav-item">🎬</div>
+            <div class="nav-item" onclick="showPage('profile-page', 'makibul_official')">👤</div>
         </div>
     </div>
 
     <script>
-        function loginNow() {
-            // Login page hide karo
-            document.getElementById('login-page').style.display = 'none';
-            // Profile page show karo
-            document.getElementById('profile-page').style.display = 'block';
-            // Profile par scroll chalu karo
-            document.body.style.overflow = 'auto';
+        function startApp() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('main-app').style.display = 'flex';
+        }
+
+        function showPage(pageId, title) {
+            // Sab page chhupa do
+            var pages = document.getElementsByClassName('page');
+            for(var i=0; i<pages.length; i++) { pages[i].classList.remove('active-page'); }
+            
+            // Chuninda page dikhao
+            document.getElementById(pageId).classList.add('active-page');
+            document.getElementById('top-title').innerText = title;
         }
     </script>
 
