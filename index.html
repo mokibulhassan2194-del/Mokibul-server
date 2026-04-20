@@ -17,20 +17,30 @@
 
         /* Main App Section */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; font-size: 1.2rem; background: #fff; }
-        .content { flex: 1; overflow-y: auto; padding-bottom: 60px; background: #fafafa; }
+        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; font-size: 1.2rem; background: #fff; justify-content: space-between; }
+        .content { flex: 1; overflow-y: auto; padding-bottom: 60px; background: #fff; }
+
+        /* Stories Section */
+        .stories { display: flex; overflow-x: auto; padding: 10px; gap: 10px; border-bottom: 1px solid #dbdbdb; scrollbar-width: none; }
+        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #d62976; background: #eee; }
 
         /* Post Style */
-        .post { background: #fff; border-bottom: 1px solid #dbdbdb; margin-bottom: 15px; }
-        .post-header { padding: 10px; display: flex; align-items: center; font-weight: bold; gap: 10px; }
-        .p-img { width: 100%; aspect-ratio: 1/1; background: #eee; display: flex; align-items: center; justify-content: center; color: #999; }
+        .post { background: #fff; border-bottom: 1px solid #dbdbdb; margin-bottom: 10px; }
+        .post-header { padding: 10px; display: flex; align-items: center; font-weight: bold; gap: 10px; font-size: 14px; }
+        .user-avatar { width: 30px; height: 30px; border-radius: 50%; background: #ddd; }
+        .p-img { width: 100%; aspect-ratio: 1/1; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 14px; }
         .actions { padding: 12px; font-size: 22px; display: flex; gap: 15px; }
-        .like-btn { cursor: pointer; transition: 0.2s; }
+        .like-btn { cursor: pointer; }
         .liked { color: red; }
 
         /* Profile Style */
-        #profile-page { display: none; padding: 20px; text-align: center; }
-        .profile-pic { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(45deg, orange, red); margin: 0 auto 15px; border: 3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        #profile-page { display: none; }
+        .profile-info { padding: 20px; display: flex; align-items: center; gap: 30px; }
+        .profile-pic { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, orange, red); border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        .stats { display: flex; gap: 20px; text-align: center; font-size: 13px; }
+        .bio { padding: 0 20px 20px; font-size: 14px; border-bottom: 1px solid #dbdbdb; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
+        .grid-item { aspect-ratio: 1/1; background: #eee; }
 
         /* Bottom Nav */
         .nav { height: 55px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; }
@@ -42,20 +52,34 @@
     <div id="login-section">
         <div class="login-box">
             <div class="logo">Max Ful</div>
-            <input type="text" placeholder="Username" id="u">
-            <input type="password" placeholder="Password" id="p">
+            <input type="text" placeholder="Username">
+            <input type="password" placeholder="Password">
             <button class="btn" onclick="login()">Log In</button>
         </div>
     </div>
 
     <div id="main-app">
-        <div class="header" id="h-title">Max Ful</div>
+        <div class="header" id="h-title">Max Ful <span>📷</span></div>
+        
         <div class="content">
-            
             <div id="home-page">
+                <div class="stories">
+                    <div class="story-circle"></div><div class="story-circle"></div><div class="story-circle"></div>
+                    <div class="story-circle"></div><div class="story-circle"></div><div class="story-circle"></div>
+                </div>
+
                 <div class="post">
-                    <div class="post-header">makibul_official</div>
+                    <div class="post-header"><div class="user-avatar"></div> makibul_official</div>
                     <div class="p-img">Max Ful Post 1</div>
+                    <div class="actions">
+                        <span class="like-btn" onclick="toggleLike(this)">❤️</span>
+                        <span>💬</span><span>✈️</span>
+                    </div>
+                </div>
+
+                <div class="post">
+                    <div class="post-header"><div class="user-avatar"></div> maki_hacker</div>
+                    <div class="p-img">Max Ful Post 2</div>
                     <div class="actions">
                         <span class="like-btn" onclick="toggleLike(this)">❤️</span>
                         <span>💬</span><span>✈️</span>
@@ -64,45 +88,55 @@
             </div>
 
             <div id="profile-page">
-                <div class="profile-pic"></div>
-                <h2>makibul_official</h2>
-                <p>Coder | Singer | Dreamer</p>
-                <hr>
-                <p>Yahan tumhare videos dikhenge!</p>
+                <div class="profile-info">
+                    <div class="profile-pic"></div>
+                    <div class="stats">
+                        <div><strong>15</strong><br>Posts</div>
+                        <div><strong>500</strong><br>Followers</div>
+                        <div><strong>200</strong><br>Following</div>
+                    </div>
+                </div>
+                <div class="bio">
+                    <strong>Makibul Official</strong><br>
+                    Singer | Coder | Dreamer 🎸<br>
+                    Never give up on your vibes!
+                </div>
+                <div class="grid">
+                    <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
+                    <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
+                    <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
+                </div>
             </div>
-
         </div>
 
         <div class="nav">
             <div class="nav-item" onclick="nav('home')">🏠</div>
             <div class="nav-item">🔍</div>
             <div class="nav-item">➕</div>
+            <div class="nav-item">🎬</div>
             <div class="nav-item" onclick="nav('profile')">👤</div>
         </div>
     </div>
 
     <script>
-        // Login Function
         function login() {
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
         }
 
-        // Like Button Function
         function toggleLike(btn) {
             btn.classList.toggle('liked');
         }
 
-        // Navigation Function (Switching Pages)
         function nav(page) {
             if(page === 'home') {
                 document.getElementById('home-page').style.display = 'block';
                 document.getElementById('profile-page').style.display = 'none';
-                document.getElementById('h-title').innerText = 'Max Ful';
+                document.getElementById('h-title').innerHTML = 'Max Ful <span>📷</span>';
             } else {
                 document.getElementById('home-page').style.display = 'none';
                 document.getElementById('profile-page').style.display = 'block';
-                document.getElementById('h-title').innerText = 'Profile';
+                document.getElementById('h-title').innerText = 'makibul_official';
             }
         }
     </script>
