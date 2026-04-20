@@ -6,58 +6,40 @@
     <title>Max Ful - Perfect UI</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; font-family: -apple-system, sans-serif; background: #fff; overflow: hidden; }
+        body, html { width: 100%; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #fff; overflow: hidden; }
 
-        /* Login */
+        /* Login Section */
         #login-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: fixed; width: 100%; z-index: 100; background: #fff; }
         .login-box { width: 85%; max-width: 320px; text-align: center; }
         .logo { font-size: 2.5rem; font-weight: bold; margin-bottom: 25px; font-style: italic; }
         input { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #dbdbdb; border-radius: 5px; background: #fafafa; outline: none; }
         .btn { width: 100%; padding: 12px; background: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; margin-top: 15px; cursor: pointer; }
 
-        /* Main App */
+        /* Main App Structure */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; background: #fff; font-size: 1.3rem; }
+        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; background: #fff; font-size: 1.3rem; position: sticky; top: 0; z-index: 10; }
         .content-area { flex: 1; overflow-y: auto; padding-bottom: 60px; }
 
-        /* STORY SECTION - FULL WIDTH FIX */
-        .stories { 
-            display: flex; 
-            width: 100%; 
-            padding: 10px 5px; 
-            border-bottom: 0.5px solid #dbdbdb; 
-            justify-content: space-around; /* Isse gap khatam ho jayega aur barabar fit hoga */
-        }
-        .story-wrapper { 
-            flex: 1; /* Har circle barabar jagah lega */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .story-circle { 
-            width: 72px; /* Perfect size for 4 circles */
-            height: 72px; 
-            border-radius: 50%; 
-            border: 2.5px solid #d62976; 
-            background: #f0f0f0; 
-            padding: 3px;
-            background-clip: content-box;
-        }
+        /* Stories */
+        .stories { display: flex; width: 100%; padding: 10px 5px; border-bottom: 0.5px solid #dbdbdb; overflow-x: auto; }
+        .story-wrapper { flex: 0 0 25%; display: flex; justify-content: center; align-items: center; }
+        .story-circle { width: 70px; height: 70px; border-radius: 50%; border: 2.5px solid #d62976; background: #f0f0f0; padding: 3px; background-clip: content-box; }
 
         /* Post Styles */
-        .post { border-bottom: 1px solid #f0f0f0; }
+        .post { border-bottom: 1px solid #f0f0f0; margin-bottom: 10px; }
         .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
         .p-img-box { width: 100%; aspect-ratio: 1/1; background: #fafafa; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.2rem; border-top: 0.5px solid #f0f0f0; border-bottom: 0.5px solid #f0f0f0; }
-        .actions { padding: 12px; font-size: 26px; display: flex; gap: 18px; }
+        .actions { padding: 12px; font-size: 24px; display: flex; gap: 18px; }
         .liked { color: #ed4956; }
 
         /* Pages */
-        .page { display: none; width: 100%; }
+        .page { display: none; width: 100%; height: 100%; }
         .active-page { display: block !important; }
 
-        /* Bottom Nav Fix */
-        .nav-bar { height: 50px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; }
-        .nav-icon { font-size: 26px; cursor: pointer; text-decoration: none; color: black; }
+        /* Bottom Navigation - Fixed Reels Layout */
+        .nav-bar { height: 55px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; z-index: 100; }
+        .nav-icon { font-size: 24px; cursor: pointer; text-align: center; flex: 1; transition: transform 0.1s; }
+        .nav-icon:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -75,7 +57,6 @@
         <div class="header" id="top-title">Max Ful</div>
         
         <div class="content-area">
-            
             <div id="home-page" class="page active-page">
                 <div class="stories">
                     <div class="story-wrapper"><div class="story-circle"></div></div>
@@ -95,21 +76,23 @@
                 </div>
             </div>
 
-            <div id="reels-page" class="page">
-                <div style="height: 100%; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
-                    🎬 Reels Video Here
+            <div id="search-page" class="page">
+                <div style="padding:15px;">
+                    <input type="text" placeholder="Search..." style="width:100%; padding:10px; border-radius:8px; border:1px solid #dbdbdb; background:#efefef;">
                 </div>
             </div>
 
-            <div id="search-page" class="page">
-                <div style="padding:15px;"><input type="text" placeholder="Search..." style="width:100%; padding:10px; border-radius:8px; border:1px solid #dbdbdb;"></div>
+            <div id="reels-page" class="page">
+                <div style="height: 100%; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-align: center;">
+                    🎬 Reels Section<br><span style="font-size: 0.9rem; color: #ccc;">Video Content Loading...</span>
+                </div>
             </div>
 
             <div id="profile-page" class="page">
                 <div style="padding:20px; text-align:center;">
-                    <div style="width:80px; height:80px; background:#eee; border-radius:50%; margin: 0 auto 10px;"></div>
+                    <div style="width:80px; height:80px; background:#eee; border-radius:50%; margin: 0 auto 10px; border: 1px solid #dbdbdb;"></div>
                     <strong>makibul_official</strong><br>
-                    15 Posts | 500 Followers
+                    <p style="color: #8e8e8e; font-size: 14px; margin-top: 5px;">15 Posts | 500 Followers</p>
                 </div>
             </div>
         </div>
@@ -117,7 +100,8 @@
         <div class="nav-bar">
             <div class="nav-icon" onclick="changePage('home')">🏠</div>
             <div class="nav-icon" onclick="changePage('search')">🔍</div>
-            <div class="nav-icon" onclick="changePage('reels')">🎬</div> <div class="nav-icon" onclick="changePage('profile')">👤</div>
+            <div class="nav-icon" onclick="changePage('reels')">🎬</div>
+            <div class="nav-icon" onclick="changePage('profile')">👤</div>
         </div>
     </div>
 
@@ -128,20 +112,22 @@
         }
 
         function changePage(pageName) {
+            // Hide all pages
             var pages = document.getElementsByClassName('page');
             for (var i = 0; i < pages.length; i++) {
                 pages[i].classList.remove('active-page');
             }
 
+            // Show selected page and change header text
             if(pageName === 'home') {
                 document.getElementById('home-page').classList.add('active-page');
                 document.getElementById('top-title').innerText = 'Max Ful';
-            } else if(pageName === 'reels') {
-                document.getElementById('reels-page').classList.add('active-page');
-                document.getElementById('top-title').innerText = 'Reels';
             } else if(pageName === 'search') {
                 document.getElementById('search-page').classList.add('active-page');
                 document.getElementById('top-title').innerText = 'Explore';
+            } else if(pageName === 'reels') {
+                document.getElementById('reels-page').classList.add('active-page');
+                document.getElementById('top-title').innerText = 'Reels';
             } else if(pageName === 'profile') {
                 document.getElementById('profile-page').classList.add('active-page');
                 document.getElementById('top-title').innerText = 'makibul_official';
