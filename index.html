@@ -6,48 +6,59 @@
     <title>Max Ful</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #fff; overflow: hidden; }
+        body, html { width: 100%; height: 100%; font-family: -apple-system, sans-serif; background: #fff; overflow: hidden; }
 
         /* Login Section */
         #login-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: fixed; width: 100%; z-index: 100; background: #fff; }
         .login-box { width: 85%; max-width: 320px; text-align: center; }
-        .logo { font-size: 2.5rem; font-weight: bold; margin-bottom: 25px; font-style: italic; }
+        .logo { font-size: 2.5rem; font-weight: bold; margin-bottom: 25px; }
         input { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #dbdbdb; border-radius: 5px; background: #fafafa; }
         .btn { width: 100%; padding: 12px; background: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; margin-top: 15px; cursor: pointer; }
 
-        /* Main Layout */
+        /* App Layout */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; background: #fff; position: sticky; top: 0; z-index: 10; font-size: 1.2rem; }
+        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; background: #fff; position: sticky; top: 0; z-index: 10; }
         .content-area { flex: 1; overflow-y: auto; padding-bottom: 60px; }
 
-        /* Page Toggle Logic */
-        .page { display: none; width: 100%; }
-        .active-page { display: block !important; }
+        /* STORY SECTION FIX (Space cover karne ke liye) */
+        .stories { 
+            display: flex; 
+            padding: 12px 15px; /* Side padding thoda badhaya */
+            border-bottom: 0.5px solid #dbdbdb; 
+            overflow-x: auto;
+            justify-content: space-between; /* Isse circles ke beech ka gap automatic badh jayega aur jagah nahi bachegi */
+        }
+        .stories::-webkit-scrollbar { display: none; } /* Hide scrollbar */
+        
+        .story-wrapper { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+        .story-circle { 
+            width: 68px; 
+            height: 68px; 
+            border-radius: 50%; 
+            border: 2.5px solid #d62976; 
+            background: #eee; 
+            padding: 2px;
+            background-clip: content-box;
+        }
 
-        /* Home Page Styles */
-        .stories { display: flex; overflow-x: auto; padding: 10px; gap: 12px; border-bottom: 0.5px solid #dbdbdb; }
-        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 2.5px solid #d62976; background: #eee; }
+        /* Post Styles */
         .post { border-bottom: 1px solid #f0f0f0; margin-bottom: 10px; }
         .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
         .p-img-box { width: 100%; aspect-ratio: 1/1; background: #fafafa; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.2rem; }
-        .actions { padding: 12px; font-size: 22px; display: flex; gap: 18px; }
-        .actions span { cursor: pointer; }
+        .actions { padding: 12px; font-size: 24px; display: flex; gap: 18px; }
         .liked { color: #ed4956; }
 
-        /* Profile Page Styles */
-        .profile-container { padding: 20px 15px; }
-        .profile-header-main { display: flex; align-items: center; gap: 25px; margin-bottom: 20px; }
-        .p-pic-large { width: 85px; height: 85px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 3px; }
-        .p-pic-inner { width: 100%; height: 100%; border-radius: 50%; background: #eee; border: 2px solid white; }
-        .profile-stats { font-size: 14px; line-height: 1.4; }
-        .user-name-bold { font-weight: 700; font-size: 16px; margin-bottom: 4px; display: block; }
-        .grid-layout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-        .grid-item { aspect-ratio: 1/1; background: #efefef; }
+        /* Page Control */
+        .page { display: none; width: 100%; }
+        .active-page { display: block !important; }
 
         /* Bottom Nav */
-        .nav-bar { height: 50px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; }
-        .nav-icon { font-size: 24px; cursor: pointer; opacity: 0.7; }
-        .active-icon { opacity: 1; }
+        .nav-bar { height: 55px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; }
+        .nav-icon { font-size: 26px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -55,7 +66,7 @@
     <div id="login-section">
         <div class="login-box">
             <div class="logo">Max Ful</div>
-            <input type="text" placeholder="Phone number, username, or email">
+            <input type="text" placeholder="Phone, username or email">
             <input type="password" placeholder="Password">
             <button class="btn" onclick="showApp()">Log In</button>
         </div>
@@ -63,48 +74,37 @@
 
     <div id="main-app">
         <div class="header" id="top-title">Max Ful</div>
-        
         <div class="content-area">
             
             <div id="home-page" class="page active-page">
                 <div class="stories">
-                    <div class="story-circle"></div><div class="story-circle"></div><div class="story-circle"></div><div class="story-circle"></div>
+                    <div class="story-wrapper"><div class="story-circle"></div></div>
+                    <div class="story-wrapper"><div class="story-circle"></div></div>
+                    <div class="story-wrapper"><div class="story-circle"></div></div>
+                    <div class="story-wrapper"><div class="story-circle"></div></div>
                 </div>
+
                 <div class="post">
                     <div class="post-header">makibul_official</div>
-                    <div class="p-img-box">Home Post Content</div>
+                    <div class="p-img-box">Max Ful Post Content</div>
                     <div class="actions">
                         <span onclick="this.classList.toggle('liked')">❤️</span> 
                         <span>💬</span> 
-                        <span>✈️</span> </div>
+                        <span>✈️</span>
+                    </div>
                 </div>
             </div>
 
             <div id="search-page" class="page">
-                <div style="padding:10px;"><input type="text" placeholder="Search" style="width:100%; padding:10px; border-radius:10px; border:none; background:#efefef;"></div>
-                <div class="grid-layout">
-                    <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
-                    <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
-                </div>
+                <div style="padding:10px;"><input type="text" placeholder="Search" style="width:100%; padding:8px; border-radius:8px; border:none; background:#eee;"></div>
             </div>
 
             <div id="profile-page" class="page">
-                <div class="profile-container">
-                    <div class="profile-header-main">
-                        <div class="p-pic-large"><div class="p-pic-inner"></div></div>
-                        <div class="profile-stats">
-                            <span class="user-name-bold">makibul_official</span>
-                            <strong>15</strong> Posts &nbsp; | &nbsp; <strong>500</strong> Followers
-                        </div>
-                    </div>
-                    <hr style="border: 0; border-top: 1px solid #dbdbdb; margin-bottom: 15px;">
-                    <div class="grid-layout">
-                        <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
-                        <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
-                    </div>
+                <div style="padding:20px; text-align:center;">
+                    <strong>makibul_official</strong><br>
+                    15 Posts | 500 Followers
                 </div>
             </div>
-
         </div>
 
         <div class="nav-bar">
@@ -119,24 +119,16 @@
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
         }
-
         function changePage(pageName) {
-            // Hide all pages
             var pages = document.getElementsByClassName('page');
-            for (var i = 0; i < pages.length; i++) {
-                pages[i].classList.remove('active-page');
-            }
-
-            // Show selected page & update Header
+            for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active-page'); }
             if(pageName === 'home') {
                 document.getElementById('home-page').classList.add('active-page');
                 document.getElementById('top-title').innerText = 'Max Ful';
             } else if(pageName === 'search') {
                 document.getElementById('search-page').classList.add('active-page');
-                document.getElementById('top-title').innerText = 'Explore';
             } else if(pageName === 'profile') {
                 document.getElementById('profile-page').classList.add('active-page');
-                document.getElementById('top-title').innerText = 'makibul_official';
             }
         }
     </script>
