@@ -3,67 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Ful | Profile</title>
+    <title>Max Ful | Login</title>
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: sans-serif; background-color: #fafafa; margin: 0; }
-        
-        /* ऊपर की पट्टी */
-        .nav { background: white; border-bottom: 1px solid #dbdbdb; padding: 10px; text-align: center; font-weight: bold; font-size: 20px; position: sticky; top: 0; z-index: 100; }
-        
-        /* मोबाइल के लिए कंटेनर */
-        .main-content { max-width: 500px; margin: 0 auto; background: white; min-height: 100vh; }
-
-        .profile-section { display: flex; padding: 20px; align-items: center; }
-        .p-pic { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #dc2743); padding: 3px; flex-shrink: 0; }
-        .p-pic img { width: 100%; height: 100%; border-radius: 50%; background: white; border: 2px solid white; }
-        
-        .p-stats { margin-left: 20px; display: flex; justify-content: space-around; flex-grow: 1; text-align: center; font-size: 13px; }
-        .p-stats b { display: block; font-size: 16px; }
-        
-        .bio-section { padding: 0 20px 15px; font-size: 14px; }
-        
-        .btn-group { display: flex; gap: 10px; padding: 0 20px; margin-bottom: 20px; }
-        .action-btn { flex: 1; padding: 8px; border: 1px solid #dbdbdb; border-radius: 5px; background: #efefef; font-weight: bold; font-size: 13px; cursor: pointer; border: none; }
-
-        .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #fafafa; }
-        .v-item { background: #000; aspect-ratio: 1/1; }
-        .v-item video { width: 100%; height: 100%; object-fit: cover; }
+        body { font-family: sans-serif; background-color: #fafafa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: white; border: 1px solid #dbdbdb; width: 350px; padding: 40px; text-align: center; }
+        .logo { font-size: 35px; font-weight: bold; margin-bottom: 30px; }
+        input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #dbdbdb; background: #fafafa; border-radius: 3px; }
+        .btn { width: 100%; padding: 8px; background: #0095f6; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <div class="nav">Max Ful</div>
-
-    <div class="main-content">
-        <div class="profile-section">
-            <div class="p-pic">
-                <img src="https://via.placeholder.com/150" alt="Maki">
-            </div>
-            <div class="p-stats">
-                <div><b>15</b> posts</div>
-                <div><b>500</b> followers</div>
-                <div><b>200</b> following</div>
-            </div>
-        </div>
-
-        <div class="bio-section">
-            <b>Makibul Hassan</b><br>
-            Singer | Coder | Dreamer 🎸💻<br>
-            Bhai, mehnat jaari hai!
-        </div>
-
-        <div class="btn-group">
-            <button class="action-btn">Edit Profile</button>
-            <button class="action-btn">Share Profile</button>
-        </div>
-
-        <div class="video-grid">
-            <div class="v-item"><video src="2956.mp4" controls></video></div>
-            <div class="v-item"><video src="2962.mp4" controls></video></div>
-            <div class="v-item"><video src="2957.mp4" controls></video></div>
-        </div>
+    <div class="login-card">
+        <div class="logo">Max Ful</div>
+        <form id="l-form">
+            <input type="text" placeholder="Username (maki123)" required>
+            <input type="password" placeholder="Password (bhai786)" required>
+            <button type="submit" class="btn">Log In</button>
+        </form>
     </div>
 
+    <script>
+        document.getElementById('l-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const u = document.querySelectorAll('input')[0].value;
+            const p = document.querySelectorAll('input')[1].value;
+            if(u === "maki123" && p === "bhai786") {
+                window.location.href = "profile.html"; // यहाँ ध्यान दे! यह profile.html पर भेजेगा
+            } else {
+                alert("Galat Password!");
+            }
+        });
+    </script>
 </body>
 </html>
