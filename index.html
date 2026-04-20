@@ -2,89 +2,123 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MOKIBUL VAULT v4.0</title>
-    <style>
-        body { background: #000; color: #0f0; font-family: 'Arial', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; touch-action: manipulation; }
-        #lock-screen { text-align: center; border: 3px solid #0f0; padding: 30px 15px; width: 85%; max-width: 400px; box-shadow: 0 0 25px #0f0; border-radius: 20px; }
-        h2 { font-size: 26px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
-        input { background: #111; border: 2px solid #0f0; color: #fff; padding: 15px; text-align: center; font-size: 22px; width: 85%; border-radius: 12px; margin-bottom: 20px; outline: none; }
-        button { background: #0f0; color: #000; border: none; padding: 15px; cursor: pointer; font-weight: bold; font-size: 20px; border-radius: 12px; width: 90%; transition: 0.2s; }
-        button:active { transform: scale(0.95); background: #00cc00; }
-        
-        /* Gallery Style */
-        #gallery { display: none; width: 100%; height: 100vh; background: #000; overflow-y: auto; padding: 20px 10px; box-sizing: border-box; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .grid img { width: 100%; height: 150px; object-fit: cover; border: 2px solid #0f0; border-radius: 10px; cursor: pointer; }
-        .grid img:hover { border-color: #fff; }
-        
-        #ban-message { color: #ff0000; font-size: 24px; font-weight: bold; display: none; text-align: center; line-height: 1.6; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful - Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div id="ban-message">
-        <br><br>
-        <h1>[!] ACCESS DENIED</h1>
-        <p>IP BLACKLISTED BY MOKIBUL KHAN</p>
-        <p id="timer">LOCKOUT: 10 HOURS</p>
-    </div>
-
-    <div id="lock-screen">
-        <h2>SECURITY LOCK</h2>
-        <input type="password" id="pass" placeholder="PASSWORD" readonly onfocus="this.removeAttribute('readonly');">
-        <br>
-        <button onclick="checkPass()">DECRYPT SYSTEM</button>
-        <p id="status" style="margin-top: 15px; color: yellow; font-size: 14px;"></p>
-    </div>
-
-    <div id="gallery">
-        <h2 style="color: #fff; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px;">MY COLLECTION</h2>
-        <div class="grid">
-            <img src="https://via.placeholder.com/300" onclick="viewImage(this.src)">
-            <img src="https://via.placeholder.com/300" onclick="viewImage(this.src)">
-            <img src="https://via.placeholder.com/300" onclick="viewImage(this.src)">
-            <img src="https://via.placeholder.com/300" onclick="viewImage(this.src)">
+    <div class="login-container">
+        <div class="login-box">
+            <h1 class="logo">Max Ful</h1>
+            <form id="login-form">
+                <input type="text" placeholder="Phone number, username, or email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
+            <div class="divider">
+                <div class="line"></div>
+                <p>OR</p>
+                <div class="line"></div>
+            </div>
+            <div class="fb-login">
+                <a href="#">Log in with Facebook</a>
+            </div>
+            <a href="#" class="forgot-password">Forgot password?</a>
         </div>
-        <br><br>
-        <button style="background: #ff0000; color: #fff;" onclick="location.reload()">LOCK SYSTEM</button>
+        <div class="signup-box">
+            <p>Don't have an account? <a href="#">Sign up</a></p>
+        </div>
     </div>
-
-<script>
-    const correctPass = "Mokibul@2017"; 
-    
-    function checkPass() {
-        let input = document.getElementById('pass').value;
-        let attempts = parseInt(localStorage.getItem('attempts') || 0);
-
-        if (input === correctPass) {
-            localStorage.setItem('attempts', 0);
-            document.getElementById('lock-screen').style.display = 'none';
-            document.getElementById('gallery').style.display = 'block';
-        } else {
-            attempts++;
-            localStorage.setItem('attempts', attempts);
-            document.getElementById('status').innerText = "WRONG PASSWORD! ATTEMPTS: " + attempts + "/3";
-
-            if (attempts >= 3) {
-                let banExpiry = Date.now() + (10 * 60 * 60 * 1000);
-                localStorage.setItem('banTime', banExpiry);
-                location.reload();
-            }
-        }
-    }
-
-    window.onload = function() {
-        let banTime = localStorage.getItem('banTime');
-        if (banTime && Date.now() < banTime) {
-            document.getElementById('lock-screen').style.display = 'none';
-            document.getElementById('ban-message').style.display = 'block';
-        }
-    };
-
-    function viewImage(url) {
-        alert("Opening Image: " + url + "\n(मकीबुल भाई, यहाँ तू अपनी मर्जी की फोटो देख सकता है!)");
-    }
-</script>
 </body>
 </html>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #fafafa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    width: 350px;
+}
+
+.login-box, .signup-box {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    padding: 20px 40px;
+    text-align: center;
+}
+
+.logo {
+    font-family: 'Billabong', sans-serif; /* You can use a cursive font here */
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #dbdbdb;
+    background-color: #fafafa;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background-color: #0095f6;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.line {
+    flex: 1;
+    height: 1px;
+    background-color: #dbdbdb;
+}
+
+.divider p {
+    margin: 0 10px;
+    color: #8e8e8e;
+    font-size: 0.8rem;
+}
+
+.fb-login a {
+    color: #385185;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.forgot-password {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: #00376b;
+    text-decoration: none;
+}
+
+.signup-box {
+    margin-top: 10px;
+}
+
+.signup-box a {
+    color: #0095f6;
+    text-decoration: none;
+    font-weight: bold;
+}
