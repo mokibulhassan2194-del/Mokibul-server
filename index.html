@@ -2,39 +2,121 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Ful | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Max Ful</title>
     <style>
-        body { font-family: sans-serif; background-color: #fafafa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-card { background: white; border: 1px solid #dbdbdb; width: 300px; padding: 40px; text-align: center; border-radius: 5px; }
-        .logo { font-size: 30px; font-weight: bold; margin-bottom: 20px; }
-        input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #dbdbdb; background: #fafafa; border-radius: 3px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 10px; background: #0095f6; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        /* Basic Setup - Pure page ko lock karne ke liye */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            font-family: -apple-system, sans-serif; background-color: #ffffff;
+            overflow: hidden; /* Login page par scroll band */
+        }
+
+        /* 1. LOGIN SECTION STYLE */
+        #login-page {
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; height: 100vh; width: 100%; padding: 20px;
+        }
+        .login-box { width: 100%; max-width: 350px; text-align: center; }
+        .logo { font-size: 3.5rem; font-weight: bold; margin-bottom: 30px; color: #262626; letter-spacing: -1px; }
+        input { 
+            width: 100%; padding: 14px; margin: 7px 0; border: 1px solid #dbdbdb; 
+            background: #fafafa; border-radius: 5px; font-size: 14px; outline: none;
+        }
+        input:focus { border: 1px solid #a8a8a8; }
+        .login-btn { 
+            width: 100%; padding: 12px; background-color: #0095f6; color: white; 
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; 
+            margin-top: 15px; font-size: 14px;
+        }
+        .divider { display: flex; align-items: center; margin: 25px 0; color: #8e8e8e; font-size: 13px; }
+        .line { flex: 1; height: 1px; background: #dbdbdb; margin: 0 10px; }
+
+        /* 2. PROFILE SECTION STYLE (Shuru mein hidden) */
+        #profile-page { 
+            display: none; height: 100vh; width: 100%; overflow-y: auto; background: white; 
+        }
+        .nav-header { 
+            text-align: center; padding: 15px; border-bottom: 1px solid #dbdbdb; 
+            font-weight: bold; font-size: 1.2rem; position: sticky; top: 0; background: white;
+        }
+        .p-info { padding: 20px; display: flex; align-items: center; gap: 20px; }
+        .circle-pic { 
+            width: 85px; height: 85px; border-radius: 50%; 
+            background: linear-gradient(45deg, #f09433, #dc2743, #cc2366); 
+            border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .stats-row { display: flex; gap: 20px; font-size: 14px; }
+        .bio-data { padding: 0 20px; font-size: 14px; line-height: 1.4; }
+        .v-grid { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 2px; margin-top: 20px; padding: 2px; 
+        }
+        .v-item { 
+            aspect-ratio: 1/1; background: #efefef; display: flex; 
+            align-items: center; justify-content: center; color: #999; font-size: 12px;
+        }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <div class="logo">Max Ful</div>
-        <form id="l-form">
-            <input type="text" id="user" placeholder="Username (maki123)" required>
-            <input type="password" id="pass" placeholder="Password (bhai786)" required>
-            <button type="submit" class="btn">Log In</button>
-        </form>
+
+    <div id="login-page">
+        <div class="login-box">
+            <div class="logo">Max Ful</div>
+            <form onsubmit="event.preventDefault(); loginNow();">
+                <input type="text" placeholder="Phone number, username, or email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
+            <div class="divider">
+                <div class="line"></div> OR <div class="line"></div>
+            </div>
+            <p style="color: #385185; font-weight: bold; font-size: 14px; cursor: pointer;">Log in with Facebook</p>
+            <p style="color: #00376b; font-size: 12px; margin-top: 15px;">Forgot password?</p>
+        </div>
+    </div>
+
+    <div id="profile-page">
+        <div class="nav-header">MakiShow</div>
+        <div class="p-info">
+            <div class="circle-pic"></div>
+            <div>
+                <h3 style="margin:0;">makibul_official</h3>
+                <div class="stats-row">
+                    <span><strong>15</strong> posts</span>
+                    <span><strong>500</strong> followers</span>
+                </div>
+            </div>
+        </div>
+        <div class="bio-data">
+            <strong>Makibul</strong><br>
+            Singer | Coder | Dreamer 🎸💻<br>
+            Never give up on your vibes!
+        </div>
+        <div class="v-grid">
+            <div class="v-item">Video 1</div>
+            <div class="v-item">Video 2</div>
+            <div class="v-item">Video 3</div>
+            <div class="v-item">Video 4</div>
+            <div class="v-item">Video 5</div>
+            <div class="v-item">Video 6</div>
+            <div class="v-item">Video 7</div>
+            <div class="v-item">Video 8</div>
+            <div class="v-item">Video 9</div>
+        </div>
     </div>
 
     <script>
-        document.getElementById('l-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-            
-            // Bhai dhyan dena, login hote hi profile.html khulegi
-            if(u === "maki123" && p === "bhai786") {
-                window.location.href = "profile.html"; 
-            } else {
-                alert("Galat Password! dhyan se type kar.");
-            }
-        });
+        function loginNow() {
+            // Login page hide karo
+            document.getElementById('login-page').style.display = 'none';
+            // Profile page show karo
+            document.getElementById('profile-page').style.display = 'block';
+            // Profile par scroll chalu karo
+            document.body.style.overflow = 'auto';
+        }
     </script>
+
 </body>
 </html>
