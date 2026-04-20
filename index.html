@@ -4,121 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Max Ful - Login</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: sans-serif; background-color: #fafafa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; flex-direction: column; }
+        .login-box { background: white; border: 1px solid #dbdbdb; padding: 30px; width: 300px; text-align: center; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { font-size: 2.5rem; margin-bottom: 20px; color: #262626; }
+        input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #dbdbdb; background: #fafafa; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; border: none; background-color: #0095f6; color: white; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        button:hover { background-color: #1877f2; }
+        a { text-decoration: none; color: #00376b; font-size: 0.8rem; margin-top: 15px; display: block; }
+    </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-box">
-            <h1 class="logo">Max Ful</h1>
-            <form id="login-form">
-                <input type="text" placeholder="Phone number, username, or email" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit" class="login-btn">Log In</button>
-            </form>
-            <div class="divider">
-                <div class="line"></div>
-                <p>OR</p>
-                <div class="line"></div>
-            </div>
-            <div class="fb-login">
-                <a href="#">Log in with Facebook</a>
-            </div>
-            <a href="#" class="forgot-password">Forgot password?</a>
-        </div>
-        <div class="signup-box">
-            <p>Don't have an account? <a href="#">Sign up</a></p>
-        </div>
+
+    <div class="login-box">
+        <h1>Max Ful</h1>
+        <form id="loginForm">
+            <input type="text" placeholder="Username" id="user" required>
+            <input type="password" placeholder="Password" id="pass" required>
+            <button type="button" onclick="goToHome()">Log In</button>
+        </form>
+        <a href="#">Forgot password?</a>
     </div>
+
+    <script>
+        function goToHome() {
+            // Jab user login button dabayega, wo home.html par chala jayega
+            window.location.href = "home.html";
+        }
+    </script>
+
 </body>
 </html>
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #fafafa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.login-container {
-    width: 350px;
-}
-
-.login-box, .signup-box {
-    background-color: #fff;
-    border: 1px solid #dbdbdb;
-    padding: 20px 40px;
-    text-align: center;
-}
-
-.logo {
-    font-family: 'Billabong', sans-serif; /* You can use a cursive font here */
-    font-size: 3rem;
-    margin-bottom: 20px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #dbdbdb;
-    background-color: #fafafa;
-    border-radius: 3px;
-    box-sizing: border-box;
-}
-
-.login-btn {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    background-color: #0095f6;
-    color: white;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 10px 0;
-}
-
-.divider {
-    display: flex;
-    align-items: center;
-    margin: 20px 0;
-}
-
-.line {
-    flex: 1;
-    height: 1px;
-    background-color: #dbdbdb;
-}
-
-.divider p {
-    margin: 0 10px;
-    color: #8e8e8e;
-    font-size: 0.8rem;
-}
-
-.fb-login a {
-    color: #385185;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-.forgot-password {
-    display: block;
-    margin-top: 15px;
-    font-size: 0.8rem;
-    color: #00376b;
-    text-decoration: none;
-}
-
-.signup-box {
-    margin-top: 10px;
-}
-
-.signup-box a {
-    color: #0095f6;
-    text-decoration: none;
-    font-weight: bold;
-}
