@@ -6,59 +6,35 @@
     <title>Max Ful</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            font-family: -apple-system, sans-serif; background-color: #fff;
-            overflow: hidden; 
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: sans-serif; background: #fff; overflow: hidden; }
 
-        /* ----- LOGIN SECTION ----- */
-        #login-section {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; width: 100%; background: #fff; position: absolute; z-index: 100;
-        }
-        .login-box { width: 100%; max-width: 320px; text-align: center; }
-        .logo { font-size: 3rem; font-weight: bold; margin-bottom: 25px; color: #262626; }
-        input { 
-            width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #dbdbdb; 
-            background: #fafafa; border-radius: 5px; font-size: 14px; outline: none;
-        }
-        .login-btn { 
-            width: 100%; padding: 12px; background-color: #0095f6; color: white; 
-            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; 
-        }
+        /* Login Section */
+        #login-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: absolute; width: 100%; z-index: 100; background: #fff; }
+        .login-box { width: 90%; max-width: 320px; text-align: center; }
+        .logo { font-size: 3rem; font-weight: bold; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #dbdbdb; border-radius: 5px; background: #fafafa; }
+        .btn { width: 100%; padding: 12px; background: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; margin-top: 10px; cursor: pointer; }
 
-        /* ----- MAIN APP (HOME & PROFILE) ----- */
-        #main-app { display: none; height: 100vh; width: 100%; flex-direction: column; }
-        
-        /* Top Header */
-        .top-nav { 
-            height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; 
-            align-items: center; padding: 0 15px; font-weight: bold; font-size: 1.2rem;
-            justify-content: space-between; background: #fff;
-        }
+        /* Main App Section */
+        #main-app { display: none; height: 100vh; flex-direction: column; }
+        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; font-size: 1.2rem; background: #fff; }
+        .content { flex: 1; overflow-y: auto; padding-bottom: 60px; background: #fafafa; }
 
-        /* Content Area */
-        .content-scroll { flex: 1; overflow-y: auto; padding-bottom: 60px; background: #fafafa; }
+        /* Post Style */
+        .post { background: #fff; border-bottom: 1px solid #dbdbdb; margin-bottom: 15px; }
+        .post-header { padding: 10px; display: flex; align-items: center; font-weight: bold; gap: 10px; }
+        .p-img { width: 100%; aspect-ratio: 1/1; background: #eee; display: flex; align-items: center; justify-content: center; color: #999; }
+        .actions { padding: 12px; font-size: 22px; display: flex; gap: 15px; }
+        .like-btn { cursor: pointer; transition: 0.2s; }
+        .liked { color: red; }
 
-        /* Home Post Style */
-        .post { background: #fff; border-bottom: 1px solid #dbdbdb; margin-bottom: 10px; }
-        .post-header { padding: 10px; display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 14px; }
-        .user-icon { width: 30px; height: 30px; border-radius: 50%; background: #ddd; }
-        .post-img { width: 100%; aspect-ratio: 1/1; background: #efefef; display: flex; align-items: center; justify-content: center; color: #999; }
-        .post-actions { padding: 10px; font-size: 20px; display: flex; gap: 15px; }
+        /* Profile Style */
+        #profile-page { display: none; padding: 20px; text-align: center; }
+        .profile-pic { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(45deg, orange, red); margin: 0 auto 15px; border: 3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
 
-        /* Bottom Nav Bar */
-        .bottom-nav { 
-            height: 55px; border-top: 1px solid #dbdbdb; display: flex; 
-            justify-content: space-around; align-items: center; background: #fff;
-            position: fixed; bottom: 0; width: 100%;
-        }
-        .nav-item { font-size: 24px; cursor: pointer; color: #262626; text-decoration: none; }
-
-        /* Hidden Sections */
-        .page { display: none; }
-        .active-page { display: block; }
+        /* Bottom Nav */
+        .nav { height: 55px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; }
+        .nav-item { font-size: 24px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -66,72 +42,69 @@
     <div id="login-section">
         <div class="login-box">
             <div class="logo">Max Ful</div>
-            <input type="text" placeholder="Username" id="user">
-            <input type="password" placeholder="Password" id="pass">
-            <button class="login-btn" onclick="startApp()">Log In</button>
+            <input type="text" placeholder="Username" id="u">
+            <input type="password" placeholder="Password" id="p">
+            <button class="btn" onclick="login()">Log In</button>
         </div>
     </div>
 
     <div id="main-app">
-        <div class="top-nav" id="top-title">Max Ful</div>
-
-        <div class="content-scroll">
+        <div class="header" id="h-title">Max Ful</div>
+        <div class="content">
             
-            <div id="home-page" class="page active-page">
+            <div id="home-page">
                 <div class="post">
-                    <div class="post-header"><div class="user-icon"></div> makibul_official</div>
-                    <div class="post-img">Photo Content 1</div>
-                    <div class="post-actions"><span>❤️</span> <span>💬</span> <span>✈️</span></div>
-                </div>
-                <div class="post">
-                    <div class="post-header"><div class="user-icon"></div> rocket_coder</div>
-                    <div class="post-img">Photo Content 2</div>
-                    <div class="post-actions"><span>❤️</span> <span>💬</span> <span>✈️</span></div>
+                    <div class="post-header">makibul_official</div>
+                    <div class="p-img">Max Ful Post 1</div>
+                    <div class="actions">
+                        <span class="like-btn" onclick="toggleLike(this)">❤️</span>
+                        <span>💬</span><span>✈️</span>
+                    </div>
                 </div>
             </div>
 
-            <div id="profile-page" class="page">
-                <div style="padding: 20px; display: flex; align-items: center; gap: 20px;">
-                    <div style="width:80px; height:80px; border-radius:50%; background: linear-gradient(45deg, #f09433, #dc2743);"></div>
-                    <div>
-                        <h3 style="margin:0;">makibul_official</h3>
-                        <p>15 Posts | 500 Followers</p>
-                    </div>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px;">
-                    <div style="aspect-ratio:1/1; background:#efefef;"></div>
-                    <div style="aspect-ratio:1/1; background:#efefef;"></div>
-                    <div style="aspect-ratio:1/1; background:#efefef;"></div>
-                </div>
+            <div id="profile-page">
+                <div class="profile-pic"></div>
+                <h2>makibul_official</h2>
+                <p>Coder | Singer | Dreamer</p>
+                <hr>
+                <p>Yahan tumhare videos dikhenge!</p>
             </div>
 
         </div>
 
-        <div class="bottom-nav">
-            <div class="nav-item" onclick="showPage('home-page', 'Max Ful')">🏠</div>
+        <div class="nav">
+            <div class="nav-item" onclick="nav('home')">🏠</div>
             <div class="nav-item">🔍</div>
             <div class="nav-item">➕</div>
-            <div class="nav-item">🎬</div>
-            <div class="nav-item" onclick="showPage('profile-page', 'makibul_official')">👤</div>
+            <div class="nav-item" onclick="nav('profile')">👤</div>
         </div>
     </div>
 
     <script>
-        function startApp() {
+        // Login Function
+        function login() {
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
         }
 
-        function showPage(pageId, title) {
-            // Sab page chhupa do
-            var pages = document.getElementsByClassName('page');
-            for(var i=0; i<pages.length; i++) { pages[i].classList.remove('active-page'); }
-            
-            // Chuninda page dikhao
-            document.getElementById(pageId).classList.add('active-page');
-            document.getElementById('top-title').innerText = title;
+        // Like Button Function
+        function toggleLike(btn) {
+            btn.classList.toggle('liked');
+        }
+
+        // Navigation Function (Switching Pages)
+        function nav(page) {
+            if(page === 'home') {
+                document.getElementById('home-page').style.display = 'block';
+                document.getElementById('profile-page').style.display = 'none';
+                document.getElementById('h-title').innerText = 'Max Ful';
+            } else {
+                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('profile-page').style.display = 'block';
+                document.getElementById('h-title').innerText = 'Profile';
+            }
         }
     </script>
-
 </body>
 </html>
