@@ -100,4 +100,24 @@
     </div>
 
 </body>
-</html>
+</html><script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // पेज को फालतू में रीलोड होने से रोकेगा
+
+    // यहाँ हम अपना एक "Fake" यूजरनेम और पासवर्ड सेट कर रहे हैं टेस्टिंग के लिए
+    const correctUser = "maki123";
+    const correctPass = "bhai786";
+
+    // जो यूजर ने टाइप किया वो उठाओ
+    const userInput = document.querySelectorAll('input')[0].value;
+    const passInput = document.querySelectorAll('input')[1].value;
+
+    if(userInput === correctUser && passInput === correctPass) {
+        alert("लॉगिन कामयाब! स्वागत है मकीबुल भाई।");
+        window.location.href = "index.html"; // यह तुझे प्रोफाइल पेज पर ले जाएगा
+    } else {
+        alert("गलत पासवर्ड! भाई ध्यान से टाइप कर।");
+    }
+});
+        </script>
+
