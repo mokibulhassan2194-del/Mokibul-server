@@ -3,93 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Ful | Home</title>
+    <title>Max Ful | Home Feed</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            overflow: hidden; /* ताकि पेज फालतू न हिले */
-            font-family: sans-serif;
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
+        
+        /* Top Header */
+        .header { 
+            position: sticky; top: 0; background: #000; padding: 10px 15px; 
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #222; z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: bold; color: #FFD700; }
+
+        /* Stories Section */
+        .stories { 
+            display: flex; overflow-x: auto; padding: 10px; gap: 10px; 
+            border-bottom: 1px solid #222; 
+        }
+        .story { 
+            min-width: 65px; height: 65px; border-radius: 50%; 
+            border: 2px solid #FFD700; background: #333; 
         }
 
-        /* रील जैसा वीडियो कंटेनर */
-        .reel-container {
-            width: 100%;
-            height: calc(100vh - 60px); /* नीचे की पट्टी के लिए जगह छोड़ी है */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+        /* Post Style */
+        .post { margin-top: 15px; border-bottom: 1px solid #222; }
+        .post-header { display: flex; align-items: center; padding: 10px; gap: 10px; }
+        .user-pic { width: 35px; height: 35px; background: #555; border-radius: 50%; }
+        .post-img { width: 100%; min-height: 300px; background: #111; object-fit: cover; }
+        
+        .post-footer { padding: 12px; }
+        .actions { display: flex; gap: 15px; font-size: 20px; margin-bottom: 8px; }
+        .likes { font-weight: bold; font-size: 14px; }
 
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* वीडियो पूरे स्क्रीन पर फैलेगा */
-        }
-
-        /* नीचे की नेविगेशन पट्टी */
+        /* Bottom Navigation */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-            background: #000;
-            border-top: 1px solid #333;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+            position: fixed; bottom: 0; width: 100%; height: 60px;
+            background: #000; border-top: 1px solid #333;
+            display: flex; justify-content: space-around; align-items: center;
         }
-
-        .nav-item {
-            color: #fff;
-            text-decoration: none;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        .nav-item span {
-            display: block;
-            font-size: 10px;
-            color: #FFD700;
-        }
-
-        /* वीडियो के ऊपर के बटन (Like, Comment) */
-        .side-buttons {
-            position: absolute;
-            right: 15px;
-            bottom: 100px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            color: white;
-            text-align: center;
-        }
+        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div class="reel-container">
-        <video src="3021.mp4" autoplay loop muted playsinline></video>
+    <div class="header">
+        <div class="logo">Max Ful</div>
+        <div style="font-size: 20px;">🔔 ✉️</div>
+    </div>
 
-        <div class="side-buttons">
-            <div>❤️<br><small>1.2k</small></div>
-            <div>💬<br><small>300</small></div>
-            <div>✈️<br><small>Share</small></div>
+    <div class="stories">
+        <div class="story"></div>
+        <div class="story"></div>
+        <div class="story"></div>
+        <div class="story"></div>
+        <div class="story"></div>
+    </div>
+
+    <div class="post">
+        <div class="post-header">
+            <div class="user-pic"></div>
+            <span><b>makibul_vlogs</b></span>
+        </div>
+        <video class="post-img" src="3021.mp4" autoplay muted loop></video>
+        <div class="post-footer">
+            <div class="actions">❤️ 💬 ✈️</div>
+            <div class="likes">1,250 likes</div>
+            <p><b>makibul_vlogs</b> My first 4K post! #MaxFul #NewApp</p>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <a href="home.html" class="nav-item">🏠<span>Home</span></a>
-        <a href="#" class="nav-item">🔍<span>Search</span></a>
-        <a href="#" style="font-size: 30px; color: #FFD700;">+</a>
-        <a href="#" class="nav-item">🎬<span>Reels</span></a>
-        <a href="#" class="nav-item">👤<span>Profile</span></a>
+        <a href="home.html" class="nav-item">🏠<br>Home</a>
+        <a href="search.html" class="nav-item">🔍<br>Search</a>
+        <a href="#" style="font-size: 25px; color: #FFD700;">+</a>
+        <a href="#" class="nav-item">🎬<br>Reels</a>
+        <a href="#" class="nav-item">👤<br>Profile</a>
     </div>
 
 </body>
 </html>
-
