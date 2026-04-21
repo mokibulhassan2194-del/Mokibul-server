@@ -1,1 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful | Profile</title>
+    <style>
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
+        
+        /* Top Header */
+        .profile-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px; border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100;
+        }
+        .username { font-size: 18px; font-weight: bold; }
+
+        /* Profile Info Section */
+        .profile-info { padding: 20px 15px; display: flex; align-items: center; gap: 30px; }
+        .profile-pic { 
+            width: 80px; height: 80px; border-radius: 50%; 
+            background: #333; border: 2px solid #FFD700; overflow: hidden;
+        }
+        .stats { display: flex; gap: 20px; text-align: center; flex-grow: 1; justify-content: space-around; }
+        .stat-num { font-weight: bold; font-size: 18px; display: block; }
+        .stat-label { font-size: 12px; color: #aaa; }
+
+        /* Name and Bio */
+        .profile-details { padding: 0 15px 15px 15px; }
+        .full-name { font-weight: bold; font-size: 14px; margin-bottom: 5px; }
+        .bio { font-size: 13px; line-height: 1.4; color: #eee; }
+
+        /* Edit Button */
+        .edit-btn {
+            display: block; width: calc(100% - 30px); margin: 0 auto;
+            padding: 8px; background: #262626; border: 1px solid #333;
+            color: #fff; text-align: center; border-radius: 8px;
+            text-decoration: none; font-size: 14px; font-weight: bold;
+        }
+
+        /* Post Grid */
+        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 20px; }
+        .grid-item { aspect-ratio: 1/1; background: #1a1a1a; position: relative; }
+        .grid-item video, .grid-item img { width: 100%; height: 100%; object-fit: cover; }
+        .play-icon { position: absolute; top: 5px; right: 5px; font-size: 12px; }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 60px;
+            background: #000; border-top: 1px solid #333;
+            display: flex; justify-content: space-around; align-items: center;
+        }
+        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-header">
+        <div class="username">makibul_vlogs 🔒</div>
+        <div style="font-size: 20px;">➕ ☰</div>
+    </div>
+
+    <div class="profile-info">
+        <div class="profile-pic">
+            <img src="profile-placeholder.jpg" alt="" style="width:100%; height:100%;">
+        </div>
+        <div class="stats">
+            <div><span class="stat-num">12</span><span class="stat-label">Posts</span></div>
+            <div><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
+            <div><span class="stat-num">150</span><span class="stat-label">Following</span></div>
+        </div>
+    </div>
+
+    <div class="profile-details">
+        <div class="full-name">Makibul Islam</div>
+        <div class="bio">🎬 4K Video Creator | Tech Enthusiast<br>🚀 Working on Max Ful App<br>📍 India</div>
+    </div>
+
+    <a href="#" class="edit-btn">Edit Profile</a>
+
+    <div class="post-grid">
+        <div class="grid-item">
+            <video src="3021.mp4" muted></video>
+            <span class="play-icon">▶️</span>
+        </div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item">🏠<br>Home</a>
+        <a href="search.html" class="nav-item">🔍<br>Search</a>
+        <a href="#" style="font-size: 25px; color: #FFD700;">+</a>
+        <a href="#" class="nav-item">🎬<br>Reels</a>
+        <a href="profile.html" class="nav-item">👤<br>Profile</a>
+    </div>
+
+</body>
+</html>
 
