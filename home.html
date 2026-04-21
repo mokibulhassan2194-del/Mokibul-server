@@ -22,22 +22,25 @@
         .header .logo { font-size: 26px; font-weight: 900; color: #FFD700; letter-spacing: -1px; }
         .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; }
 
-        /* Stories Section */
+        /* --- STORIES SECTION (FIXED) --- */
         .stories-container { 
             display: flex; 
             padding: 15px 10px; 
             gap: 12px; 
-            overflow-x: auto; 
+            overflow-x: auto; /* Isse scroll hoga aur sab icon dikhenge */
             border-bottom: 1px solid #111; 
         }
         .stories-container::-webkit-scrollbar { display: none; }
-        .story-wrapper { min-width: 75px; text-align: center; cursor: pointer; }
+        
+        .story-wrapper { min-width: 75px; text-align: center; cursor: pointer; flex-shrink: 0; }
+        
         .story-circle { 
             width: 65px; height: 65px; border-radius: 50%; 
             padding: 3px; border: 2px solid #FFD700; 
             position: relative; margin: 0 auto;
         }
         .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; }
+        
         .plus-icon { 
             position: absolute; bottom: 2px; right: 2px; background: #0095f6; 
             border-radius: 50%; width: 18px; height: 18px; display: flex; 
@@ -57,29 +60,19 @@
             display: flex; align-items: center; justify-content: center;
         }
         
-        /* The Animated Heart */
         .big-heart {
-            position: absolute;
-            font-size: 100px;
-            color: #ff3040;
-            opacity: 0;
-            transform: scale(0);
-            pointer-events: none;
-            z-index: 10;
+            position: absolute; font-size: 100px; color: #ff3040;
+            opacity: 0; transform: scale(0); pointer-events: none; z-index: 10;
         }
-        .animate-heart {
-            animation: heartPop 0.8s ease-out;
-        }
+        .animate-heart { animation: heartPop 0.8s ease-out; }
         @keyframes heartPop {
             0% { transform: scale(0); opacity: 0; }
             40% { transform: scale(1.2); opacity: 0.9; }
             100% { transform: scale(1); opacity: 0; }
         }
 
-        /* Post Actions (Buttons) */
         .post-actions { padding: 12px; display: flex; gap: 15px; font-size: 20px; }
         .action-btn { cursor: pointer; transition: 0.2s; }
-        .action-btn:active { transform: scale(1.2); }
 
         /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
@@ -94,33 +87,41 @@
     </div>
 
     <div class="stories-container">
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle">
-                <img src="https://via.placeholder.com/100" alt="">
-                <div class="plus-icon">+</div>
-            </div>
+        <div class="story-wrapper">
+            <div class="story-circle"><img src="https://via.placeholder.com/100"><div class="plus-icon">+</div></div>
             <div class="story-label">Your Story</div>
         </div>
+        <div class="story-wrapper">
+            <div class="story-circle"><img src="https://via.placeholder.com/101"></div>
+            <div class="story-label">rahul_vlogs</div>
         </div>
+        <div class="story-wrapper">
+            <div class="story-circle"><img src="https://via.placeholder.com/102"></div>
+            <div class="story-label">ankit_99</div>
+        </div>
+        <div class="story-wrapper">
+            <div class="story-circle"><img src="https://via.placeholder.com/103"></div>
+            <div class="story-label">priya.art</div>
+        </div>
+        <div class="story-wrapper">
+            <div class="story-circle"><img src="https://via.placeholder.com/104"></div>
+            <div class="story-label">mr_beast_fan</div>
+        </div>
+    </div>
 
     <div class="post-card">
         <div class="post-header">
             <div class="post-user-pic"></div>
             <span style="font-weight: bold; font-size: 14px;">makibul_islam</span>
         </div>
-
         <div class="post-img-container" id="post1" ondblclick="doLike('post1')">
             <span class="big-heart">❤️</span>
             <div style="color: #444;">Tap to Like (Demo Image)</div>
         </div>
-
         <div class="post-actions">
             <span class="action-btn" id="like-icon" onclick="toggleLike()">🤍</span>
             <span class="action-btn">💬</span>
             <span class="action-btn">✈️</span>
-        </div>
-        <div style="padding: 0 12px 10px; font-size: 14px; font-weight: bold;">
-            1,245 likes
         </div>
     </div>
 
@@ -137,20 +138,11 @@
             const container = document.getElementById(postId);
             const heart = container.querySelector('.big-heart');
             const likeIcon = document.getElementById('like-icon');
-
-            // 1. Dil dikhao
             heart.classList.add('animate-heart');
-            
-            // 2. Niche wala button lal karo
             likeIcon.innerHTML = '❤️';
             likeIcon.style.color = '#ff3040';
-
-            // 3. Animation ke baad dil gayab karo
-            setTimeout(() => {
-                heart.classList.remove('animate-heart');
-            }, 800);
+            setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
-
         function toggleLike() {
             const likeIcon = document.getElementById('like-icon');
             if (likeIcon.innerHTML === '🤍') {
@@ -162,6 +154,5 @@
             }
         }
     </script>
-
 </body>
 </html>
