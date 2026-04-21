@@ -1,45 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Ful | Join Now</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful | Sign Up</title>
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .signup-container { width: 85%; max-width: 400px; text-align: center; }
-        .logo { font-size: 45px; font-weight: bold; color: #FFD700; margin-bottom: 30px; }
-        input { 
-            width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #333; 
-            background: #121212; color: #fff; outline: none; box-sizing: border-box;
-        }
-        .signup-btn { 
-            width: 100%; padding: 12px; margin-top: 15px; border-radius: 8px; border: none; 
-            background: #FFD700; color: #000; font-weight: bold; cursor: pointer; font-size: 16px;
-        }
-        .footer { margin-top: 25px; font-size: 14px; color: #aaa; }
-        .footer a { color: #FFD700; text-decoration: none; font-weight: bold; }
+        body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { width: 85%; text-align: center; }
+        .logo { font-size: 40px; font-weight: bold; color: #FFD700; margin-bottom: 10px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #121212; border: 1px solid #333; color: #fff; border-radius: 5px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background: #FFD700; color: #000; border: none; font-weight: bold; border-radius: 5px; margin-top: 10px; cursor: pointer; text-decoration: none; display: inline-block; }
     </style>
 </head>
 <body>
-
-    <div class="signup-container">
+    <div class="box">
         <div class="logo">Max Ful</div>
-        <p style="color: #aaa; margin-bottom: 20px;">Create an account to see photos and videos from your friends.</p>
-        
+        <p style="color: #aaa;">Sign up to see photos and videos.</p>
         <input type="text" placeholder="Full Name">
         <input type="text" placeholder="Username">
-        <input type="text" placeholder="Mobile Number or Email">
         <input type="password" placeholder="Password">
-        
-        <a href="home.html" style="text-decoration: none;">
-            <button class="signup-btn">Sign Up</button>
-        </a>
-
-        <div class="footer">
-            Already have an account? <a href="index.html">Log In</a>
-        </div>
+        <a href="home.html" class="btn">Sign Up</a>
+        <p style="margin-top: 20px;">Already have an account? <a href="index.html" style="color: #FFD700; text-decoration: none;">Log In</a></p>
     </div>
-
 </body>
 </html>
-
