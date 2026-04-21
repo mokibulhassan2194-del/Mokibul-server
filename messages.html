@@ -1,1 +1,62 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful | Messages</title>
+    <style>
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; }
+        .header { 
+            display: flex; align-items: center; padding: 15px; 
+            border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; 
+        }
+        .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 20px; }
+        .search-box { 
+            background: #1a1a1a; margin: 10px 15px; padding: 12px; 
+            border-radius: 10px; color: #888; font-size: 14px; text-align: left; 
+        }
+        
+        .chat-list { padding-top: 10px; }
+        .chat-item { 
+            display: flex; align-items: center; padding: 12px 15px; 
+            text-decoration: none; color: #fff; 
+        }
+        .profile-pic { 
+            width: 55px; height: 55px; border-radius: 50%; 
+            background: #333; margin-right: 15px; border: 1.5px solid #FFD700; 
+        }
+        .chat-info { flex: 1; }
+        .name { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
+        .last-msg { color: #aaa; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="home.html" class="back-btn">←</a>
+        <span style="font-size: 18px; font-weight: bold;">Messages</span>
+    </div>
+
+    <div class="search-box">🔍 Search</div>
+
+    <div class="chat-list">
+        <a href="#" class="chat-item">
+            <div class="profile-pic"></div>
+            <div class="chat-info">
+                <div class="name">Sahil Khan</div>
+                <div class="last-msg">Bhai app ekdam kadak hai! · 2h</div>
+            </div>
+        </a>
+
+        <a href="#" class="chat-item">
+            <div class="profile-pic"></div>
+            <div class="chat-info">
+                <div class="name">Team Max Ful</div>
+                <div class="last-msg">Welcome to your new app! · 5h</div>
+            </div>
+        </a>
+    </div>
+
+</body>
+</html>
