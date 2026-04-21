@@ -1,1 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful | Reset Password</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 85%;
+            max-width: 400px;
+            text-align: center;
+            background: #111;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+        h2 { color: #FFD700; margin-bottom: 10px; }
+        p { color: #aaa; font-size: 14px; margin-bottom: 25px; }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid #444;
+            background: #000;
+            color: #fff;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: #FFD700;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* OTP वाले डिब्बे के लिए खास स्टाइल */
+        .otp-section { display: none; margin-top: 20px; }
+        
+        .back-to-login {
+            display: block;
+            margin-top: 20px;
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Forgot Password?</h2>
+    <p id="instruction">Enter your email or phone to receive a 4-digit OTP.</p>
+
+    <div id="step1">
+        <input type="text" id="userInput" placeholder="Email or Phone Number">
+        <button class="btn" onclick="showOTP()">Send OTP</button>
+    </div>
+
+    <div id="step2" class="otp-section">
+        <input type="number" placeholder="X - X - X - X" maxlength="4">
+        <button class="btn" onclick="alert('Password Reset Link Sent!')">Verify OTP</button>
+    </div>
+
+    <a href="index.html" class="back-to-login">Back to Login</a>
+</div>
+
+<script>
+    function showOTP() {
+        var input = document.getElementById('userInput').value;
+        if(input == "") {
+            alert("Please enter detail first!");
+        } else {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+            document.getElementById('instruction').innerHTML = "We sent an OTP to <b>" + input + "</b>";
+        }
+    }
+</script>
+
+</body>
+</html>
 
