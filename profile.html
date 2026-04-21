@@ -13,27 +13,38 @@
             padding: 15px; border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100;
         }
 
-        /* --- BLUE TICK STYLE --- */
         .username-container { display: flex; align-items: center; gap: 5px; }
         .username { font-size: 18px; font-weight: bold; }
         .blue-tick {
             width: 16px; height: 16px;
-            background-color: #0095f6; /* Instagram Blue */
+            background-color: #0095f6;
             color: white; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 10px; font-weight: bold;
         }
-        /* ------------------------ */
 
-        .header-icons a { text-decoration: none; color: #fff; margin-left: 15px; font-size: 20px; cursor: pointer; }
+        .header-icons span, .header-icons a { text-decoration: none; color: #fff; margin-left: 15px; font-size: 20px; cursor: pointer; }
 
         /* Profile Info Section */
-        .profile-info { padding: 20px 15px; display: flex; align-items: center; gap: 30px; }
-        .profile-pic { 
-            width: 80px; height: 80px; border-radius: 50%; 
-            background: #333; border: 2px solid #FFD700; overflow: hidden;
+        .profile-info { padding: 20px 15px; display: flex; align-items: center; gap: 20px; }
+        
+        /* --- FIXED PROFILE PIC WITH STORY LINK --- */
+        .profile-pic-container {
+            width: 85px; height: 85px; 
+            border-radius: 50%; 
+            border: 2.5px solid #FFD700; /* Golden Story Border */
+            padding: 3px; 
+            cursor: pointer; /* Hath ka nishan dikhega */
+            flex-shrink: 0;
         }
-        .stats { display: flex; gap: 20px; text-align: center; flex-grow: 1; justify-content: space-around; }
+        .profile-pic-container img { 
+            width: 100%; height: 100%; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            background: #333;
+        }
+
+        .stats { display: flex; gap: 10px; text-align: center; flex-grow: 1; justify-content: space-around; }
         .stat-num { font-weight: bold; font-size: 18px; display: block; }
         .stat-label { font-size: 12px; color: #aaa; }
 
@@ -62,7 +73,7 @@
             background: #000; border-top: 1px solid #333;
             display: flex; justify-content: space-around; align-items: center; z-index: 1000;
         }
-        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 12px; }
+        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 22px; }
     </style>
 </head>
 <body>
@@ -79,9 +90,10 @@
     </div>
 
     <div class="profile-info">
-        <div class="profile-pic">
-            <img src="profile-placeholder.jpg" alt="" style="width:100%; height:100%;">
+        <div class="profile-pic-container" onclick="location.href='view-story.html'">
+            <img src="profile-placeholder.jpg" alt="Profile">
         </div>
+        
         <div class="stats">
             <div><span class="stat-num">12</span><span class="stat-label">Posts</span></div>
             <div><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
@@ -109,11 +121,11 @@
     </div>
 
     <div class="bottom-nav">
-        <a href="home.html" class="nav-item">🏠<br>Home</a>
-        <a href="search.html" class="nav-item">🔍<br>Search</a>
-        <a href="#" style="font-size: 25px; color: #FFD700;">+</a>
-        <a href="reels.html" class="nav-item">🎬<br>Reels</a>
-        <a href="profile.html" class="nav-item">👤<br>Profile</a>
+        <a href="home.html" class="nav-item">🏠</a>
+        <a href="search.html" class="nav-item">🔍</a>
+        <a href="#" style="font-size: 30px; color: #FFD700;">+</a>
+        <a href="reels.html" class="nav-item">🎬</a>
+        <a href="profile.html" class="nav-item">👤</a>
     </div>
 
 </body>
