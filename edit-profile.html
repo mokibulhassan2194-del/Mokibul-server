@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful | Edit Profile</title>
+    <style>
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; }
+        
+        /* Header */
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px; border-bottom: 1px solid #222;
+        }
+        .header a, .header span { font-size: 16px; text-decoration: none; color: #fff; cursor: pointer; }
+        .done-btn { color: #FFD700 !important; font-weight: bold; }
+
+        /* Profile Photo Edit */
+        .photo-section { text-align: center; padding: 25px 0; }
+        .profile-pic {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: #333; margin-bottom: 10px; border: 2px solid #222;
+        }
+        .change-photo { color: #3897f0; font-size: 14px; font-weight: bold; display: block; cursor: pointer; }
+
+        /* Input Fields */
+        .edit-form { padding: 0 15px; }
+        .input-group { margin-bottom: 20px; }
+        .label { font-size: 12px; color: #aaa; margin-bottom: 5px; display: block; }
+        input, textarea {
+            width: 100%; background: none; border: none; 
+            border-bottom: 1px solid #333; color: #fff; padding: 8px 0;
+            font-size: 16px; outline: none; box-sizing: border-box;
+        }
+        input:focus { border-bottom: 1px solid #FFD700; }
+
+        /* Switch Style (For Privacy) */
+        .privacy-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 0; border-top: 1px solid #222; margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="profile.html">Cancel</a>
+        <span style="font-weight: bold;">Edit Profile</span>
+        <a href="profile.html" class="done-btn">Done</a>
+    </div>
+
+    <div class="photo-section">
+        <div style="display: inline-block;">
+            <img src="profile-placeholder.jpg" class="profile-pic" alt="">
+        </div>
+        <span class="change-photo">Change profile photo</span>
+    </div>
+
+    <div class="edit-form">
+        <div class="input-group">
+            <span class="label">Name</span>
+            <input type="text" value="Makibul Islam">
+        </div>
+
+        <div class="input-group">
+            <span class="label">Username</span>
+            <input type="text" value="makibul_vlogs">
+        </div>
+
+        <div class="input-group">
+            <span class="label">Bio</span>
+            <textarea rows="2">🎬 4K Video Creator | Tech Enthusiast</textarea>
+        </div>
+
+        <div class="input-group">
+            <span class="label">Links</span>
+            <input type="text" placeholder="Add link">
+        </div>
+
+        <div class="privacy-row">
+            <span>Private Account</span>
+            <input type="checkbox" style="width: 20px; border: none;">
+        </div>
+    </div>
+
+</body>
+</html>
 
