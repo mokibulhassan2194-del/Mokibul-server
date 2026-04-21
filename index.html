@@ -1,91 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Max Ful | Login</title>
     <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-box {
-            width: 85%;
-            max-width: 350px;
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 45px;
-            color: #FFD700;
-            margin-bottom: 40px;
-            font-family: 'Arial Black', sans-serif;
-        }
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            border: 1px solid #333;
-            background-color: #121212;
-            color: #fff;
-            box-sizing: border-box;
-        }
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            background-color: #FFD700;
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .forgot-link {
-            display: block;
-            margin-top: 20px;
-            color: #aaa;
-            text-decoration: none;
-            font-size: 13px;
-        }
-        .divider {
-            margin: 40px 0 20px 0;
-            border-top: 1px solid #333;
-        }
-        .create-acc-btn {
-            border: 1px solid #FFD700;
-            color: #FFD700;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-        }
+        body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { width: 85%; text-align: center; }
+        .logo { font-size: 40px; font-weight: bold; color: #FFD700; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #121212; border: 1px solid #333; color: #fff; border-radius: 5px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background: #FFD700; border: none; font-weight: bold; border-radius: 5px; margin-top: 10px; cursor: pointer; text-decoration: none; display: inline-block; color: #000; }
+        .create-btn { background: none; color: #FFD700; border: 1px solid #FFD700; margin-top: 20px; }
     </style>
 </head>
 <body>
-
-    <div class="login-box">
-        <h1>Max Ful</h1>
-
-        <input type="text" placeholder="Phone, email or username">
+    <div class="box">
+        <div class="logo">Max Ful</div>
+        <input type="text" placeholder="Phone number, username, or email">
         <input type="password" placeholder="Password">
-
-        <button class="login-btn" onclick="location.href='home.html'">Log In</button>
-
-        <a href="forgot.html" class="forgot-link">Forgot password?</a>
-
-        <div class="divider"></div>
-
-        <a href="#" class="create-acc-btn">Create New Account</a>
+        <a href="home.html" class="btn">Log In</a>
+        <hr style="border: 0.5px solid #333; margin: 20px 0;">
+        <a href="signup.html" class="btn create-btn">Create New Account</a>
     </div>
-
 </body>
 </html>
