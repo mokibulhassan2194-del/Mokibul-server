@@ -1,1 +1,106 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful | Reels</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
+        
+        /* Reels Container for Swiping */
+        .reels-wrapper {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+
+        .reel-video {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Right Side Buttons */
+        .side-actions {
+            position: absolute; right: 15px; bottom: 120px;
+            display: flex; flex-direction: column; gap: 20px; align-items: center;
+        }
+        .action-btn { text-align: center; color: white; font-size: 25px; cursor: pointer; }
+        .action-btn span { display: block; font-size: 12px; margin-top: 4px; }
+
+        /* Music Disk Rotation */
+        .music-disk {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(45deg, #333, #FFD700);
+            border: 2px solid #fff;
+            animation: rotate 3s linear infinite;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Bottom Details */
+        .reel-details {
+            position: absolute; left: 15px; bottom: 80px; color: white;
+        }
+        .reel-details b { font-size: 16px; display: block; margin-bottom: 5px; }
+        .reel-details p { font-size: 14px; margin: 0; opacity: 0.9; }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 60px;
+            background: rgba(0,0,0,0.8); border-top: 1px solid #333;
+            display: flex; justify-content: space-around; align-items: center; z-index: 100;
+        }
+        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="reels-wrapper">
+        <div class="reel-video">
+            <video src="3021.mp4" autoplay loop muted playsinline></video>
+            
+            <div class="side-actions">
+                <div class="action-btn">❤️<span>1.5k</span></div>
+                <div class="action-btn">💬<span>450</span></div>
+                <div class="action-btn">✈️<span>Share</span></div>
+                <div class="music-disk"></div>
+            </div>
+
+            <div class="reel-details">
+                <b>@makibul_vlogs</b>
+                <p>Max Ful app testing... 🔥 #4K #Reels</p>
+            </div>
+        </div>
+
+        <div class="reel-video">
+            <video src="3021.mp4" loop muted playsinline></video>
+            <div class="side-actions">
+                <div class="action-btn">❤️<span>800</span></div>
+                <div class="action-btn">💬<span>120</span></div>
+                <div class="action-btn">✈️<span>Share</span></div>
+                <div class="music-disk"></div>
+            </div>
+            <div class="reel-details">
+                <b>@makibul_vlogs</b>
+                <p>Working on the swipe feature! 🚀</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item">🏠<br>Home</a>
+        <a href="search.html" class="nav-item">🔍<br>Search</a>
+        <a href="#" style="font-size: 25px; color: #FFD700;">+</a>
+        <a href="reels.html" class="nav-item">🎬<br>Reels</a>
+        <a href="profile.html" class="nav-item">👤<br>Profile</a>
+    </div>
+
+</body>
+</html>
