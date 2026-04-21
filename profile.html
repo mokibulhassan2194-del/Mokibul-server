@@ -12,7 +12,19 @@
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px; border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100;
         }
+
+        /* --- BLUE TICK STYLE --- */
+        .username-container { display: flex; align-items: center; gap: 5px; }
         .username { font-size: 18px; font-weight: bold; }
+        .blue-tick {
+            width: 16px; height: 16px;
+            background-color: #0095f6; /* Instagram Blue */
+            color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: bold;
+        }
+        /* ------------------------ */
+
         .header-icons a { text-decoration: none; color: #fff; margin-left: 15px; font-size: 20px; cursor: pointer; }
 
         /* Profile Info Section */
@@ -56,7 +68,10 @@
 <body>
 
     <div class="profile-header">
-        <div class="username">makibul_vlogs 🔒</div>
+        <div class="username-container">
+            <div class="username">makibul_vlogs</div>
+            <div class="blue-tick" title="Verified">✓</div>
+        </div>
         <div class="header-icons">
             <span>➕</span>
             <a href="settings.html">☰</a>
