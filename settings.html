@@ -10,22 +10,21 @@
         /* Header */
         .header {
             display: flex; align-items: center; padding: 15px;
-            border-bottom: 1px solid #222; position: sticky; top: 0; background: #000;
+            border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100;
         }
         .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 20px; }
         
-        .section-title { padding: 20px 15px 10px; font-size: 14px; color: #aaa; font-weight: bold; }
+        .section-title { padding: 20px 15px 10px; font-size: 14px; color: #aaa; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Menu Items */
         .menu-item {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px; border-bottom: 1px solid #111;
-            text-decoration: none; color: #fff; transition: background 0.3s;
+            text-decoration: none; color: #fff;
         }
-        .menu-item:active { background: #222; }
         .item-content { display: flex; align-items: center; gap: 15px; }
-        .icon { font-size: 20px; }
-        .arrow { color: #555; font-weight: bold; }
+        .icon { font-size: 20px; width: 25px; text-align: center; }
+        .arrow { color: #555; font-size: 18px; }
     </style>
 </head>
 <body>
@@ -35,42 +34,47 @@
         <span style="font-size: 18px; font-weight: bold;">Settings and activity</span>
     </div>
 
-    <div class="section-title">How you use Max Ful</div>
-
+    <div class="section-title">Account Settings</div>
     <a href="edit-profile.html" class="menu-item">
-        <div class="item-content">
-            <span class="icon">👤</span>
-            <span>Edit Profile</span>
-        </div>
+        <div class="item-content"><span class="icon">👤</span><span>Edit Profile</span></div>
         <span class="arrow">&gt;</span>
     </a>
 
-    <div class="section-title">Who can see your content</div>
-
+    <div class="section-title">Privacy & Safety</div>
     <a href="privacy.html" class="menu-item">
-        <div class="item-content">
-            <span class="icon">🔒</span>
-            <span>Account Privacy</span>
-        </div>
+        <div class="item-content"><span class="icon">🔒</span><span>Account Privacy</span></div>
         <span class="arrow">&gt;</span>
     </a>
-
     <a href="blocked.html" class="menu-item">
-        <div class="item-content">
-            <span class="icon">🚫</span>
-            <span>Blocked Accounts</span>
-        </div>
+        <div class="item-content"><span class="icon">🚫</span><span>Blocked Accounts</span></div>
+        <span class="arrow">&gt;</span>
+    </a>
+    <a href="#" class="menu-item">
+        <div class="item-content"><span class="icon">👁️</span><span>Hide Story and Live</span></div>
         <span class="arrow">&gt;</span>
     </a>
 
-    <div class="section-title">Login</div>
-
-    <a href="login.html" class="menu-item">
-        <div class="item-content">
-            <span class="icon" style="color: #ff4d4d;">🚪</span>
-            <span style="color: #ff4d4d;">Log Out</span>
-        </div>
+    <div class="section-title">Preferences</div>
+    <a href="#" class="menu-item">
+        <div class="item-content"><span class="icon">🔔</span><span>Notifications</span></div>
+        <span class="arrow">&gt;</span>
     </a>
+    <a href="#" class="menu-item">
+        <div class="item-content"><span class="icon">🌙</span><span>Dark Mode</span></div>
+        <span class="arrow">&gt;</span>
+    </a>
+
+    <div class="section-title">Support</div>
+    <a href="#" class="menu-item">
+        <div class="item-content"><span class="icon">🎧</span><span>Help Center</span></div>
+        <span class="arrow">&gt;</span>
+    </a>
+
+    <div style="margin-top: 30px;">
+        <a href="login.html" class="menu-item">
+            <div class="item-content"><span class="icon">🚪</span><span style="color: #ff4d4d;">Log Out</span></div>
+        </a>
+    </div>
 
 </body>
 </html>
