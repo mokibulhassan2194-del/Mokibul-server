@@ -3,43 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Max Ful - Perfect UI</title>
+    <title>Max Ful - Complete UI</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #fff; overflow: hidden; }
+        body, html { width: 100%; height: 100%; font-family: -apple-system, sans-serif; background: #fff; overflow: hidden; }
 
-        /* Login Section */
-        #login-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: fixed; width: 100%; z-index: 100; background: #fff; }
-        .login-box { width: 85%; max-width: 320px; text-align: center; }
-        .logo { font-size: 2.5rem; font-weight: bold; margin-bottom: 25px; font-style: italic; }
-        input { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #dbdbdb; border-radius: 5px; background: #fafafa; outline: none; }
-        .btn { width: 100%; padding: 12px; background: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        /* --- LOGIN PAGE --- */
+        #login-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: fixed; width: 100%; z-index: 100; background: #fff; padding: 20px; }
+        .login-box { width: 100%; max-width: 350px; text-align: center; }
+        .logo { font-size: 3rem; font-weight: bold; margin-bottom: 30px; font-style: italic; }
+        .login-box input { width: 100%; padding: 14px; margin: 5px 0; border: 1px solid #dbdbdb; border-radius: 5px; background: #fafafa; font-size: 14px; outline: none; }
+        .btn { width: 100%; padding: 12px; background: #0095f6; color: #fff; border: none; border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        .forgot-link { display: block; margin-top: 15px; color: #00376b; font-size: 12px; text-decoration: none; }
+        .signup-box { margin-top: 50px; padding: 20px; border-top: 1px solid #dbdbdb; width: 100%; max-width: 350px; text-align: center; font-size: 14px; }
+        .signup-box a { color: #0095f6; text-decoration: none; font-weight: bold; }
 
-        /* Main App Structure */
+        /* --- MAIN APP --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; background: #fff; font-size: 1.3rem; position: sticky; top: 0; z-index: 10; }
+        .header { height: 50px; border-bottom: 1px solid #dbdbdb; display: flex; align-items: center; padding: 0 15px; font-weight: bold; background: #fff; font-size: 1.3rem; }
         .content-area { flex: 1; overflow-y: auto; padding-bottom: 60px; }
 
         /* Stories */
-        .stories { display: flex; width: 100%; padding: 10px 5px; border-bottom: 0.5px solid #dbdbdb; overflow-x: auto; }
-        .story-wrapper { flex: 0 0 25%; display: flex; justify-content: center; align-items: center; }
-        .story-circle { width: 70px; height: 70px; border-radius: 50%; border: 2.5px solid #d62976; background: #f0f0f0; padding: 3px; background-clip: content-box; }
+        .stories { display: flex; width: 100%; padding: 10px 5px; border-bottom: 0.5px solid #dbdbdb; justify-content: space-around; }
+        .story-wrapper { flex: 1; display: flex; justify-content: center; }
+        .story-circle { width: 72px; height: 72px; border-radius: 50%; border: 2.5px solid #d62976; background: #f0f0f0; padding: 3px; background-clip: content-box; }
 
-        /* Post Styles */
-        .post { border-bottom: 1px solid #f0f0f0; margin-bottom: 10px; }
+        /* Post */
         .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
-        .p-img-box { width: 100%; aspect-ratio: 1/1; background: #fafafa; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.2rem; border-top: 0.5px solid #f0f0f0; border-bottom: 0.5px solid #f0f0f0; }
-        .actions { padding: 12px; font-size: 24px; display: flex; gap: 18px; }
+        .p-img-box { width: 100%; aspect-ratio: 1/1; background: #fafafa; display: flex; align-items: center; justify-content: center; color: #999; border-top: 0.5px solid #f0f0f0; border-bottom: 0.5px solid #f0f0f0; }
+        .actions { padding: 12px; font-size: 26px; display: flex; gap: 18px; }
         .liked { color: #ed4956; }
 
-        /* Pages */
-        .page { display: none; width: 100%; height: 100%; }
-        .active-page { display: block !important; }
+        /* Reels UI */
+        #reels-page { background: #000; height: 100%; position: relative; color: white; }
+        .reels-overlay { position: absolute; right: 10px; bottom: 80px; display: flex; flex-direction: column; gap: 20px; align-items: center; }
+        .reels-info { position: absolute; left: 15px; bottom: 80px; }
 
-        /* Bottom Navigation - Fixed Reels Layout */
-        .nav-bar { height: 55px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; z-index: 100; }
-        .nav-icon { font-size: 24px; cursor: pointer; text-align: center; flex: 1; transition: transform 0.1s; }
-        .nav-icon:active { transform: scale(0.9); }
+        /* Profile UI */
+        .profile-container { padding: 20px 15px; text-align: center; }
+        .p-pic-main { width: 85px; height: 85px; border-radius: 50%; background: #eee; margin: 0 auto 15px; border: 1px solid #dbdbdb; }
+
+        /* Nav */
+        .nav-bar { height: 50px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; position: fixed; bottom: 0; width: 100%; z-index: 10; }
+        .nav-icon { font-size: 26px; cursor: pointer; color: black; }
+        .page { display: none; width: 100%; }
+        .active-page { display: block !important; }
     </style>
 </head>
 <body>
@@ -47,16 +55,20 @@
     <div id="login-section">
         <div class="login-box">
             <div class="logo">Max Ful</div>
-            <input type="text" placeholder="Username">
+            <input type="text" placeholder="Phone number, username, or email">
             <input type="password" placeholder="Password">
             <button class="btn" onclick="showApp()">Log In</button>
+            <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+        <div class="signup-box">
+            Don't have an account? <a href="#">Sign up</a>
         </div>
     </div>
 
     <div id="main-app">
         <div class="header" id="top-title">Max Ful</div>
-        
         <div class="content-area">
+            
             <div id="home-page" class="page active-page">
                 <div class="stories">
                     <div class="story-wrapper"><div class="story-circle"></div></div>
@@ -64,37 +76,35 @@
                     <div class="story-wrapper"><div class="story-circle"></div></div>
                     <div class="story-wrapper"><div class="story-circle"></div></div>
                 </div>
-
                 <div class="post">
                     <div class="post-header">makibul_official</div>
-                    <div class="p-img-box">Max Ful Post Content</div>
+                    <div class="p-img-box">Home Feed Content</div>
                     <div class="actions">
-                        <span onclick="this.classList.toggle('liked')">❤️</span> 
-                        <span>💬</span> 
-                        <span>✈️</span>
+                        <span onclick="this.classList.toggle('liked')">❤️</span> <span>💬</span> <span>✈️</span>
                     </div>
                 </div>
             </div>
 
-            <div id="search-page" class="page">
-                <div style="padding:15px;">
-                    <input type="text" placeholder="Search..." style="width:100%; padding:10px; border-radius:8px; border:1px solid #dbdbdb; background:#efefef;">
+            <div id="reels-page" class="page">
+                <div style="height:100%; display:flex; align-items:center; justify-content:center;">🎬 Reels Playing...</div>
+                <div class="reels-overlay">
+                    <span>❤️</span><span>💬</span><span>✈️</span>
                 </div>
+                <div class="reels-info"><strong>makibul_official</strong><br>First Reel! #viral</div>
             </div>
 
-            <div id="reels-page" class="page">
-                <div style="height: 100%; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-align: center;">
-                    🎬 Reels Section<br><span style="font-size: 0.9rem; color: #ccc;">Video Content Loading...</span>
-                </div>
+            <div id="search-page" class="page">
+                <div style="padding:15px;"><input type="text" placeholder="Search..." style="width:100%; padding:10px; border-radius:8px; border:1px solid #dbdbdb;"></div>
             </div>
 
             <div id="profile-page" class="page">
-                <div style="padding:20px; text-align:center;">
-                    <div style="width:80px; height:80px; background:#eee; border-radius:50%; margin: 0 auto 10px; border: 1px solid #dbdbdb;"></div>
-                    <strong>makibul_official</strong><br>
-                    <p style="color: #8e8e8e; font-size: 14px; margin-top: 5px;">15 Posts | 500 Followers</p>
+                <div class="profile-container">
+                    <div class="p-pic-main"></div>
+                    <strong style="font-size: 1.2rem;">makibul_official</strong><br>
+                    <p style="margin-top:10px;">15 Posts | 500 Followers</p>
                 </div>
             </div>
+
         </div>
 
         <div class="nav-bar">
@@ -110,24 +120,18 @@
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
         }
-
         function changePage(pageName) {
-            // Hide all pages
             var pages = document.getElementsByClassName('page');
-            for (var i = 0; i < pages.length; i++) {
-                pages[i].classList.remove('active-page');
-            }
-
-            // Show selected page and change header text
+            for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active-page'); }
             if(pageName === 'home') {
                 document.getElementById('home-page').classList.add('active-page');
                 document.getElementById('top-title').innerText = 'Max Ful';
-            } else if(pageName === 'search') {
-                document.getElementById('search-page').classList.add('active-page');
-                document.getElementById('top-title').innerText = 'Explore';
             } else if(pageName === 'reels') {
                 document.getElementById('reels-page').classList.add('active-page');
                 document.getElementById('top-title').innerText = 'Reels';
+            } else if(pageName === 'search') {
+                document.getElementById('search-page').classList.add('active-page');
+                document.getElementById('top-title').innerText = 'Explore';
             } else if(pageName === 'profile') {
                 document.getElementById('profile-page').classList.add('active-page');
                 document.getElementById('top-title').innerText = 'makibul_official';
