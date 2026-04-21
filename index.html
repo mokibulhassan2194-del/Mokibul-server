@@ -1,25 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Max Ful | Login</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { width: 85%; text-align: center; }
-        .logo { font-size: 40px; font-weight: bold; color: #FFD700; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #121212; border: 1px solid #333; color: #fff; border-radius: 5px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 12px; background: #FFD700; border: none; font-weight: bold; border-radius: 5px; margin-top: 10px; cursor: pointer; text-decoration: none; display: inline-block; color: #000; }
-        .create-btn { background: none; color: #FFD700; border: 1px solid #FFD700; margin-top: 20px; }
+        body { 
+            background-color: #000; color: #fff; font-family: sans-serif; 
+            margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; 
+        }
+        
+        /* Logo - Ise ab bada aur solid banaya hai */
+        .logo { 
+            font-size: 60px; font-weight: 900; color: #FFD700; margin-bottom: 50px; 
+            letter-spacing: -2px; text-transform: uppercase;
+        }
+
+        .login-container { width: 80%; max-width: 320px; text-align: center; }
+
+        input {
+            width: 100%; padding: 14px; margin-bottom: 15px; background: #1a1a1a;
+            border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        /* Log In Button - Ise ab sleek aur pro banaya hai */
+        .login-btn {
+            width: 100%; padding: 12px; background: #FFD700; border: none;
+            color: #000; font-weight: bold; border-radius: 8px; cursor: pointer;
+            font-size: 16px; margin-top: 5px;
+        }
+
+        .divider { margin: 30px 0; color: #444; font-size: 12px; border-top: 1px solid #222; padding-top: 20px; }
+
+        /* Create Account Button - Ise subtle banaya hai */
+        .create-btn {
+            width: 100%; padding: 10px; background: transparent; border: 1px solid #444;
+            color: #FFD700; font-weight: bold; border-radius: 8px; cursor: pointer;
+            font-size: 13px; text-decoration: none; display: inline-block; box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <div class="logo">Max Ful</div>
-        <input type="text" placeholder="Phone number, username, or email">
-        <input type="password" placeholder="Password">
-        <a href="home.html" class="btn">Log In</a>
-        <hr style="border: 0.5px solid #333; margin: 20px 0;">
-        <a href="signup.html" class="btn create-btn">Create New Account</a>
+
+    <div class="logo">Max Ful</div>
+
+    <div class="login-container">
+        <form action="home.html">
+            <input type="text" placeholder="Phone number, username or email" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit" class="login-btn">Log In</button>
+        </form>
+
+        <div class="divider">OR</div>
+
+        <a href="signup.html" class="create-btn">Create New Account</a>
     </div>
+
 </body>
 </html>
