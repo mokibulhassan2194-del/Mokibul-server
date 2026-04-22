@@ -15,7 +15,7 @@
         .header .logo { font-size: 26px; font-weight: 900; color: #FFD700; letter-spacing: -1px; }
         .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; }
 
-        /* STORIES SECTION - FIXED */
+        /* STORIES SECTION */
         .stories-container { 
             display: flex; padding: 15px 10px; gap: 12px; 
             overflow-x: auto; border-bottom: 1px solid #111; 
@@ -37,7 +37,49 @@
             justify-content: center; align-items: center; border: 2px solid #000; 
             font-size: 12px; color: white; font-weight: bold;
         }
-        .story-label { font-size: 11px; margin-top: 6px; color: #ccc; display: block; } /* Fixed Label */
+        .story-label { font-size: 11px; margin-top: 6px; color: #ccc; display: block; }
+
+        /* --- MAX FUL MAGIC ADDITIONS START --- */
+        
+        /* 1. Blur Overlay */
+        #max-blur-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            display: none; z-index: 998;
+            transition: 0.3s;
+        }
+
+        /* 2. Floating Menu Options */
+        .max-menu-options {
+            position: fixed; bottom: 100px; left: 50%;
+            transform: translateX(-50%);
+            display: none; flex-direction: column; gap: 15px;
+            z-index: 999;
+        }
+
+        .max-btn-opt {
+            background: #fff; color: #000; padding: 12px 30px;
+            border-radius: 30px; font-weight: bold; font-size: 16px;
+            text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: bounceUp 0.4s ease; cursor: pointer;
+        }
+
+        .story-max-btn { background: #39FF14; position: relative; } /* Neon Green */
+        .badge-25h { 
+            background: black; color: white; font-size: 9px; 
+            padding: 2px 6px; border-radius: 10px; margin-left: 5px; 
+        }
+
+        @keyframes bounceUp {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* 3. Main Plus Button Rotation */
+        .plus-active { transform: rotate(45deg); color: #ff3040 !important; transition: 0.3s; }
+
+        /* --- MAX FUL MAGIC ADDITIONS END --- */
 
         /* Post Card */
         .post-card { border-bottom: 1px solid #111; margin-bottom: 10px; position: relative; }
@@ -64,15 +106,25 @@
         .post-actions { padding: 12px; display: flex; gap: 15px; font-size: 20px; }
         .action-btn { cursor: pointer; }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-item { color: #fff; text-decoration: none; font-size: 22px; }
     </style>
 </head>
 <body>
 
+    <div id="max-blur-overlay" onclick="toggleMaxPlus()"></div>
+
     <div class="header">
         <div class="logo">Max Ful</div>
         <a href="messages.html" class="header-icons">💬</a> 
+    </div>
+
+    <div class="max-menu-options" id="maxMenu">
+        <div class="max-btn-opt" onclick="location.href='reels.html'">🎬 Reels</div>
+        <div class="max-btn-opt" onclick="location.href='post.html'">🖼️ Post</div>
+        <div class="max-btn-opt story-max-btn" onclick="location.href='view-story.html'">
+            📱 Story <span class="badge-25h">25h Mode</span>
+        </div>
     </div>
 
     <div class="stories-container">
@@ -80,22 +132,9 @@
             <div class="story-circle"><img src="https://via.placeholder.com/100"><div class="plus-icon">+</div></div>
             <div class="story-label">Your Story</div>
         </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/101"></div>
-            <div class="story-label">rahul_vlogs</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/102"></div>
-            <div class="story-label">ankit_99</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/103"></div>
-            <div class="story-label">priya.art</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/104"></div>
-            <div class="story-label">mr_beast_fan</div>
-        </div>
+        <div class="story-wrapper"><div class="story-circle"><img src="https://via.placeholder.com/101"></div><div class="story-label">rahul_vlogs</div></div>
+        <div class="story-wrapper"><div class="story-circle"><img src="https://via.placeholder.com/102"></div><div class="story-label">ankit_99</div></div>
+        <div class="story-wrapper"><div class="story-circle"><img src="https://via.placeholder.com/103"></div><div class="story-label">priya.art</div></div>
     </div>
 
     <div class="post-card">
@@ -117,12 +156,29 @@
     <div class="bottom-nav">
         <a href="home.html" class="nav-item">🏠</a>
         <a href="search.html" class="nav-item">🔍</a>
-        <a href="#" style="font-size: 30px; color: #FFD700;">+</a>
+        <a href="javascript:void(0)" onclick="toggleMaxPlus()" id="mainPlus" style="font-size: 40px; color: #FFD700; text-decoration: none;">+</a>
         <a href="reels.html" class="nav-item">🎬</a>
         <a href="profile.html" class="nav-item">👤</a>
     </div>
 
     <script>
+        // Max Ful Plus Button Toggle
+        function toggleMaxPlus() {
+            const overlay = document.getElementById('max-blur-overlay');
+            const menu = document.getElementById('maxMenu');
+            const plusBtn = document.getElementById('mainPlus');
+
+            if (overlay.style.display === "block") {
+                overlay.style.display = "none";
+                menu.style.display = "none";
+                plusBtn.classList.remove('plus-active');
+            } else {
+                overlay.style.display = "block";
+                menu.style.display = "flex";
+                plusBtn.classList.add('plus-active');
+            }
+        }
+
         function doLike(postId) {
             const container = document.getElementById(postId);
             const heart = container.querySelector('.big-heart');
@@ -132,6 +188,7 @@
             likeIcon.style.color = '#ff3040';
             setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
+
         function toggleLike() {
             const likeIcon = document.getElementById('like-icon');
             if (likeIcon.innerHTML === '🤍') {
