@@ -7,14 +7,14 @@
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
         
-        /* 1. स्क्रॉलिंग को "आज़ाद" किया */
+        /* स्क्रॉलिंग को फिक्स किया */
         .reels-wrapper {
             height: 100vh;
             width: 100%;
-            overflow-y: scroll; 
+            overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scrollbar-width: none;
-            -webkit-overflow-scrolling: touch; /* आईफोन के लिए स्मूथ स्क्रॉल */
+            display: block; /* ब्लॉक रखने से स्क्रॉल नहीं रुकता */
         }
         .reels-wrapper::-webkit-scrollbar { display: none; }
 
@@ -28,9 +28,9 @@
             align-items: center; justify-content: center;
         }
 
-        /* 2. वीडियो को टच के लिए एक्टिव रखा */
-        video { width: 100%; height: 100%; object-fit: cover; pointer-events: auto; }
+        video { width: 100%; height: 100%; object-fit: cover; }
 
+        /* Double Tap Heart */
         .big-heart {
             position: absolute; font-size: 80px; color: #ff3040;
             opacity: 0; transform: scale(0); pointer-events: none; z-index: 5;
@@ -42,45 +42,49 @@
             100% { transform: scale(1); opacity: 0; }
         }
 
-        /* 3. बटनों का एरिया - इसे छोटा रखा है ताकि बीच में स्वाइप जगह बचे */
+        /* शीशे वाली काली पट्टी (Glass Effect) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.75); /* हल्का काला */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item { color: #fff; text-decoration: none; font-size: 24px; }
+
+        /* साइड के बटन */
         .side-actions {
-            position: absolute; right: 10px; bottom: 100px;
-            display: flex; flex-direction: column; gap: 15px; align-items: center; z-index: 20;
-            pointer-events: auto; /* सिर्फ बटनों पर टच काम करे */
+            position: absolute; right: 12px; bottom: 100px;
+            display: flex; flex-direction: column; gap: 20px; align-items: center; z-index: 20;
         }
-
         .action-btn { text-align: center; color: white; cursor: pointer; }
-        
-        .icon-svg {
-            width: 32px; /* थोड़ा सा छोटा किया ताकि स्वाइप न फँसे */
-            height: 32px;
-            fill: white;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-        }
+        .icon-svg { width: 35px; height: 35px; fill: white; filter: drop-shadow(0 2px 4px #000); }
+        .liked .icon-svg { fill: #ff3040; transform: scale(1.1); }
+        .action-btn span { display: block; font-size: 12px; margin-top: 4px; font-weight: bold; }
 
-        .liked .icon-svg { fill: #ff3040; transform: scale(1.1); transition: 0.2s; }
-        
-        .action-btn span { display: block; font-size: 11px; margin-top: 2px; font-weight: bold; }
-
+        /* डिटेल्स - इसे पट्टी के ऊपर रखा है */
         .reel-details {
             position: absolute; left: 15px; bottom: 85px; color: white; z-index: 15;
-            max-width: 65%; pointer-events: none; /* डिटेल्स पर टच बंद किया ताकि स्वाइप हो सके */
+            max-width: 70%; text-shadow: 0 1px 4px #000;
+            pointer-events: none; /* ताकि स्वाइप न रुके */
         }
-
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 60px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9) 70%);
-            display: flex; justify-content: space-around; align-items: center; z-index: 100;
-        }
+        .reel-details b { font-size: 16px; display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
-    <div class="reels-wrapper" id="mainContainer">
+    <div class="reels-wrapper" id="scrollContainer">
         <div class="reel-video" ondblclick="handleDoubleTap(this)">
             <video src="3021.mp4" loop muted playsinline onclick="togglePlay(this)"></video>
             <div class="big-heart">❤️</div>
-            
             <div class="side-actions">
                 <div class="action-btn" onclick="toggleLike(this)">
                     <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -90,17 +94,20 @@
                     <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg>
                     <span>450</span>
                 </div>
-                <div class="action-btn">
-                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                    <span>Share</span>
-                </div>
             </div>
-
             <div class="reel-details">
                 <b>@makibul_vlogs</b>
-                <p>Finally Fixed! Big Icons & Smooth Swipe 🚀</p>
+                <p>Glassy Nav Bar + Smooth Swipe! 🔥</p>
             </div>
         </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item">🏠</a>
+        <a href="search.html" class="nav-item">🔍</a>
+        <a href="#" style="font-size: 30px; color: #FFD700;">+</a>
+        <a href="reels.html" class="nav-item">🎬</a>
+        <a href="profile.html" class="nav-item">👤</a>
     </div>
 
     <script>
@@ -111,13 +118,10 @@
             setTimeout(() => h.classList.remove('animate-heart'), 800);
             if (!btn.classList.contains('liked')) btn.classList.add('liked');
         }
-
         function toggleLike(btn) { btn.classList.toggle('liked'); }
-
         function togglePlay(v) { v.paused ? v.play() : v.pause(); }
 
-        // ऑटो-प्ले फिक्स
-        const container = document.getElementById('mainContainer');
+        const container = document.getElementById('scrollContainer');
         container.addEventListener('scroll', () => {
             const vids = document.querySelectorAll('video');
             vids.forEach(v => {
