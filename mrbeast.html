@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MrBeast Profile</title>
+    <style>
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; }
+        
+        /* Header Section */
+        .header { display: flex; align-items: center; padding: 15px; border-bottom: 0.5px solid #333; position: sticky; top: 0; background: #000; z-index: 100; }
+        .back-btn { font-size: 24px; color: #fff; text-decoration: none; margin-right: 20px; }
+        .username { font-weight: bold; font-size: 18px; }
+
+        /* Profile Info Section */
+        .profile-info { padding: 20px 15px; display: flex; align-items: center; justify-content: space-between; }
+        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #FFD700; padding: 3px; }
+        .stats { display: flex; gap: 20px; text-align: center; }
+        .stat-item b { display: block; font-size: 16px; }
+        .stat-item span { font-size: 12px; color: #888; }
+
+        /* Bio Section */
+        .bio { padding: 0 15px 15px; }
+        .full-name { font-weight: bold; margin-bottom: 5px; display: block; }
+        .bio-text { font-size: 14px; line-height: 1.4; }
+
+        /* Follow Button */
+        .follow-btn { width: calc(100% - 30px); margin-left: 15px; padding: 10px; background: #FFD700; color: #000; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; }
+
+        /* Posts Grid */
+        .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 20px; }
+        .grid-item { aspect-ratio: 1/1; background: #1a1a1a; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="search.html" class="back-btn">←</a>
+        <span class="username">mr_beast_fan</span>
+    </div>
+
+    <div class="profile-info">
+        <img src="https://via.placeholder.com/150" alt="MrBeast DP" class="profile-pic">
+        <div class="stats">
+            <div class="stat-item"><b>120</b><span>Posts</span></div>
+            <div class="stat-item"><b>200k</b><span>Followers</span></div>
+            <div class="stat-item"><b>10</b><span>Following</span></div>
+        </div>
+    </div>
+
+    <div class="bio">
+        <span class="full-name">Mr Beast Fan Page</span>
+        <div class="bio-text">
+            Helping people and making fun content! 🌟<br>
+            Official Fan Club of MrBeast.<br>
+            📍 USA / Worldwide
+        </div>
+    </div>
+
+    <button class="follow-btn">Follow</button>
+
+    <div class="posts-grid">
+        <div class="grid-item">🎬</div><div class="grid-item">🎬</div><div class="grid-item">🎬</div>
+        <div class="grid-item">🎬</div><div class="grid-item">🎬</div><div class="grid-item">🎬</div>
+        <div class="grid-item">🎬</div><div class="grid-item">🎬</div><div class="grid-item">🎬</div>
+    </div>
+
+</body>
+</html>
 
