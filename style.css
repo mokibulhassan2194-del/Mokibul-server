@@ -1,39 +1,44 @@
-/* style.css के अंदर ये बदल देना */
-
+body, html { 
+    margin: 0; padding: 0; 
+    width: 100%; height: 100%; 
+    background: #000 !important; 
+    overflow: hidden; 
+    font-family: sans-serif; 
+}
+.reels-wrapper {
+    height: 100vh; width: 100%;
+    overflow-y: scroll; 
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+}
+.reel {
+    height: 100vh; width: 100%;
+    scroll-snap-align: start; 
+    position: relative; 
+    background: #000;
+}
+video { width: 100%; height: 100%; object-fit: cover; }
 .side-actions {
-    position: absolute; 
-    right: 15px; 
-    bottom: 180px; /* अब ये पट्टी के ऊपर रहेगा */
-    display: flex; 
-    flex-direction: column; 
-    gap: 22px;
+    position: absolute; right: 15px; bottom: 180px;
+    display: flex; flex-direction: column; gap: 22px;
     z-index: 1000; 
 }
-
+.btn { background: none; border: none; color: white; text-align: center; }
+.icon { width: 32px; height: 32px; fill: white; }
 .details {
-    position: absolute; 
-    left: 15px; 
-    bottom: 150px; /* यूजरनेम भी ऊपर कर दिया */
-    color: white; 
-    z-index: 1000; 
-    pointer-events: none;
+    position: absolute; left: 15px; bottom: 150px;
+    color: white; z-index: 1000; pointer-events: none;
 }
-
-/* गाने का आइकॉन जो तू कह रहा था */
 .music-note {
-    width: 30px;
-    height: 30px;
-    background: #222;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid white;
-    margin-top: 10px;
+    width: 30px; height: 30px; background: #222; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid white; margin-top: 10px;
     animation: rotate 3s linear infinite;
 }
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.bottom-nav {
+    position: fixed; bottom: 0; width: 100%; height: 65px;
+    background: #000; display: flex; justify-content: space-around;
+    align-items: center; z-index: 2000; border-top: 0.5px solid #333;
 }
+.nav-item { color: white; text-decoration: none; font-size: 24px; }
