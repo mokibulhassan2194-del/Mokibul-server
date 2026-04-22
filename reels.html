@@ -11,7 +11,7 @@
             height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
-            scrollbar-width: none; /* Hide scrollbar */
+            scrollbar-width: none;
         }
         .reels-wrapper::-webkit-scrollbar { display: none; }
 
@@ -27,22 +27,24 @@
 
         video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Double Tap Heart Animation */
+        /* Double Tap Big Heart - PRO Animation */
         .big-heart {
             position: absolute;
-            font-size: 80px;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 100px;
+            color: rgba(255, 48, 64, 0.9); /* Perfect Red */
             opacity: 0;
-            transform: scale(0);
+            transform: scale(0) rotate(-15deg);
             pointer-events: none;
             z-index: 10;
-            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            text-shadow: 0 0 30px rgba(0,0,0,0.6);
+            transition: 0.1s;
         }
         .animate-heart { animation: heartPop 0.8s ease-out; }
         @keyframes heartPop {
-            0% { transform: scale(0); opacity: 0; }
-            40% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 0; }
+            0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+            30% { transform: scale(1.3) rotate(0deg); opacity: 1; }
+            45% { transform: scale(1.1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1) rotate(15deg); opacity: 0; }
         }
 
         /* Right Side Buttons */
@@ -51,9 +53,15 @@
             display: flex; flex-direction: column; gap: 20px; align-items: center;
             z-index: 20;
         }
-        .action-btn { text-align: center; color: white; font-size: 28px; cursor: pointer; transition: 0.2s; }
-        .action-btn span { display: block; font-size: 12px; margin-top: 4px; }
-        .liked { color: #ff3040 !important; }
+        .action-btn { text-align: center; color: white; cursor: pointer; transition: 0.2s; }
+        
+        /* 1. Empty Heart (Default) */
+        .heart-icon { font-size: 30px; transition: 0.2s; }
+        
+        /* 2. Filled Red Heart (Liked) */
+        .liked .heart-icon { color: #ff3040 !important; transform: scale(1.1); }
+        
+        .action-btn span { display: block; font-size: 12px; margin-top: 4px; color: #eee; }
 
         .music-disk {
             width: 35px; height: 35px; border-radius: 50%;
@@ -61,24 +69,26 @@
             border: 2px solid #fff;
             animation: rotate 3s linear infinite;
             display: flex; align-items: center; justify-content: center;
+            margin-top: 10px; font-size: 18px;
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* Bottom Details */
         .reel-details {
             position: absolute; left: 15px; bottom: 80px; color: white; z-index: 20;
-            max-width: 70%;
+            max-width: 70%; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
-        .reel-details b { font-size: 16px; display: block; margin-bottom: 5px; }
+        .reel-details b { font-size: 16px; display: block; margin-bottom: 5px; letter-spacing: 0.5px; }
         .reel-details p { font-size: 14px; margin: 0; opacity: 0.9; line-height: 1.4; }
 
-        /* Bottom Nav */
+        /* Bottom Nav - Premium Look */
         .bottom-nav {
             position: fixed; bottom: 0; width: 100%; height: 60px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            background: linear-gradient(transparent, rgba(0,0,0,0.9) 30%);
             display: flex; justify-content: space-around; align-items: center; z-index: 100;
         }
-        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 20px; }
+        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 22px; transition: 0.2s; opacity: 0.8; }
+        .nav-item:hover { opacity: 1; }
     </style>
 </head>
 <body>
@@ -89,7 +99,10 @@
             <span class="big-heart">❤️</span>
             
             <div class="side-actions">
-                <div class="action-btn" onclick="toggleLike(this)">❤️<span>1.5k</span></div>
+                <div class="action-btn" onclick="toggleLike(this)">
+                    <span class="heart-icon">🤍</span>
+                    <span class="like-count">1.5k</span>
+                </div>
                 <div class="action-btn">💬<span>450</span></div>
                 <div class="action-btn">✈️<span>Share</span></div>
                 <div class="music-disk">🎵</div>
@@ -97,7 +110,7 @@
 
             <div class="reel-details">
                 <b>@makibul_vlogs</b>
-                <p>Max Ful app testing... 🔥 #4K #Reels</p>
+                <p>Max Ful app testing... 🔥 #4K #Reels #Magic</p>
             </div>
         </div>
 
@@ -106,14 +119,17 @@
             <span class="big-heart">❤️</span>
             
             <div class="side-actions">
-                <div class="action-btn" onclick="toggleLike(this)">❤️<span>800</span></div>
+                <div class="action-btn" onclick="toggleLike(this)">
+                    <span class="heart-icon">🤍</span>
+                    <span class="like-count">800</span>
+                </div>
                 <div class="action-btn">💬<span>120</span></div>
                 <div class="action-btn">✈️<span>Share</span></div>
                 <div class="music-disk">🎵</div>
             </div>
             <div class="reel-details">
                 <b>@makibul_vlogs</b>
-                <p>Working on the swipe feature! 🚀 #Coding</p>
+                <p>Double Tap feature is working! 🚀 #Coding</p>
             </div>
         </div>
     </div>
@@ -127,22 +143,60 @@
     </div>
 
     <script>
-        // 1. Double Tap Like Function
+        // 1. Double Tap Like Magic Function
         function handleDoubleTap(element) {
             const heart = element.querySelector('.big-heart');
-            const likeBtn = element.querySelector('.side-actions .action-btn:first-child');
+            const actionBtn = element.querySelector('.side-actions .action-btn');
+            const heartIcon = actionBtn.querySelector('.heart-icon');
+            const likeCount = actionBtn.querySelector('.like-count');
             
             // Show big heart animation
             heart.classList.add('animate-heart');
             setTimeout(() => heart.classList.remove('animate-heart'), 800);
             
-            // Update like button color
-            likeBtn.classList.add('liked');
+            // Update like button state and increase count
+            if (!actionBtn.classList.contains('liked')) {
+                actionBtn.classList.add('liked');
+                heartIcon.innerHTML = '❤️'; // Change to Filled Red Heart
+                
+                // Optional: Increment count for feedback
+                let currentLikes = parseFloat(likeCount.innerText.replace('k', ''));
+                if (likeCount.innerText.includes('k')) {
+                    likeCount.innerText = (currentLikes + 0.1).toFixed(1) + 'k';
+                } else {
+                    likeCount.innerText = currentLikes + 1;
+                }
+            }
         }
 
-        // 2. Click Like Button Toggle
+        // 2. Click Like Button Toggle (Manual)
         function toggleLike(btn) {
-            btn.classList.toggle('liked');
+            const heartIcon = btn.querySelector('.heart-icon');
+            const likeCount = btn.querySelector('.like-count');
+            
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                heartIcon.innerHTML = '🤍'; // Back to Empty Heart
+                
+                // Optional: Decrement count
+                let currentLikes = parseFloat(likeCount.innerText.replace('k', ''));
+                if (likeCount.innerText.includes('k')) {
+                    likeCount.innerText = (currentLikes - 0.1).toFixed(1) + 'k';
+                } else {
+                    likeCount.innerText = currentLikes - 1;
+                }
+            } else {
+                btn.classList.add('liked');
+                heartIcon.innerHTML = '❤️'; // Fill Red
+                
+                // Optional: Increment count
+                let currentLikes = parseFloat(likeCount.innerText.replace('k', ''));
+                if (likeCount.innerText.includes('k')) {
+                    likeCount.innerText = (currentLikes + 0.1).toFixed(1) + 'k';
+                } else {
+                    likeCount.innerText = currentLikes + 1;
+                }
+            }
         }
 
         // 3. Play/Pause on click
@@ -154,18 +208,25 @@
             }
         }
 
-        // 4. Auto Play on Swipe (Simple version)
+        // 4. Auto Play on Swipe
         const wrapper = document.querySelector('.reels-wrapper');
+        let isScrolling;
+
         wrapper.addEventListener('scroll', () => {
-            const videos = document.querySelectorAll('video');
-            videos.forEach(v => {
-                const rect = v.getBoundingClientRect();
-                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-                    v.play();
-                } else {
-                    v.pause();
-                }
-            });
+            window.clearTimeout(isScrolling);
+            isScrolling = setTimeout(() => {
+                const videos = document.querySelectorAll('video');
+                videos.forEach(v => {
+                    const rect = v.getBoundingClientRect();
+                    // Check if video is almost fully in viewport
+                    if (rect.top >= -window.innerHeight/2 && rect.bottom <= window.innerHeight * 1.5) {
+                        v.play();
+                    } else {
+                        v.pause();
+                        v.currentTime = 0; // Optional: Reset video
+                    }
+                });
+            }, 100); // Small delay to prevent too many plays/pauses during fast scroll
         });
     </script>
 </body>
