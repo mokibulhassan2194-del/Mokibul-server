@@ -21,21 +21,41 @@ body, html {
     background: #000;
 }
 video { width: 100%; height: 100%; object-fit: cover; }
+
+/* मकीबुल भाई, यहाँ मैंने bottom को 120 से 165 कर दिया है */
 .side-actions {
-    position: absolute; right: 15px; bottom: 120px;
-    display: flex; flex-direction: column; gap: 22px;
+    position: absolute; 
+    right: 15px; 
+    bottom: 165px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 22px;
     z-index: 1000; 
 }
+
 .btn { background: none; border: none; color: white; text-align: center; }
 .icon { width: 32px; height: 32px; fill: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+
+/* यहाँ मैंने bottom को 100 से 145 कर दिया है */
 .details {
-    position: absolute; left: 15px; bottom: 100px;
-    color: white; z-index: 1000; pointer-events: none;
+    position: absolute; 
+    left: 15px; 
+    bottom: 145px; 
+    color: white; 
+    z-index: 1000; 
+    pointer-events: none;
 }
+
 .bottom-nav {
-    position: fixed; bottom: 0; width: 100%; height: 65px;
-    background: #000; display: flex; justify-content: space-around;
-    align-items: center; z-index: 2000; border-top: 0.5px solid #333;
+    position: fixed; 
+    bottom: 0; 
+    width: 100%; 
+    height: 65px;
+    background: #000; 
+    display: flex; 
+    justify-content: space-around;
+    align-items: center; 
+    z-index: 2000; 
+    border-top: 0.5px solid #333;
 }
 .nav-item { color: white; text-decoration: none; font-size: 24px; }
-
