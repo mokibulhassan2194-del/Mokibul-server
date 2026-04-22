@@ -9,13 +9,14 @@
         
         /* Search Box Styling */
         .search-box { padding: 15px; position: sticky; top: 0; background: #000; z-index: 100; }
-        .search-input { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #262626; color: #fff; outline: none; box-sizing: border-box; font-size: 16px; }
+        .search-input { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #262626; color: #fff; outline: none; box-sizing: border-box; font-size: 16px; transition: 0.3s; }
+        .search-input:focus { border: 1px solid #FFD700; } /* Focus hone par halka yellow border */
 
-        /* Default Grid (Jo shuru me dikhega) */
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
+        /* Default Grid (Trending Videos/Images) */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; transition: 0.3s; }
         .grid-item { aspect-ratio: 1/1; background: #1a1a1a; display: flex; align-items: center; justify-content: center; font-size: 24px; }
 
-        /* Search Results List (Jo search karne pe dikhega) */
+        /* Search Results List */
         #search-results { display: none; padding: 10px; }
         .user-row { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #111; animation: fadeIn 0.3s; }
         .user-pic { width: 45px; height: 45px; border-radius: 50%; background: #333; margin-right: 15px; object-fit: cover; border: 1px solid #FFD700; }
@@ -32,7 +33,7 @@
 <body>
 
     <div class="search-box">
-        <input type="text" class="search-input" id="mainSearch" placeholder="🔍 Search..." oninput="doSearch()" onfocus="showList()">
+        <input type="text" class="search-input" id="mainSearch" placeholder="🔍 Search..." oninput="doSearch()">
     </div>
 
     <div class="grid" id="default-grid">
@@ -52,7 +53,7 @@
     </div>
 
     <script>
-        // Data: Followers ke hisab se setup kiya hai
+        // Fake Database (Followers ke sath)
         const allUsers = [
             { name: "priya.art", followers: 150000, pic: "https://via.placeholder.com/150" },
             { name: "makibul_islam", followers: 55000, pic: "https://via.placeholder.com/150" },
@@ -61,34 +62,39 @@
             { name: "mr_beast_fan", followers: 200000, pic: "https://via.placeholder.com/150" }
         ];
 
-        function showList() {
-            // Click karte hi grid gayab, results active
-            document.getElementById('default-grid').style.display = 'none';
-            document.getElementById('search-results').style.display = 'block';
-            doSearch(); // Khali search dikhane ke liye
-        }
-
         function doSearch() {
             let input = document.getElementById('mainSearch').value.toLowerCase();
+            let grid = document.getElementById('default-grid');
             let resultsDiv = document.getElementById('search-results');
-            resultsDiv.innerHTML = ""; // Purana clear karo
 
-            // Filter karo aur Followers ke hisab se SORT (Bade se Chota) karo
-            let filteredUsers = allUsers
-                .filter(u => u.name.toLowerCase().includes(input))
-                .sort((a, b) => b.followers - a.followers);
+            // Logic: Agar box khali nahi hai, tabhi grid hide hogi
+            if (input.length > 0) {
+                grid.style.display = 'none';
+                resultsDiv.style.display = 'block';
+                
+                resultsDiv.innerHTML = ""; // Purana clear karo
 
-            filteredUsers.forEach(user => {
-                resultsDiv.innerHTML += `
-                    <div class="user-row" onclick="location.href='profile.html'">
-                        <img src="${user.pic}" class="user-pic">
-                        <div>
-                            <div class="user-name">${user.name}</div>
-                            <div class="user-followers">${(user.followers/1000).toFixed(1)}k followers</div>
+                // Filter aur Sort (Followers upar)
+                let filteredUsers = allUsers
+                    .filter(u => u.name.toLowerCase().includes(input))
+                    .sort((a, b) => b.followers - a.followers);
+
+                filteredUsers.forEach(user => {
+                    resultsDiv.innerHTML += `
+                        <div class="user-row" onclick="location.href='profile.html'">
+                            <img src="${user.pic}" class="user-pic">
+                            <div>
+                                <div class="user-name">${user.name}</div>
+                                <div class="user-followers">${(user.followers/1000).toFixed(1)}k followers</div>
+                            </div>
                         </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            } else {
+                // Agar box khali hai, to wapas Grid dikhao
+                grid.style.display = 'grid';
+                resultsDiv.style.display = 'none';
+            }
         }
     </script>
 </body>
