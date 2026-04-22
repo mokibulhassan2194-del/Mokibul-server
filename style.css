@@ -1,37 +1,80 @@
-/* मकीबुल भाई के लिए एकदम फिक्स कोड */
-body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000 !important; overflow: hidden; font-family: sans-serif; }
-.reels-wrapper { height: 100vh; width: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
-.reel { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; background: #000; }
+body, html { 
+    margin: 0; padding: 0; 
+    width: 100%; height: 100%; 
+    background: #000 !important; 
+    overflow: hidden; 
+    font-family: sans-serif; 
+}
+
+.reels-wrapper {
+    height: 100vh; width: 100%;
+    overflow-y: scroll; 
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* IE/Edge fix */
+}
+
+.reels-wrapper::-webkit-scrollbar { display: none; } /* Chrome/Safari scrollbar hide */
+
+.reel {
+    height: 100vh; width: 100%;
+    scroll-snap-align: start; 
+    position: relative; 
+    background: #000;
+}
+
 video { width: 100%; height: 100%; object-fit: cover; }
 
-/* बटनों को स्क्रीन के अंदर लाने के लिए right: 30px कर दिया */
+/* --- FIX YAHAN HAI --- */
 .side-actions {
     position: absolute; 
-    right: 30px; 
-    bottom: 200px;
+    right: 15px; 
+    bottom: 90px; /* 180px se kam karke 90px kiya taaki Nav bar ke upar rahe */
     display: flex; 
     flex-direction: column; 
-    gap: 25px;
+    gap: 18px; /* Buttons ka gap thoda kam kiya */
     z-index: 1000; 
     align-items: center;
 }
 
-.icon { width: 35px; height: 35px; fill: white; filter: drop-shadow(0 2px 5px #000); }
 .btn { background: none; border: none; color: white; text-align: center; }
-.btn span { display: block; font-size: 12px; margin-top: 5px; font-weight: bold; }
+.btn span { display: block; font-size: 12px; margin-top: 4px; } /* Numbers ke liye style */
 
-.details { position: absolute; left: 15px; bottom: 150px; color: white; z-index: 1000; }
+.icon { width: 28px; height: 28px; fill: white; }
+
+.details {
+    position: absolute; 
+    left: 15px; 
+    bottom: 90px; /* Isse text aur Like button ek hi line mein rahenge */
+    color: white; 
+    z-index: 1000; 
+    pointer-events: none;
+    max-width: 70%;
+}
 
 .music-note {
-    width: 35px; height: 35px; background: #222; border-radius: 50%;
+    width: 30px; height: 30px; 
+    background: radial-gradient(circle, #444, #111);
+    border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    border: 2px solid white; animation: rotate 3s linear infinite;
+    border: 2px solid white; 
+    margin-top: 5px;
+    animation: rotate 3s linear infinite;
 }
+
 @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 .bottom-nav {
-    position: fixed; bottom: 0; width: 100%; height: 65px;
-    background: #000; display: flex; justify-content: space-around;
-    align-items: center; z-index: 2000; border-top: 0.5px solid #333;
+    position: fixed; 
+    bottom: 0; 
+    width: 100%; 
+    height: 65px;
+    background: #000; 
+    display: flex; 
+    justify-content: space-around;
+    align-items: center; 
+    z-index: 2000; 
+    border-top: 0.5px solid #333;
 }
+
 .nav-item { color: white; text-decoration: none; font-size: 24px; }
