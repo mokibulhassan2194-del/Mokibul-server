@@ -4,214 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Reels</title>
-    <style>
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-        }
-        
-        body, html { 
-            margin: 0; padding: 0; 
-            width: 100%; height: 100%; 
-            background: #000; 
-            overflow: hidden; 
-            font-family: sans-serif; 
-        }
-
-        /* Main Container */
-        .reels-wrapper {
-            height: 100vh; 
-            width: 100%;
-            overflow-y: scroll; 
-            scroll-snap-type: y mandatory;
-            scrollbar-width: none; /* Firefox */
-            scroll-behavior: smooth;
-        }
-        .reels-wrapper::-webkit-scrollbar { display: none; } /* Chrome/Safari */
-
-        /* Single Reel Slide */
-        .reel {
-            height: 100vh; 
-            width: 100%;
-            scroll-snap-align: start; 
-            scroll-snap-stop: always;
-            position: relative; 
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
-
-        /* Right Side Actions (Like, Comment, Share) */
-        .side-actions {
-            position: absolute; 
-            right: 15px; 
-            bottom: 120px; /* Nav bar se upar rakhne ke liye */
-            display: flex; 
-            flex-direction: column; 
-            gap: 22px;
-            z-index: 1000; 
-        }
-        
-        .btn { 
-            background: none; 
-            border: none; 
-            color: white; 
-            text-align: center; 
-            cursor: pointer; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .btn span { 
-            display: block; 
-            font-size: 13px; 
-            margin-top: 5px; 
-            font-weight: 500;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-        }
-        
-        .icon { 
-            width: 32px; 
-            height: 32px; 
-            fill: white; 
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); 
-        }
-
-        /* Left Side Details */
-        .details {
-            position: absolute; 
-            left: 15px; 
-            bottom: 100px; /* Nav bar se thoda upar */
-            color: white; 
-            z-index: 1000; 
-            pointer-events: none;
-            max-width: 70%;
-        }
-        
-        .details b {
-            font-size: 16px;
-            display: block;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-        
-        .details p {
-            margin: 0;
-            font-size: 14px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            line-height: 1.4;
-        }
-
-        /* Bottom Navigation Bar */
-        .bottom-nav {
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-            height: 65px;
-            background: #000; 
-            display: flex; 
-            justify-content: space-around;
-            align-items: center; 
-            z-index: 2000; 
-            border-top: 0.5px solid #333;
-            padding-bottom: env(safe-area-inset-bottom); /* iPhone notch support */
-        }
-        
-        .nav-item { 
-            color: white; 
-            text-decoration: none; 
-            font-size: 24px; 
-            opacity: 0.8;
-        }
-        
-        .nav-item:hover { opacity: 1; }
-    </style>
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 
 <div class="reels-wrapper" id="mainContainer">
-    
     <div class="reel">
-        <video src="3021.mp4" loop autoplay muted playsinline onclick="this.paused?this.play():this.pause()"></video>
-        
+        <video src="3021.mp4" loop autoplay muted playsinline></video>
         <div class="side-actions">
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                <span>1.5k</span>
-            </div>
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg>
-                <span>450</span>
-            </div>
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                <span>Share</span>
-            </div>
+            <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>1.5k</span></div>
         </div>
-
-        <div class="details">
-            <b>@makibul_vlogs</b>
-            <p>Buttons fixed! Ab scroll karke dekh bhai 🔥</p>
-        </div>
+        <div class="details"><b>@makibul_vlogs</b><p>Smart Method Setup! ✅</p></div>
     </div>
 
     <div class="reel">
-        <video src="your_second_video.mp4" loop muted playsinline onclick="this.paused?this.play():this.pause()"></video>
-        <div class="side-actions">
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                <span>2k</span>
-            </div>
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg>
-                <span>100</span>
-            </div>
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                <span>Share</span>
-            </div>
-        </div>
-        <div class="details">
-            <b>@makibul_vlogs</b>
-            <p>Next video is here! 🚀</p>
-        </div>
+        <video src="3021.mp4" loop muted playsinline></video>
+        <div class="details"><b>@makibul_vlogs</b><p>Swipe is now working! 🔥</p></div>
     </div>
-
 </div>
 
 <div class="bottom-nav">
     <a href="home.html" class="nav-item">🏠</a>
     <a href="search.html" class="nav-item">🔍</a>
-    <a href="#" style="font-size:30px; color:gold; text-decoration:none;">+</a>
-    <a href="reels.html" class="nav-item" style="opacity: 1;">🎬</a>
+    <a href="reels.html" class="nav-item">🎬</a>
     <a href="profile.html" class="nav-item">👤</a>
 </div>
 
-<script>
-    const wrapper = document.getElementById('mainContainer');
-    
-    // Auto-play/pause logic on scroll
-    wrapper.addEventListener('scroll', () => {
-        const vids = document.querySelectorAll('video');
-        vids.forEach(v => {
-            const rect = v.getBoundingClientRect();
-            // Agar video screen ke beech mein hai
-            if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
-                v.play().catch(() => {});
-            } else {
-                v.pause();
-            }
-        });
-    }, { passive: true });
-</script>
+<script src="script.js"></script> 
 
 </body>
 </html>
