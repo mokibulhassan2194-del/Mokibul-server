@@ -15,14 +15,24 @@
         .header .logo { font-size: 26px; font-weight: 900; color: #FFD700; letter-spacing: -1px; }
         .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; }
 
-        /* STORIES SECTION */
+        /* STORIES SECTION - FIXED */
         .stories-container { 
-            display: flex; padding: 15px 10px; gap: 12px; 
-            overflow-x: auto; border-bottom: 1px solid #111; 
+            display: flex; 
+            padding: 15px 10px; 
+            gap: 12px; 
+            overflow-x: auto; 
+            white-space: nowrap; /* YE JARURI HAI SWIPE KE LIYE */
+            border-bottom: 1px solid #111; 
+            -webkit-overflow-scrolling: touch; /* SMOOTH SWIPE FOR MOBILE */
         }
         .stories-container::-webkit-scrollbar { display: none; }
         
-        .story-wrapper { min-width: 75px; text-align: center; cursor: pointer; flex-shrink: 0; }
+        .story-wrapper { 
+            min-width: 75px; 
+            text-align: center; 
+            cursor: pointer; 
+            flex-shrink: 0; /* ISSE GOLA DABTA NAHI HAI */
+        }
         
         .story-circle { 
             width: 65px; height: 65px; border-radius: 50%; 
@@ -37,7 +47,7 @@
             justify-content: center; align-items: center; border: 2px solid #000; 
             font-size: 12px; color: white; font-weight: bold;
         }
-        .story-label { font-size: 11px; margin-top: 6px; color: #ccc; display: block; }
+        .story-label { font-size: 11px; margin-top: 6px; color: #ccc; display: block; overflow: hidden; text-overflow: ellipsis; }
 
         /* --- MAX FUL MAGIC ADDITIONS --- */
         #max-blur-overlay {
@@ -138,7 +148,19 @@
             <div class="story-circle"><img src="https://via.placeholder.com/103"></div>
             <div class="story-label">priya.art</div>
         </div>
-    </div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'">
+            <div class="story-circle"><img src="https://via.placeholder.com/104"></div>
+            <div class="story-label">mr_beast</div>
+        </div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'">
+            <div class="story-circle"><img src="https://via.placeholder.com/105"></div>
+            <div class="story-label">rocky_bhai</div>
+        </div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'">
+            <div class="story-circle"><img src="https://via.placeholder.com/106"></div>
+            <div class="story-label">max_fan</div>
+        </div>
+        </div>
 
     <div class="post-card">
         <div class="post-header">
