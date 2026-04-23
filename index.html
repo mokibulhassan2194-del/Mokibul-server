@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Login</title>
     <style>
         body { 
             background-color: #000; color: #fff; font-family: sans-serif; 
-            margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; 
+            margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;
+            overflow: hidden; /* Screen ko hile se rokne ke liye */
         }
         
         /* Logo: Max Ful Styling */
@@ -21,13 +22,13 @@
         input {
             width: 100%; padding: 14px; margin-bottom: 12px; background: #1a1a1a;
             border: 1px solid #333; color: #fff; border-radius: 10px; box-sizing: border-box;
-            font-size: 14px; display: block; outline: none; transition: 0.3s;
-            text-align: center; /* Input ke andar ka text bhi center rakha hai */
+            /* Font-size 16px rakha hai taaki iOS/Android zoom na kare */
+            font-size: 16px; display: block; outline: none; transition: 0.3s;
+            text-align: center; 
         }
 
         input:focus { border-color: #FFD700; background: #222; }
 
-        /* Yahan badlav kiya gaya hai - text-align: center kar diya */
         .forgot-link {
             display: block; 
             text-align: center; 
@@ -59,6 +60,7 @@
             color: #FFD700; font-weight: bold; border-radius: 10px; cursor: pointer;
             font-size: 14px; text-decoration: none; display: inline-block; box-sizing: border-box;
             transition: 0.3s;
+            text-align: center;
         }
         .create-btn:hover { border-color: #FFD700; background: #111; }
     </style>
