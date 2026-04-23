@@ -6,19 +6,12 @@
     <title>Max Ful | Home</title>
     <style>
         body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
-        
-        .header { 
-            padding: 12px 18px; display: flex; justify-content: space-between; 
-            align-items: center; border-bottom: 1px solid #222; 
-            position: sticky; top: 0; background: #000; z-index: 100; 
-        }
+        .header { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100; }
         .header .logo { font-size: 26px; font-weight: 900; color: #FFD700; letter-spacing: -1px; }
         .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; }
 
-        .stories-container { 
-            display: flex; padding: 15px 10px; gap: 12px; overflow-x: auto; 
-            white-space: nowrap; border-bottom: 1px solid #111; -webkit-overflow-scrolling: touch; 
-        }
+        /* STORIES SECTION - SWIPE FIXED */
+        .stories-container { display: flex; padding: 15px 10px; gap: 12px; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid #111; -webkit-overflow-scrolling: touch; }
         .stories-container::-webkit-scrollbar { display: none; }
         .story-wrapper { min-width: 75px; text-align: center; cursor: pointer; flex-shrink: 0; }
         .story-circle { width: 65px; height: 65px; border-radius: 50%; padding: 3px; border: 2px solid #FFD700; position: relative; margin: 0 auto; }
@@ -26,6 +19,7 @@
         .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; font-weight: bold; }
         .story-label { font-size: 11px; margin-top: 6px; color: #ccc; display: block; overflow: hidden; text-overflow: ellipsis; }
 
+        /* BLUR & MENU */
         #max-blur-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); display: none; z-index: 998; transition: 0.3s; }
         .max-menu-options { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); display: none; flex-direction: column; gap: 15px; z-index: 999; }
         .max-btn-opt { background: #fff; color: #000; padding: 12px 30px; border-radius: 30px; font-weight: bold; font-size: 16px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); animation: bounceUp 0.4s ease; cursor: pointer; text-decoration: none; }
@@ -35,6 +29,7 @@
         @keyframes bounceUp { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
         .plus-active { transform: rotate(45deg); color: #ff3040 !important; transition: 0.3s; }
 
+        /* POSTS */
         .post-card { border-bottom: 1px solid #111; margin-bottom: 10px; position: relative; }
         .post-header { display: flex; align-items: center; padding: 10px; }
         .post-user-pic { width: 32px; height: 32px; border-radius: 50%; background: #333; margin-right: 10px; }
@@ -63,8 +58,15 @@
     </div>
 
     <div class="stories-container">
-        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/100"><div class="plus-icon">+</div></div><div class="story-label">Your Story</div></div>
+        <div class="story-wrapper" onclick="location.href='upload.html'"><div class="story-circle"><img src="https://via.placeholder.com/100"><div class="plus-icon">+</div></div><div class="story-label">Your Story</div></div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/104"></div><div class="story-label">mr_beast</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/101"></div><div class="story-label">rahul_vlogs</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/102"></div><div class="story-label">ankit_99</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/103"></div><div class="story-label">priya.art</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/105"></div><div class="story-label">max_fan</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/106"></div><div class="story-label">rocky_bhai</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/107"></div><div class="story-label">vicky_vids</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/108"></div><div class="story-label">sonia_art</div></div>
     </div>
 
     <div class="post-card">
@@ -106,7 +108,6 @@
                 plusBtn.classList.add('plus-active');
             }
         }
-
         function doLike(postId) {
             const container = document.getElementById(postId);
             const heart = container.querySelector('.big-heart');
@@ -116,7 +117,6 @@
             likeIcon.style.color = '#ff3040';
             setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
-
         function toggleLike() {
             const likeIcon = document.getElementById('like-icon');
             if (likeIcon.innerHTML === '🤍') {
