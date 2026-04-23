@@ -10,46 +10,56 @@
             margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; 
         }
         
+        /* Logo: Max Ful Styling */
         .logo { 
-            font-size: 60px; font-weight: 900; color: #FFD700; margin-bottom: 50px; 
-            letter-spacing: -2px; text-transform: uppercase;
+            font-size: 55px; font-weight: 900; color: #FFD700; margin-bottom: 40px; 
+            letter-spacing: -1.5px; text-transform: none; /* Max Ful style */
         }
 
         .login-container { width: 85%; max-width: 320px; text-align: center; }
 
         input {
             width: 100%; padding: 14px; margin-bottom: 12px; background: #1a1a1a;
-            border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box;
-            font-size: 14px; display: block;
+            border: 1px solid #333; color: #fff; border-radius: 10px; box-sizing: border-box;
+            font-size: 14px; display: block; outline: none; transition: 0.3s;
         }
 
-        /* FIXED: Isse "Forgot password" ekdam line mein rahega */
+        /* Focus effect: Jab click karoge to chamkega */
+        input:focus { border-color: #FFD700; background: #222; }
+
         .forgot-link {
             display: block; 
             text-align: right; 
             font-size: 13px; 
             color: #FFD700;
             text-decoration: none; 
-            margin-top: 5px;    /* Dabba se thodi doori */
-            margin-bottom: 25px; /* Button se thodi doori */
-            padding-right: 2px;  /* Dahine se box ke barabar lane ke liye */
+            margin-top: 2px;
+            margin-bottom: 25px;
             font-weight: 500;
         }
 
         .login-btn {
-            width: 100%; padding: 12px; background: #FFD700; border: none;
-            color: #000; font-weight: bold; border-radius: 8px; cursor: pointer;
-            font-size: 16px;
+            width: 100%; padding: 14px; background: #FFD700; border: none;
+            color: #000; font-weight: bold; border-radius: 10px; cursor: pointer;
+            font-size: 16px; transition: 0.2s;
         }
+        .login-btn:active { transform: scale(0.98); background: #e6c200; }
 
-        .divider { margin: 30px 0; color: #444; font-size: 12px; border-top: 1px solid #222; padding-top: 20px; position: relative; }
-        .divider::after { content: "OR"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #000; padding: 0 10px; }
+        .divider { 
+            margin: 35px 0; color: #555; font-size: 13px; 
+            display: flex; align-items: center; width: 100%; 
+        }
+        .divider::before, .divider::after { 
+            content: ""; flex: 1; height: 1px; background: #222; margin: 0 10px; 
+        }
 
         .create-btn {
-            width: 100%; padding: 10px; background: transparent; border: 1px solid #444;
-            color: #FFD700; font-weight: bold; border-radius: 8px; cursor: pointer;
-            font-size: 13px; text-decoration: none; display: inline-block; box-sizing: border-box;
+            width: 100%; padding: 12px; background: transparent; border: 1px solid #333;
+            color: #FFD700; font-weight: bold; border-radius: 10px; cursor: pointer;
+            font-size: 14px; text-decoration: none; display: inline-block; box-sizing: border-box;
+            transition: 0.3s;
         }
+        .create-btn:hover { border-color: #FFD700; background: #111; }
     </style>
 </head>
 <body>
@@ -66,7 +76,7 @@
             <button type="submit" class="login-btn">Log In</button>
         </form>
 
-        <div class="divider"></div>
+        <div class="divider">OR</div>
 
         <a href="signup.html" class="create-btn">Create New Account</a>
     </div>
