@@ -14,29 +14,30 @@
         
         .logo { font-size: 42px; font-weight: 900; color: #FFD700; margin-bottom: 5px; letter-spacing: 1px; }
         .sub-title { color: #fff; font-weight: bold; font-size: 18px; margin-bottom: 10px; }
-        .info { color: #aaa; font-size: 14px; margin-bottom: 25px; line-height: 1.4; padding: 0 10px; }
+        .info { color: #aaa; font-size: 14px; margin-bottom: 25px; line-height: 1.4; }
         
         .input-group { text-align: left; margin-bottom: 20px; }
         .label { color: #FFD700; font-size: 12px; font-weight: bold; margin-bottom: 5px; display: block; text-transform: uppercase; }
 
-        /* ZOOM FIX: Font-size 16px rakha gaya hai */
         input { 
             width: 100%; padding: 14px; background: #121212; 
             border: 1px solid #333; color: #fff; border-radius: 10px; 
             box-sizing: border-box; outline: none; font-size: 16px; 
-            transition: border 0.3s;
         }
-        input:focus { border-color: #FFD700; }
 
         .divider { margin: 20px 0; display: flex; align-items: center; color: #555; font-size: 13px; font-weight: bold; }
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #222; margin: 0 10px; }
 
+        /* BUTTON FIX: Box ke andar fit karne ke liye styles */
         .btn { 
-            width: 100%; padding: 14px; background: #FFD700; 
+            display: block; /* Poori width lene ke liye */
+            width: 100%; 
+            padding: 14px 0; /* Left/Right padding 0 taki width 100% rahe */
+            background: #FFD700; 
             color: #000; border: none; font-weight: bold; 
             border-radius: 10px; cursor: pointer; 
-            text-decoration: none; display: inline-block; font-size: 16px;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+            text-decoration: none; font-size: 16px;
+            box-sizing: border-box; /* Padding ko width ke andar rakhne ke liye */
         }
         
         .back-link { margin-top: 25px; display: block; color: #aaa; text-decoration: none; font-size: 14px; }
