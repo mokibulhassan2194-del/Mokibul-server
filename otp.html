@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Verification</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        body { 
+            background: #000; color: #fff; font-family: sans-serif; 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; touch-action: manipulation;
+        }
         .box { width: 85%; text-align: center; max-width: 350px; }
         
         .logo { font-size: 42px; font-weight: 900; color: #FFD700; margin-bottom: 30px; letter-spacing: 1px; }
@@ -13,7 +17,7 @@
         h2 { font-size: 20px; margin-bottom: 10px; }
         .info { color: #aaa; font-size: 14px; margin-bottom: 25px; line-height: 1.5; padding: 0 10px; }
         
-        /* NORMAL SINGLE INPUT BOX */
+        /* ZOOM FIX: Input font-size 16px se bada rakha hai */
         input { 
             width: 100%; padding: 14px; 
             background: #121212; border: 1px solid #333; 
@@ -24,12 +28,17 @@
         
         input:focus { border-color: #FFD700; }
 
+        /* BUTTON FIX: box-sizing aur display property add ki gayi hai */
         .btn { 
-            width: 100%; padding: 14px; background: #FFD700; 
+            display: block;
+            width: 100%; 
+            padding: 14px 0; 
+            background: #FFD700; 
             color: #000; border: none; font-weight: bold; 
             border-radius: 10px; cursor: pointer; 
-            text-decoration: none; display: inline-block;
-            font-size: 16px; margin-top: 20px;
+            text-decoration: none; font-size: 16px; 
+            margin-top: 20px;
+            box-sizing: border-box; /* Isse button bahar nahi jayega */
         }
         
         .resend { margin-top: 25px; display: block; color: #FFD700; text-decoration: none; font-size: 14px; font-weight: bold; }
@@ -37,7 +46,7 @@
 </head>
 <body>
     <div class="box">
-        <div class="logo">Max  ful</div>
+        <div class="logo">Max ful</div>
         
         <h2>Enter Confirmation Code</h2>
         <p class="info">Enter the 6-digit code we sent to your device to verify your account.</p>
