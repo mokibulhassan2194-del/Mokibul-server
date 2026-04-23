@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful | Verification</title>
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { width: 85%; text-align: center; max-width: 350px; }
+        .logo { font-size: 42px; font-weight: 900; color: #FFD700; margin-bottom: 10px; letter-spacing: 1px; }
+        .msg-icon { font-size: 50px; margin-bottom: 15px; }
+        h2 { font-size: 20px; margin-bottom: 8px; }
+        .info { color: #aaa; font-size: 14px; margin-bottom: 25px; line-height: 1.4; }
+        
+        /* OTP Input Boxes */
+        .otp-inputs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .otp-inputs input { 
+            width: 45px; height: 50px; background: #121212; 
+            border: 1px solid #333; color: #fff; border-radius: 8px; 
+            text-align: center; font-size: 20px; font-weight: bold; outline: none;
+        }
+        .otp-inputs input:focus { border-color: #FFD700; }
+
+        .btn { 
+            width: 100%; padding: 14px; background: #FFD700; 
+            color: #000; border: none; font-weight: bold; 
+            border-radius: 8px; cursor: pointer; 
+            text-decoration: none; display: inline-block; font-size: 16px;
+        }
+        .resend { margin-top: 25px; display: block; color: #FFD700; text-decoration: none; font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="logo">Max  ful</div>
+        <div class="msg-icon">📩</div>
+        <h2>Enter Confirmation Code</h2>
+        <p class="info">Enter the 6-digit code we sent to your device. It may take a minute to arrive.</p>
+        
+        <div class="otp-inputs">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+        </div>
+        
+        <a href="home.html" class="btn">Verify Account</a>
+        
+        <a href="#" class="resend">Resend Code</a>
+    </div>
+</body>
+</html>
 
