@@ -5,90 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Reel | Max Ful</title>
     <style>
-        body { margin: 0; background: #000; color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; }
+        body { margin: 0; background: #000; color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
         .header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 0.1px solid #333; }
         .header h2 { font-size: 18px; margin: 0; }
-        
-        /* Video Preview Area */
+        .next-link { color: #FFD700; font-weight: bold; text-decoration: none; font-size: 16px; cursor: pointer; }
+
+        /* Video Preview Area - Full Screen Feel */
         .preview-container { width: 100%; flex: 1; background: #111; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        #videoPreview { width: 100%; height: 100%; object-fit: contain; display: none; }
-        .placeholder-text { color: #888; text-align: center; }
-
-        /* Caption & Hashtag Section */
-        .input-section { padding: 15px; background: #000; }
-        .caption-input { 
-            width: 100%; background: none; border: none; color: white; 
-            font-size: 15px; outline: none; resize: none; height: 80px; 
-        }
-        /* Hashtag highlight effect (Blue) */
-        .highlight { color: #0095f6; }
-
-        .share-btn { 
-            background: gold; color: black; border: none; padding: 12px; 
-            width: 90%; align-self: center; border-radius: 8px; font-weight: bold; 
-            font-size: 16px; margin-bottom: 20px; cursor: pointer;
-        }
+        #videoPreview { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .placeholder-text { color: #888; text-align: center; cursor: pointer; }
 
         /* Hidden File Input */
         #fileInput { display: none; }
+
+        /* Instructions */
+        .tap-info { position: absolute; bottom: 20px; width: 100%; text-align: center; color: rgba(255,255,255,0.5); font-size: 12px; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <span onclick="history.back()">✕</span>
+        <span onclick="history.back()" style="cursor:pointer; font-size: 20px;">✕</span>
         <h2>New Reel</h2>
-        <span style="color: gold; font-weight: bold;">Next</span>
+        <a href="share-reel.html" class="next-link">Next</a>
     </div>
 
     <div class="preview-container" onclick="document.getElementById('fileInput').click()">
         <video id="videoPreview" autoplay muted loop></video>
+        
         <div class="placeholder-text" id="placeholder">
-            <div style="font-size: 50px;">+</div>
-            <p>Click to select from Gallery</p>
+            <div style="font-size: 60px; color: #FFD700;">+</div>
+            <p>Tap to select from Gallery</p>
         </div>
+
+        <div class="tap-info" id="tapInfo" style="display:none;">Tap video to change</div>
     </div>
 
     <input type="file" id="fileInput" accept="video/*" onchange="previewVideo(event)">
 
-    <div class="input-section">
-        <textarea class="caption-input" id="caption" placeholder="Write a caption... #reels #viral"></textarea>
-    </div>
-
-    <button class="share-btn" onclick="startUpload()">Share Reel</button>
-
     <script>
-        // Gallery se video dikhane ke liye
         function previewVideo(event) {
             const file = event.target.files[0];
             if (file) {
                 const videoPreview = document.getElementById('videoPreview');
                 const placeholder = document.getElementById('placeholder');
+                const tapInfo = document.getElementById('tapInfo');
                 
                 videoPreview.src = URL.createObjectURL(file);
                 videoPreview.style.display = 'block';
                 placeholder.style.display = 'none';
+                tapInfo.style.display = 'block';
             }
-        }
-
-        // Upload button ka drama (Fake Upload)
-        function startUpload() {
-            const btn = document.querySelector('.share-btn');
-            btn.innerHTML = "Uploading... 10%";
-            btn.style.opacity = "0.6";
-            
-            let progress = 10;
-            const interval = setInterval(() => {
-                progress += 20;
-                btn.innerHTML = `Uploading... ${progress}%`;
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    alert("Reel Published Successfully! 🔥");
-                    window.location.href = "reels.html"; // Wapas reels par le jayega
-                }
-            }, 500);
         }
     </script>
 </body>
 </html>
-
