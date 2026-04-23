@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Profile</title>
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
+        body { 
+            background-color: #000; color: #fff; font-family: sans-serif; 
+            margin: 0; padding-bottom: 70px; 
+            /* Browser zoom preventer */
+            touch-action: manipulation; 
+        }
         
         /* Top Header */
         .profile-header {
@@ -13,16 +18,17 @@
             padding: 15px; border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100;
         }
         .username { font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .blue-tick { background: #0095f6; color: #fff; border-radius: 50%; width: 15px; height: 15px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+        .blue-tick { background: #0095f6; color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
         /* Profile Info */
         .profile-info { padding: 15px; display: flex; align-items: center; gap: 20px; }
         .profile-pic-container {
             width: 80px; height: 80px; 
-            border-radius: 50%; border: 2px solid #FFD700; 
+            border-radius: 50%; border: 2.5px solid #FFD700; 
             padding: 3px; overflow: hidden;
+            background: #111;
         }
-        .profile-pic-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #333; }
+        .profile-pic-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
         .stats { display: flex; flex-grow: 1; justify-content: space-around; text-align: center; }
         .stat-num { font-weight: bold; font-size: 18px; display: block; }
@@ -30,21 +36,28 @@
 
         /* Bio */
         .profile-details { padding: 0 15px 10px; }
-        .full-name { font-weight: bold; font-size: 15px; }
+        .full-name { font-weight: bold; font-size: 15px; margin-bottom: 2px; }
         .bio { font-size: 13px; color: #ddd; line-height: 1.5; }
 
-        /* Highlights */
+        /* Highlights - Better Styling */
         .highlights { display: flex; gap: 15px; padding: 10px 15px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-        .highlight-item { text-align: center; display: inline-block; }
-        .highlight-circle { width: 56px; height: 56px; border-radius: 50%; border: 1px solid #333; padding: 2px; background: #111; margin-bottom: 5px; }
+        .highlights::-webkit-scrollbar { display: none; }
+        .highlight-item { text-align: center; display: inline-block; min-width: 65px; }
+        .highlight-circle { 
+            width: 58px; height: 58px; border-radius: 50%; border: 1px solid #333; 
+            padding: 2px; background: #1a1a1a; margin: 0 auto 5px; 
+            display: flex; align-items: center; justify-content: center;
+        }
         .highlight-text { font-size: 11px; color: #eee; }
 
-        /* Buttons */
+        /* Buttons - Prevent Zoom */
         .btn-container { display: flex; gap: 10px; padding: 10px 15px; }
         .edit-btn {
             flex: 1; background: #262626; color: #fff; 
-            text-align: center; padding: 8px; border-radius: 8px;
+            text-align: center; padding: 10px; border-radius: 10px;
             text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #333;
+            /* Anti-zoom click */
+            touch-action: manipulation;
         }
 
         /* Tabs */
@@ -54,9 +67,9 @@
 
         /* Grid */
         .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-        .grid-item { aspect-ratio: 9/16; background: #111; position: relative; border: 0.1px solid #222; overflow: hidden; }
-        .grid-item video { width: 100%; height: 100%; object-fit: cover; }
-        .play-count { position: absolute; bottom: 5px; left: 5px; font-size: 10px; color: #fff; display: flex; align-items: center; gap: 3px; }
+        .grid-item { aspect-ratio: 1/1; background: #111; position: relative; border: 0.1px solid #222; overflow: hidden; }
+        .grid-item video, .grid-item img { width: 100%; height: 100%; object-fit: cover; }
+        .play-count { position: absolute; bottom: 5px; left: 5px; font-size: 10px; color: #fff; display: flex; align-items: center; gap: 3px; background: rgba(0,0,0,0.4); padding: 2px 4px; border-radius: 4px; }
 
         /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
@@ -75,7 +88,7 @@
 
     <div class="profile-info">
         <div class="profile-pic-container">
-            <img src="my-photo.jpg.jpg" alt="Profile">
+            <img src="https://picsum.photos/id/64/200/200" alt="Profile">
         </div>
         <div class="stats">
             <div><span class="stat-num">12</span><span class="stat-label">Posts</span></div>
@@ -91,19 +104,19 @@
 
     <div class="highlights">
         <div class="highlight-item">
-            <div class="highlight-circle"><div style="width:100%; height:100%; background:#222; border-radius:50%;"></div></div>
+            <div class="highlight-circle"><img src="https://picsum.photos/id/120/100/100" style="width:100%; height:100%; border-radius:50%; object-fit:cover;"></div>
             <span class="highlight-text">Gym</span>
         </div>
         <div class="highlight-item">
-            <div class="highlight-circle"><div style="width:100%; height:100%; background:#222; border-radius:50%;"></div></div>
+            <div class="highlight-circle"><img src="https://picsum.photos/id/10/100/100" style="width:100%; height:100%; border-radius:50%; object-fit:cover;"></div>
             <span class="highlight-text">Travel</span>
         </div>
         <div class="highlight-item">
-            <div class="highlight-circle"><div style="width:100%; height:100%; background:#222; border-radius:50%;"></div></div>
+            <div class="highlight-circle"><img src="https://picsum.photos/id/2/100/100" style="width:100%; height:100%; border-radius:50%; object-fit:cover;"></div>
             <span class="highlight-text">Vlogs</span>
         </div>
         <div class="highlight-item">
-            <div class="highlight-circle"><div style="width:100%; height:100%; background:#222; border-radius:50%; display:flex; align-items:center; justify-content:center;">+</div></div>
+            <div class="highlight-circle" style="font-size: 24px; color: #aaa;">+</div>
             <span class="highlight-text">New</span>
         </div>
     </div>
@@ -120,14 +133,12 @@
     </div>
 
     <div class="post-grid">
-        <div class="grid-item">
-            <video muted autoplay loop>
-                <source src="your-video.mp4" type="video/mp4">
-            </video>
-            <div class="play-count">▶ 105k</div>
-        </div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/101/300/500"><div class="play-count">▶ 105k</div></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/102/300/500"><div class="play-count">▶ 82k</div></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/103/300/500"><div class="play-count">▶ 45k</div></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/104/300/500"></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/105/300/500"></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/106/300/500"></div>
     </div>
 
     <div class="bottom-nav">
