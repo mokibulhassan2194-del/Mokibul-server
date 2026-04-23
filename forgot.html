@@ -24,7 +24,8 @@
             border-radius: 20px;
             border: 1px solid #333;
         }
-        h2 { color: #FFD700; margin-bottom: 10px; }
+        .logo-text { font-size: 30px; font-weight: 800; color: #FFD700; margin-bottom: 10px; }
+        h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
         p { color: #aaa; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
         
         input {
@@ -52,13 +53,15 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
+            transition: 0.3s;
         }
+        .btn:active { transform: scale(0.98); }
 
-        .otp-section { display: none; margin-top: 20px; }
+        .otp-section { display: none; margin-top: 10px; }
         
         .back-to-login {
             display: block;
-            margin-top: 20px;
+            margin-top: 25px;
             color: #FFD700;
             text-decoration: none;
             font-size: 14px;
@@ -68,7 +71,8 @@
 <body>
 
 <div class="container">
-    <h2>Forgot Password?</h2>
+    <div class="logo-text">Max Ful</div>
+    <h2 id="title">Forgot Password?</h2>
     <p id="instruction">Enter your email or phone to receive a 4-digit OTP.</p>
 
     <div id="step1">
@@ -77,8 +81,8 @@
     </div>
 
     <div id="step2" class="otp-section">
-        <input type="number" id="otpValue" placeholder="X - X - X - X">
-        <button class="btn" onclick="verifyAndRedirect()">Verify OTP</button>
+        <input type="number" id="otpValue" placeholder="Enter 4-digit OTP" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
+        <button class="btn" id="verifyBtn" onclick="verifyAndRedirect()">Verify OTP</button>
     </div>
 
     <a href="index.html" class="back-to-login">Back to Login</a>
@@ -92,20 +96,24 @@
         } else {
             document.getElementById('step1').style.display = 'none';
             document.getElementById('step2').style.display = 'block';
+            document.getElementById('title').innerText = "Verify OTP";
             document.getElementById('instruction').innerHTML = "We sent an OTP to <br><b>" + input + "</b>";
         }
     }
 
-    // Naya function jo user ko home page par le jayega
     function verifyAndRedirect() {
         var otp = document.getElementById('otpValue').value;
         
         if(otp.length < 4) {
             alert("Please enter a valid 4-digit OTP");
         } else {
-            alert('OTP Verified! Redirecting to your account...');
-            // Yahan 'home.html' likha hai, ise apni ID/Dashboard wali file ke naam se badal dena
-            window.location.href = "home.html"; 
+            // Button ka text change kar rahe hain taki user ko lage processing ho rahi hai
+            document.getElementById('verifyBtn').innerText = "Verifying...";
+            
+            // 1 second ka delay taki thoda real lage, phir seedha home page
+            setTimeout(function(){
+                window.location.href = "home.html"; 
+            }, 800);
         }
     }
 </script>
