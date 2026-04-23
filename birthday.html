@@ -19,20 +19,25 @@
         
         .dob-row { display: flex; gap: 8px; margin-bottom: 30px; }
         
-        /* ZOOM FIX: Font-size 16px rakha gaya hai */
         select { 
             flex: 1; padding: 12px; background: #121212; 
             border: 1px solid #333; color: #fff; border-radius: 8px; 
             outline: none; cursor: pointer; font-size: 16px; 
-            appearance: none; /* Mobile optimization */
+            appearance: none;
         }
 
+        /* NEXT BUTTON FIX: width aur position ko sahi karne ke liye */
         .btn { 
-            width: 100%; padding: 14px; background: #FFD700; 
+            display: block; /* Poori width lene ke liye */
+            width: 100%; 
+            padding: 14px 0; 
+            background: #FFD700; 
             color: #000; border: none; font-weight: bold; 
             border-radius: 8px; cursor: pointer; 
-            text-decoration: none; display: inline-block; font-size: 16px;
+            text-decoration: none; font-size: 16px;
+            box-sizing: border-box; /* Padding ko width ke andar rakhne ke liye */
         }
+        
         .back-link { margin-top: 25px; display: block; color: #aaa; text-decoration: none; font-size: 14px; }
     </style>
 </head>
@@ -54,11 +59,11 @@
 
             <select id="day">
                 <option selected disabled>Day</option>
-                </select>
+            </select>
 
             <select id="year">
                 <option selected disabled>Year</option>
-                </select>
+            </select>
         </div>
         
         <a href="contact.html" class="btn">Next</a>
@@ -67,7 +72,6 @@
     </div>
 
     <script>
-        // Days (1 to 31) generate karne ke liye
         const daySelect = document.getElementById('day');
         for (let i = 1; i <= 31; i++) {
             let opt = document.createElement('option');
@@ -76,7 +80,6 @@
             daySelect.appendChild(opt);
         }
 
-        // Years (1950 to 2026) generate karne ke liye
         const yearSelect = document.getElementById('year');
         const currentYear = new Date().getFullYear();
         for (let i = currentYear; i >= 1950; i--) {
