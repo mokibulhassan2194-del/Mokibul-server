@@ -14,70 +14,91 @@
         }
         .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 20px; }
         
-        .section-title { padding: 20px 15px 10px; font-size: 14px; color: #aaa; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* Search Box */
+        .search-container { padding: 10px 15px; }
+        .search-bar {
+            width: 90%; background: #262626; border: none; padding: 10px 15px;
+            border-radius: 10px; color: #fff; font-size: 14px; outline: none;
+        }
+
+        .section-title { padding: 25px 15px 10px; font-size: 12px; color: #8e8e8e; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
         /* Menu Items */
         .menu-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px; border-bottom: 1px solid #111;
-            text-decoration: none; color: #fff;
+            padding: 16px 15px; border-bottom: 0.5px solid #1a1a1a;
+            text-decoration: none; color: #fff; transition: background 0.3s;
         }
+        .menu-item:active { background: #1a1a1a; } /* Click effect */
+
         .item-content { display: flex; align-items: center; gap: 15px; }
-        .icon { font-size: 20px; width: 25px; text-align: center; }
-        .arrow { color: #555; font-size: 18px; }
+        .icon { font-size: 20px; width: 25px; text-align: center; color: #FFD700; } /* Gold Icons */
+        .arrow { color: #555; font-size: 18px; font-weight: lighter; }
+
+        .logout-text { color: #ff4d4d; font-weight: bold; }
+        
+        .version { text-align: center; color: #444; font-size: 12px; padding: 40px 0; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="profile.html" class="back-btn">←</a>
-        <span style="font-size: 18px; font-weight: bold;">Settings and activity</span>
+        <span style="font-size: 18px; font-weight: bold;">Settings</span>
     </div>
 
-    <div class="section-title">Account Settings</div>
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="🔍 Search settings...">
+    </div>
+
+    <div class="section-title">Your Account</div>
     <a href="edit-profile.html" class="menu-item">
         <div class="item-content"><span class="icon">👤</span><span>Edit Profile</span></div>
-        <span class="arrow">&gt;</span>
+        <span class="arrow">›</span>
     </a>
 
     <div class="section-title">Privacy & Safety</div>
     <a href="privacy.html" class="menu-item">
         <div class="item-content"><span class="icon">🔒</span><span>Account Privacy</span></div>
-        <span class="arrow">&gt;</span>
+        <span class="arrow">›</span>
     </a>
     <a href="blocked.html" class="menu-item">
         <div class="item-content"><span class="icon">🚫</span><span>Blocked Accounts</span></div>
-        <span class="arrow">&gt;</span>
-    </a>
-    <a href="#" class="menu-item">
-        <div class="item-content"><span class="icon">👁️</span><span>Hide Story and Live</span></div>
-        <span class="arrow">&gt;</span>
+        <span class="arrow">›</span>
     </a>
 
     <div class="section-title">Preferences</div>
     <a href="#" class="menu-item">
         <div class="item-content"><span class="icon">🔔</span><span>Notifications</span></div>
-        <span class="arrow">&gt;</span>
+        <span class="arrow">›</span>
     </a>
     <a href="#" class="menu-item">
-        <div class="item-content"><span class="icon">🌙</span><span>Dark Mode</span></div>
-        <span class="arrow">&gt;</span>
+        <div class="item-content"><span class="icon">🌙</span><span>Appearance</span></div>
+        <span class="arrow">›</span>
     </a>
 
-    <div class="section-title">Support</div>
+    <div class="section-title">Support & About</div>
     <a href="#" class="menu-item">
         <div class="item-content"><span class="icon">🎧</span><span>Help Center</span></div>
-        <span class="arrow">&gt;</span>
+        <span class="arrow">›</span>
+    </a>
+    <a href="#" class="menu-item">
+        <div class="item-content"><span class="icon">ℹ️</span><span>About Max Ful</span></div>
+        <span class="arrow">›</span>
     </a>
 
-    <div style="margin-top: 30px;">
-        <a href="index.html" class="menu-item"> <div class="item-content">
+    <div style="margin-top: 20px;">
+        <a href="index.html" class="menu-item">
+            <div class="item-content">
                 <span class="icon">🚪</span>
-                <span style="color: #ff4d4d; font-weight: bold;">Log Out</span>
+                <span class="logout-text">Log Out</span>
             </div>
         </a>
     </div>
 
+    <div class="version">
+        MAX FUL for Android<br>Version 1.0.24 (2026)
+    </div>
+
 </body>
 </html>
-
