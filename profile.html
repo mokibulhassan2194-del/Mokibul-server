@@ -12,99 +12,71 @@
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px; border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100;
         }
+        .username { font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .blue-tick { background: #0095f6; color: #fff; border-radius: 50%; width: 15px; height: 15px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
 
-        .username-container { display: flex; align-items: center; gap: 5px; }
-        .username { font-size: 18px; font-weight: bold; }
-        .blue-tick {
-            width: 16px; height: 16px;
-            background-color: #0095f6;
-            color: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: bold;
-        }
-
-        .header-icons span, .header-icons a { text-decoration: none; color: #fff; margin-left: 15px; font-size: 20px; cursor: pointer; }
-
-        /* Profile Info Section */
-        .profile-info { padding: 10px 15px; display: flex; align-items: center; gap: 20px; }
+        /* Profile Info */
+        .profile-info { padding: 15px; display: flex; align-items: center; gap: 20px; }
         
-        /* --- STORY ICON: CHHOTA AND UPAR --- */
+        /* FIX 1: Circle Photo with Border */
         .profile-pic-container {
-            width: 72px; /* 85 से घटाकर 72 किया */
-            height: 72px; 
+            width: 80px; height: 80px; 
             border-radius: 50%; 
             border: 2px solid #FFD700; 
-            padding: 2.5px; 
-            cursor: pointer;
-            flex-shrink: 0;
-            margin-top: -5px; /* थोडा सा ऊपर सरकाया */
+            padding: 3px;
         }
         .profile-pic-container img { 
             width: 100%; height: 100%; 
             border-radius: 50%; 
             object-fit: cover; 
-            background: #333;
+            background: #222; /* Jab tak image nahi milti tab tak ye dikhega */
         }
 
-        .stats { display: flex; gap: 10px; text-align: center; flex-grow: 1; justify-content: space-around; }
-        .stat-num { font-weight: bold; font-size: 17px; display: block; }
-        .stat-label { font-size: 11px; color: #aaa; }
+        .stats { display: flex; flex-grow: 1; justify-content: space-around; text-align: center; }
+        .stat-num { font-weight: bold; font-size: 18px; display: block; }
+        .stat-label { font-size: 12px; color: #aaa; }
 
-        /* Name and Bio */
-        .profile-details { padding: 0 15px 15px 15px; }
-        .full-name { font-weight: bold; font-size: 14px; margin-bottom: 3px; }
-        .bio { font-size: 13px; line-height: 1.4; color: #eee; }
+        /* Bio */
+        .profile-details { padding: 0 15px 10px; }
+        .full-name { font-weight: bold; font-size: 15px; }
+        .bio { font-size: 13px; color: #ddd; line-height: 1.5; }
 
-        /* --- EDIT BUTTON: SLEEK AND CENTERED --- */
+        /* Buttons */
+        .btn-container { display: flex; gap: 10px; padding: 10px 15px; }
         .edit-btn {
-            display: block; 
-            width: 92%; /* थोडा सा छोटा किया */
-            max-width: 340px;
-            margin: 5px auto; 
-            padding: 7px; /* ऊँचाई कम की */
-            background: #262626; 
+            flex: 1; background: #262626; color: #fff; 
+            text-align: center; padding: 8px; border-radius: 8px;
+            text-decoration: none; font-size: 14px; font-weight: bold;
             border: 1px solid #333;
-            color: #fff; 
-            text-align: center; 
-            border-radius: 7px;
-            text-decoration: none; 
-            font-size: 13px; 
-            font-weight: bold;
         }
 
-        /* Post Grid */
-        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 15px; }
-        .grid-item { aspect-ratio: 1/1; background: #1a1a1a; position: relative; }
-        .grid-item video, .grid-item img { width: 100%; height: 100%; object-fit: cover; }
-        .play-icon { position: absolute; top: 5px; right: 5px; font-size: 12px; }
+        /* Tabs Icon */
+        .tabs { display: flex; justify-content: space-around; border-top: 1px solid #222; margin-top: 10px; }
+        .tab-item { padding: 12px; font-size: 20px; color: #aaa; cursor: pointer; flex: 1; text-align: center; }
+        .active-tab { color: #fff; border-bottom: 2px solid #fff; }
 
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 60px;
-            background: #000; border-top: 1px solid #333;
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
-        }
-        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 22px; }
+        /* Grid - 3 Columns like Instagram */
+        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .grid-item { aspect-ratio: 9/16; background: #111; position: relative; border: 0.1px solid #222; overflow: hidden; }
+        .grid-item video { width: 100%; height: 100%; object-fit: cover; }
+        .play-count { position: absolute; bottom: 5px; left: 5px; font-size: 10px; color: #fff; display: flex; align-items: center; gap: 3px; }
+
+        /* Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; }
+        .nav-link { color: #fff; text-decoration: none; font-size: 24px; }
     </style>
 </head>
 <body>
 
     <div class="profile-header">
-        <div class="username-container">
-            <div class="username">makibul_vlogs</div>
-            <div class="blue-tick" title="Verified">✓</div>
-        </div>
-        <div class="header-icons">
-            <span>➕</span>
-            <a href="settings.html">☰</a>
-        </div>
+        <div class="username">makibul_vlogs <div class="blue-tick">✓</div></div>
+        <div style="font-size: 22px;">☰</div>
     </div>
 
     <div class="profile-info">
-        <div class="profile-pic-container" onclick="location.href='view-story.html'">
-            <img src="profile-placeholder.jpg" alt="Profile">
+        <div class="profile-pic-container">
+            <img src="my-photo.jpg" alt="👤">
         </div>
-        
         <div class="stats">
             <div><span class="stat-num">12</span><span class="stat-label">Posts</span></div>
             <div><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
@@ -117,12 +89,23 @@
         <div class="bio">🎬 4K Video Creator | Tech Enthusiast<br>🚀 Working on Max Ful App<br>📍 India</div>
     </div>
 
-    <a href="edit-profile.html" class="edit-btn">Edit Profile</a>
+    <div class="btn-container">
+        <a href="edit-profile.html" class="edit-btn">Edit Profile</a>
+        <a href="#" class="edit-btn">Share Profile</a>
+    </div>
+
+    <div class="tabs">
+        <div class="tab-item active-tab">🔳</div>
+        <div class="tab-item">🎬</div>
+        <div class="tab-item">👥</div>
+    </div>
 
     <div class="post-grid">
         <div class="grid-item">
-            <video src="3021.mp4" muted></video>
-            <span class="play-icon">▶️</span>
+            <video muted autoplay loop>
+                <source src="your-video.mp4" type="video/mp4">
+            </video>
+            <div class="play-count">▶ 105k</div>
         </div>
         <div class="grid-item"></div>
         <div class="grid-item"></div>
@@ -132,11 +115,11 @@
     </div>
 
     <div class="bottom-nav">
-        <a href="home.html" class="nav-item">🏠</a>
-        <a href="search.html" class="nav-item">🔍</a>
-        <a href="#" style="font-size: 30px; color: #FFD700;">+</a>
-        <a href="reels.html" class="nav-item">🎬</a>
-        <a href="profile.html" class="nav-item">👤</a>
+        <a href="home.html" class="nav-link">🏠</a>
+        <a href="search.html" class="nav-link">🔍</a>
+        <a href="upload.html" style="font-size: 32px; color: #FFD700;">➕</a>
+        <a href="reels.html" class="nav-link">🎬</a>
+        <a href="profile.html" class="nav-link" style="color: #FFD700;">👤</a>
     </div>
 
 </body>
