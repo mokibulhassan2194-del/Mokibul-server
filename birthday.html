@@ -2,22 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Add Birthday</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        body { 
+            background: #000; color: #fff; font-family: sans-serif; 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; 
+            touch-action: manipulation;
+        }
         .box { width: 85%; text-align: center; max-width: 350px; }
         .logo { font-size: 42px; font-weight: 900; color: #FFD700; margin-bottom: 10px; letter-spacing: 1px; }
         .cake-img { font-size: 55px; margin-bottom: 15px; }
         h2 { font-size: 19px; margin-bottom: 8px; }
         .info { color: #aaa; font-size: 13px; margin-bottom: 25px; line-height: 1.4; }
         
-        /* Select Boxes Styling */
         .dob-row { display: flex; gap: 8px; margin-bottom: 30px; }
+        
+        /* ZOOM FIX: Font-size 16px rakha gaya hai */
         select { 
             flex: 1; padding: 12px; background: #121212; 
             border: 1px solid #333; color: #fff; border-radius: 8px; 
-            outline: none; cursor: pointer; font-size: 14px;
+            outline: none; cursor: pointer; font-size: 16px; 
+            appearance: none; /* Mobile optimization */
         }
 
         .btn { 
@@ -31,13 +38,13 @@
 </head>
 <body>
     <div class="box">
-        <div class="logo">Max  ful</div>
+        <div class="logo">Max ful</div>
         <div class="cake-img">🎂</div>
         <h2>Add Your Birthday</h2>
-        <p class="info">This won't be a part of your public profile. Max  ful needs your age to keep the community safe.</p>
+        <p class="info">This won't be a part of your public profile. Max ful needs your age to keep the community safe.</p>
         
         <div class="dob-row">
-            <select>
+            <select id="month">
                 <option selected disabled>Month</option>
                 <option>January</option><option>February</option><option>March</option>
                 <option>April</option><option>May</option><option>June</option>
@@ -45,24 +52,39 @@
                 <option>October</option><option>November</option><option>December</option>
             </select>
 
-            <select>
+            <select id="day">
                 <option selected disabled>Day</option>
-                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-                <option>10</option><option>15</option><option>20</option><option>25</option><option>31</option>
-            </select>
+                </select>
 
-            <select>
+            <select id="year">
                 <option selected disabled>Year</option>
-                <option>2024</option><option>2020</option><option>2015</option>
-                <option>2010</option><option>2005</option><option>2000</option>
-                <option>1995</option><option>1990</option><option>1985</option>
-            </select>
+                </select>
         </div>
         
         <a href="contact.html" class="btn">Next</a>
         
         <a href="signup.html" class="back-link">Go Back</a>
     </div>
+
+    <script>
+        // Days (1 to 31) generate karne ke liye
+        const daySelect = document.getElementById('day');
+        for (let i = 1; i <= 31; i++) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = i;
+            daySelect.appendChild(opt);
+        }
+
+        // Years (1950 to 2026) generate karne ke liye
+        const yearSelect = document.getElementById('year');
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i >= 1950; i--) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = i;
+            yearSelect.appendChild(opt);
+        }
+    </script>
 </body>
 </html>
-
