@@ -13,14 +13,35 @@
         .username { font-weight: bold; font-size: 18px; }
 
         /* Profile Info Section */
-        .profile-info { padding: 20px 15px; display: flex; align-items: center; justify-content: space-between; }
-        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #FFD700; padding: 3px; }
-        .stats { display: flex; gap: 20px; text-align: center; }
+        .profile-info { 
+            padding: 10px 15px; /* ऊपर की पैडिंग कम की ताकि सब ऊपर शिफ्ट हो जाए */
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+        }
+        
+        .profile-pic { 
+            width: 75px;   /* साइज 85 से घटाकर 75 किया (हल्का छोटा) */
+            height: 75px; 
+            border-radius: 50%; 
+            border: 1.8px solid #FFD700; 
+            padding: 2px; 
+            object-fit: cover;
+            margin-top: -10px; /* फोटो को हल्का ऊपर खींचा */
+        }
+
+        .stats { 
+            display: flex; 
+            gap: 20px; 
+            text-align: center; 
+            margin-top: -15px; /* नंबरों को भी फोटो के साथ ऊपर सेट किया */
+        }
+        
         .stat-item b { display: block; font-size: 16px; }
         .stat-item span { font-size: 12px; color: #888; }
 
         /* Bio Section */
-        .bio { padding: 0 15px 15px; }
+        .bio { padding: 0 15px 15px; margin-top: -5px; } /* बायो को भी हल्का ऊपर किया */
         .full-name { font-weight: bold; margin-bottom: 5px; display: block; }
         .bio-text { font-size: 14px; line-height: 1.4; }
 
@@ -67,4 +88,3 @@
 
 </body>
 </html>
-
