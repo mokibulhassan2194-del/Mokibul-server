@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Ful | New Reel</title>
+    <title>Max Ful | Upload Reel</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; }
+        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; overflow: hidden; }
         
         /* Header */
         .header { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #222; align-items: center; }
         .header h3 { margin: 0; font-size: 18px; }
-        .back-btn { font-size: 24px; text-decoration: none; color: #fff; }
+        .back-btn { font-size: 24px; text-decoration: none; color: #fff; cursor: pointer; }
 
         /* Share Section */
         .share-container { padding: 15px; display: flex; gap: 15px; border-bottom: 1px solid #222; }
         
-        /* Chhota Video Thumbnail */
+        /* Thumbnail */
         .video-preview { 
             width: 90px; height: 140px; 
             background: #111; border-radius: 8px; 
@@ -23,7 +23,7 @@
         }
         .video-preview video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Caption Area */
+        /* Caption */
         .caption-area { flex: 1; }
         textarea { 
             width: 100%; background: transparent; border: none; 
@@ -31,28 +31,29 @@
             outline: none; height: 100px;
         }
 
-        /* List Options */
+        /* Options */
         .options-list { list-style: none; padding: 0; margin: 0; }
         .option-item { 
             display: flex; justify-content: space-between; 
-            padding: 15px; border-bottom: 1px solid #111; 
+            padding: 18px 15px; border-bottom: 1px solid #111; 
             font-size: 15px; cursor: pointer;
         }
         .option-item span { color: #aaa; }
 
-        /* Final Share Button */
-        .footer { position: fixed; bottom: 0; width: 100%; padding: 15px; box-sizing: border-box; }
-        .btn-share { 
+        /* Final Upload Button */
+        .footer { position: fixed; bottom: 0; width: 100%; padding: 15px; box-sizing: border-box; background: #000; }
+        .btn-upload { 
             width: 100%; padding: 14px; background: #FFD700; 
             color: #000; border: none; font-weight: bold; 
             border-radius: 10px; font-size: 16px; cursor: pointer;
+            text-align: center; text-decoration: none; display: block;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <a href="home.html" class="back-btn">✕</a>
+        <span onclick="history.back()" class="back-btn">✕</span>
         <h3>New Reel</h3>
         <div style="width: 24px;"></div>
     </div>
@@ -65,7 +66,7 @@
         </div>
         
         <div class="caption-area">
-            <textarea placeholder="Write a caption... #reels #viral"></textarea>
+            <textarea placeholder="Write a caption... #maxful #viral"></textarea>
         </div>
     </div>
 
@@ -77,9 +78,8 @@
     </div>
 
     <div class="footer">
-        <button class="btn-share">Share Reel</button>
+        <a href="profile.html" class="btn-upload">Upload Reel</a>
     </div>
 
 </body>
 </html>
-
