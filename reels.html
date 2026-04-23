@@ -4,29 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Reels</title>
-    <link rel="stylesheet" href="style.css?v=3.2">
     <style>
-        /* Ek chota sa inline fix mobile height ke liye */
-        html, body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            position: fixed; /* Taaki poora page hil na sake */
-            background-color: #000;
+        /* CSS KA SARA MAAL YAHAN HAI */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: #000; overflow: hidden; font-family: sans-serif; 
         }
+        .reels-wrapper {
+            height: 100vh; width: 100%; overflow-y: scroll; 
+            scroll-snap-type: y mandatory; scrollbar-width: none;
+        }
+        .reels-wrapper::-webkit-scrollbar { display: none; }
+        .reel {
+            height: 100vh; width: 100%; scroll-snap-align: start; 
+            position: relative; background: #000;
+        }
+        video { width: 100%; height: 100%; object-fit: cover; }
+
+        .side-actions {
+            position: absolute; right: 15px; bottom: 100px; 
+            display: flex; flex-direction: column; gap: 20px; z-index: 1000; align-items: center;
+        }
+        .btn { background: none; border: none; color: white; text-align: center; cursor: pointer; }
+        .btn span { display: block; font-size: 12px; margin-top: 4px; }
+        .icon { width: 32px; height: 32px; fill: white; transition: 0.3s; }
+        .liked { fill: #ff2d55 !important; } /* Like hone par red color */
+
+        .details {
+            position: absolute; left: 15px; bottom: 100px; 
+            color: white; z-index: 1000; pointer-events: none; max-width: 70%;
+        }
+        .details b { font-size: 16px; display: block; margin-bottom: 5px; }
+        .details p { margin: 0; font-size: 14px; opacity: 0.9; }
+
+        .music-note {
+            width: 35px; height: 35px; border-radius: 50%;
+            border: 2px solid white; display: flex; align-items: center; justify-content: center;
+            animation: rotate 3s linear infinite; background: #222;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 65px;
+            background: #000; display: flex; justify-content: space-around;
+            align-items: center; z-index: 2000; border-top: 0.5px solid #333;
+        }
+        .nav-item { color: white; text-decoration: none; font-size: 24px; opacity: 0.6; }
+        .active { opacity: 1; color: gold; }
     </style>
 </head>
 <body>
 
 <div class="reels-wrapper" id="mainContainer">
-    
     <div class="reel">
-        <video src="3021.mp4" loop autoplay muted playsinline onclick="this.paused?this.play():this.pause()"></video>
-        
+        <video src="3021.mp4" loop autoplay muted playsinline onclick="togglePlay(this)"></video>
         <div class="side-actions">
-            <div class="btn">
+            <div class="btn" onclick="toggleLike(this)">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 <span>1.5k</span>
             </div>
@@ -40,49 +73,21 @@
             </div>
             <div class="music-note">🎵</div>
         </div>
-
         <div class="details">
             <b>@makibul_vlogs</b>
-            <p>Full Screen Fix! ✅</p>
+            <p>Coding is hard but I am harder! 🔥 #Success</p>
         </div>
     </div>
-
-    <div class="reel">
-        <video src="3021.mp4" loop muted playsinline onclick="this.paused?this.play():this.pause()"></video>
-        
-        <div class="side-actions">
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                <span>2.1k</span>
-            </div>
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg>
-                <span>120</span>
-            </div>
-            <div class="btn">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                <span>Share</span>
-            </div>
-            <div class="music-note">🎵</div>
-        </div>
-        
-        <div class="details">
-            <b>@makibul_vlogs</b>
-            <p>Everything is perfect now! 🚀</p>
-        </div>
-    </div>
-
 </div>
 
 <div class="bottom-nav">
     <a href="home.html" class="nav-item">🏠</a>
     <a href="search.html" class="nav-item">🔍</a>
-    <a href="#" style="font-size:30px; color:gold; text-decoration:none;">+</a>
-    <a href="reels.html" class="nav-item" style="opacity: 1;">🎬</a>
+    <a href="#" style="font-size:35px; color:gold; text-decoration:none;">+</a>
+    <a href="reels.html" class="nav-item active">🎬</a>
     <a href="profile.html" class="nav-item">👤</a>
 </div>
 
-<script src="script.js?v=3.2"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
