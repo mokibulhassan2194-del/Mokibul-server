@@ -15,101 +15,34 @@
         .header .logo { font-size: 26px; font-weight: 900; color: #FFD700; letter-spacing: -1px; }
         .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; }
 
-        /* STORIES SECTION - FIXED */
         .stories-container { 
-            display: flex; 
-            padding: 15px 10px; 
-            gap: 12px; 
-            overflow-x: auto; 
-            white-space: nowrap; /* YE JARURI HAI SWIPE KE LIYE */
-            border-bottom: 1px solid #111; 
-            -webkit-overflow-scrolling: touch; /* SMOOTH SWIPE FOR MOBILE */
+            display: flex; padding: 15px 10px; gap: 12px; overflow-x: auto; 
+            white-space: nowrap; border-bottom: 1px solid #111; -webkit-overflow-scrolling: touch; 
         }
         .stories-container::-webkit-scrollbar { display: none; }
-        
-        .story-wrapper { 
-            min-width: 75px; 
-            text-align: center; 
-            cursor: pointer; 
-            flex-shrink: 0; /* ISSE GOLA DABTA NAHI HAI */
-        }
-        
-        .story-circle { 
-            width: 65px; height: 65px; border-radius: 50%; 
-            padding: 3px; border: 2px solid #FFD700; 
-            position: relative; margin: 0 auto;
-        }
+        .story-wrapper { min-width: 75px; text-align: center; cursor: pointer; flex-shrink: 0; }
+        .story-circle { width: 65px; height: 65px; border-radius: 50%; padding: 3px; border: 2px solid #FFD700; position: relative; margin: 0 auto; }
         .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; }
-        
-        .plus-icon { 
-            position: absolute; bottom: 2px; right: 2px; background: #0095f6; 
-            border-radius: 50%; width: 18px; height: 18px; display: flex; 
-            justify-content: center; align-items: center; border: 2px solid #000; 
-            font-size: 12px; color: white; font-weight: bold;
-        }
+        .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; font-weight: bold; }
         .story-label { font-size: 11px; margin-top: 6px; color: #ccc; display: block; overflow: hidden; text-overflow: ellipsis; }
 
-        /* --- MAX FUL MAGIC ADDITIONS --- */
-        #max-blur-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(15px);
-            display: none; z-index: 998;
-            transition: 0.3s;
-        }
-
-        .max-menu-options {
-            position: fixed; bottom: 100px; left: 50%;
-            transform: translateX(-50%);
-            display: none; flex-direction: column; gap: 15px;
-            z-index: 999;
-        }
-
-        .max-btn-opt {
-            background: #fff; color: #000; padding: 12px 30px;
-            border-radius: 30px; font-weight: bold; font-size: 16px;
-            text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            animation: bounceUp 0.4s ease; cursor: pointer;
-        }
-
+        #max-blur-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); display: none; z-index: 998; transition: 0.3s; }
+        .max-menu-options { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); display: none; flex-direction: column; gap: 15px; z-index: 999; }
+        .max-btn-opt { background: #fff; color: #000; padding: 12px 30px; border-radius: 30px; font-weight: bold; font-size: 16px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); animation: bounceUp 0.4s ease; cursor: pointer; text-decoration: none; }
         .story-max-btn { background: #39FF14; position: relative; } 
-        .badge-25h { 
-            background: black; color: white; font-size: 9px; 
-            padding: 2px 6px; border-radius: 10px; margin-left: 5px; 
-        }
+        .badge-25h { background: black; color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; margin-left: 5px; }
 
-        @keyframes bounceUp {
-            0% { transform: translateY(30px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
+        @keyframes bounceUp { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
         .plus-active { transform: rotate(45deg); color: #ff3040 !important; transition: 0.3s; }
 
-        /* Post Card */
         .post-card { border-bottom: 1px solid #111; margin-bottom: 10px; position: relative; }
         .post-header { display: flex; align-items: center; padding: 10px; }
         .post-user-pic { width: 32px; height: 32px; border-radius: 50%; background: #333; margin-right: 10px; }
-        
-        .post-img-container { 
-            width: 100%; aspect-ratio: 1/1; background: #1a1a1a; 
-            position: relative; overflow: hidden; 
-            display: flex; align-items: center; justify-content: center;
-        }
-        
-        .big-heart {
-            position: absolute; font-size: 100px; color: #ff3040;
-            opacity: 0; transform: scale(0); pointer-events: none; z-index: 10;
-        }
+        .post-img-container { width: 100%; aspect-ratio: 1/1; background: #1a1a1a; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .big-heart { position: absolute; font-size: 100px; color: #ff3040; opacity: 0; transform: scale(0); pointer-events: none; z-index: 10; }
         .animate-heart { animation: heartPop 0.8s ease-out; }
-        @keyframes heartPop {
-            0% { transform: scale(0); opacity: 0; }
-            40% { transform: scale(1.2); opacity: 0.9; }
-            100% { transform: scale(1); opacity: 0; }
-        }
-
+        @keyframes heartPop { 0% { transform: scale(0); opacity: 0; } 40% { transform: scale(1.2); opacity: 0.9; } 100% { transform: scale(1); opacity: 0; } }
         .post-actions { padding: 12px; display: flex; gap: 15px; font-size: 20px; }
-        .action-btn { cursor: pointer; }
-
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-item { color: #fff; text-decoration: none; font-size: 22px; }
     </style>
@@ -124,43 +57,15 @@
     </div>
 
     <div class="max-menu-options" id="maxMenu">
-        <div class="max-btn-opt" onclick="location.href='reels.html'">🎬 Reels</div>
-        <div class="max-btn-opt" onclick="location.href='post.html'">🖼️ Post</div>
-        <div class="max-btn-opt story-max-btn" onclick="location.href='view-story.html'">
-            📱 Story <span class="badge-25h">25h Mode</span>
-        </div>
+        <a href="upload.html" class="max-btn-opt">🎬 Reels</a>
+        <a href="upload.html" class="max-btn-opt">🖼️ Post</a>
+        <a href="view-story.html" class="max-btn-opt story-max-btn">📱 Story <span class="badge-25h">25h Mode</span></a>
     </div>
 
     <div class="stories-container">
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/100"><div class="plus-icon">+</div></div>
-            <div class="story-label">Your Story</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/101"></div>
-            <div class="story-label">rahul_vlogs</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/102"></div>
-            <div class="story-label">ankit_99</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/103"></div>
-            <div class="story-label">priya.art</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/104"></div>
-            <div class="story-label">mr_beast</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/105"></div>
-            <div class="story-label">rocky_bhai</div>
-        </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'">
-            <div class="story-circle"><img src="https://via.placeholder.com/106"></div>
-            <div class="story-label">max_fan</div>
-        </div>
-        </div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/100"><div class="plus-icon">+</div></div><div class="story-label">Your Story</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://via.placeholder.com/104"></div><div class="story-label">mr_beast</div></div>
+    </div>
 
     <div class="post-card">
         <div class="post-header">
@@ -191,7 +96,6 @@
             const overlay = document.getElementById('max-blur-overlay');
             const menu = document.getElementById('maxMenu');
             const plusBtn = document.getElementById('mainPlus');
-
             if (overlay.style.display === "block") {
                 overlay.style.display = "none";
                 menu.style.display = "none";
