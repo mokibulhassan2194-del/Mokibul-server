@@ -25,7 +25,7 @@
             border: 1px solid #333;
         }
         h2 { color: #FFD700; margin-bottom: 10px; }
-        p { color: #aaa; font-size: 14px; margin-bottom: 25px; }
+        p { color: #aaa; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
         
         input {
             width: 100%;
@@ -38,7 +38,9 @@
             box-sizing: border-box;
             text-align: center;
             font-size: 16px;
+            outline: none;
         }
+        input:focus { border-color: #FFD700; }
 
         .btn {
             width: 100%;
@@ -49,9 +51,9 @@
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
+            font-size: 16px;
         }
 
-        /* OTP वाले डिब्बे के लिए खास स्टाइल */
         .otp-section { display: none; margin-top: 20px; }
         
         .back-to-login {
@@ -75,8 +77,8 @@
     </div>
 
     <div id="step2" class="otp-section">
-        <input type="number" placeholder="X - X - X - X" maxlength="4">
-        <button class="btn" onclick="alert('Password Reset Link Sent!')">Verify OTP</button>
+        <input type="number" id="otpValue" placeholder="X - X - X - X">
+        <button class="btn" onclick="verifyAndRedirect()">Verify OTP</button>
     </div>
 
     <a href="index.html" class="back-to-login">Back to Login</a>
@@ -85,16 +87,28 @@
 <script>
     function showOTP() {
         var input = document.getElementById('userInput').value;
-        if(input == "") {
+        if(input.trim() == "") {
             alert("Please enter detail first!");
         } else {
             document.getElementById('step1').style.display = 'none';
             document.getElementById('step2').style.display = 'block';
-            document.getElementById('instruction').innerHTML = "We sent an OTP to <b>" + input + "</b>";
+            document.getElementById('instruction').innerHTML = "We sent an OTP to <br><b>" + input + "</b>";
+        }
+    }
+
+    // Naya function jo user ko home page par le jayega
+    function verifyAndRedirect() {
+        var otp = document.getElementById('otpValue').value;
+        
+        if(otp.length < 4) {
+            alert("Please enter a valid 4-digit OTP");
+        } else {
+            alert('OTP Verified! Redirecting to your account...');
+            // Yahan 'home.html' likha hai, ise apni ID/Dashboard wali file ke naam se badal dena
+            window.location.href = "home.html"; 
         }
     }
 </script>
 
 </body>
 </html>
-
