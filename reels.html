@@ -5,51 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Reels</title>
     <style>
-        /* CSS KA SARA MAAL YAHAN HAI */
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             background: #000; overflow: hidden; font-family: sans-serif; 
         }
+        /* Scroll fix karne ke liye wrapper */
         .reels-wrapper {
             height: 100vh; width: 100%; overflow-y: scroll; 
-            scroll-snap-type: y mandatory; scrollbar-width: none;
+            scroll-snap-type: y mandatory; 
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
         .reels-wrapper::-webkit-scrollbar { display: none; }
+        
         .reel {
             height: 100vh; width: 100%; scroll-snap-align: start; 
             position: relative; background: #000;
         }
         video { width: 100%; height: 100%; object-fit: cover; }
 
+        /* Icons thoda upar set kar diye hain taaki nav bar se na takrayein */
         .side-actions {
-            position: absolute; right: 15px; bottom: 100px; 
-            display: flex; flex-direction: column; gap: 20px; z-index: 1000; align-items: center;
+            position: absolute; right: 15px; bottom: 85px; 
+            display: flex; flex-direction: column; gap: 18px; z-index: 1000; align-items: center;
         }
         .btn { background: none; border: none; color: white; text-align: center; cursor: pointer; }
         .btn span { display: block; font-size: 12px; margin-top: 4px; }
-        .icon { width: 32px; height: 32px; fill: white; transition: 0.3s; }
-        .liked { fill: #ff2d55 !important; } /* Like hone par red color */
+        .icon { width: 30px; height: 30px; fill: white; transition: 0.3s; }
+        .liked { fill: #ff2d55 !important; } 
 
         .details {
-            position: absolute; left: 15px; bottom: 100px; 
+            position: absolute; left: 15px; bottom: 85px; 
             color: white; z-index: 1000; pointer-events: none; max-width: 70%;
         }
         .details b { font-size: 16px; display: block; margin-bottom: 5px; }
         .details p { margin: 0; font-size: 14px; opacity: 0.9; }
 
         .music-note {
-            width: 35px; height: 35px; border-radius: 50%;
+            width: 30px; height: 30px; border-radius: 50%;
             border: 2px solid white; display: flex; align-items: center; justify-content: center;
             animation: rotate 3s linear infinite; background: #222;
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 65px;
+            position: fixed; bottom: 0; width: 100%; height: 60px;
             background: #000; display: flex; justify-content: space-around;
             align-items: center; z-index: 2000; border-top: 0.5px solid #333;
         }
-        .nav-item { color: white; text-decoration: none; font-size: 24px; opacity: 0.6; }
+        .nav-item { color: white; text-decoration: none; font-size: 22px; opacity: 0.6; }
         .active { opacity: 1; color: gold; }
     </style>
 </head>
@@ -78,6 +82,10 @@
             <p>Coding is hard but I am harder! 🔥 #Success</p>
         </div>
     </div>
+    
+    <div class="reel">
+        <video src="video2.mp4" loop playsinline onclick="togglePlay(this)"></video>
+    </div>
 </div>
 
 <div class="bottom-nav">
@@ -88,6 +96,39 @@
     <a href="profile.html" class="nav-item">👤</a>
 </div>
 
-<script src="script.js"></script>
+<script>
+    const wrapper = document.getElementById('mainContainer');
+
+    // Scroll Logic
+    if (wrapper) {
+        wrapper.addEventListener('scroll', () => {
+            const vids = document.querySelectorAll('video');
+            vids.forEach(v => {
+                const rect = v.getBoundingClientRect();
+                if (rect.top >= -window.innerHeight/2 && rect.top <= window.innerHeight/2) {
+                    v.play().catch(() => {});
+                } else {
+                    v.pause();
+                }
+            });
+        }, { passive: true });
+    }
+
+    // Play/Pause Function
+    function togglePlay(video) {
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    }
+
+    // Like Button Function
+    function toggleLike(element) {
+        const icon = element.querySelector('.icon');
+        icon.classList.toggle('liked'); 
+    }
+</script>
+
 </body>
 </html>
