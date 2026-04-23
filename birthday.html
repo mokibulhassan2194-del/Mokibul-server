@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Ful | Add Birthday</title>
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { width: 85%; text-align: center; max-width: 350px; }
+        .logo { font-size: 42px; font-weight: 900; color: #FFD700; margin-bottom: 10px; letter-spacing: 1px; }
+        .cake-img { font-size: 55px; margin-bottom: 15px; }
+        h2 { font-size: 19px; margin-bottom: 8px; }
+        .info { color: #aaa; font-size: 13px; margin-bottom: 25px; line-height: 1.4; }
+        
+        /* Select Boxes Styling */
+        .dob-row { display: flex; gap: 8px; margin-bottom: 30px; }
+        select { 
+            flex: 1; padding: 12px; background: #121212; 
+            border: 1px solid #333; color: #fff; border-radius: 8px; 
+            outline: none; cursor: pointer; font-size: 14px;
+        }
+
+        .btn { 
+            width: 100%; padding: 14px; background: #FFD700; 
+            color: #000; border: none; font-weight: bold; 
+            border-radius: 8px; cursor: pointer; 
+            text-decoration: none; display: inline-block; font-size: 16px;
+        }
+        .back-link { margin-top: 25px; display: block; color: #aaa; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="logo">Max  ful</div>
+        <div class="cake-img">🎂</div>
+        <h2>Add Your Birthday</h2>
+        <p class="info">This won't be a part of your public profile. Max  ful needs your age to keep the community safe.</p>
+        
+        <div class="dob-row">
+            <select>
+                <option selected disabled>Month</option>
+                <option>January</option><option>February</option><option>March</option>
+                <option>April</option><option>May</option><option>June</option>
+                <option>July</option><option>August</option><option>September</option>
+                <option>October</option><option>November</option><option>December</option>
+            </select>
+
+            <select>
+                <option selected disabled>Day</option>
+                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                <option>10</option><option>15</option><option>20</option><option>25</option><option>31</option>
+            </select>
+
+            <select>
+                <option selected disabled>Year</option>
+                <option>2024</option><option>2020</option><option>2015</option>
+                <option>2010</option><option>2005</option><option>2000</option>
+                <option>1995</option><option>1990</option><option>1985</option>
+            </select>
+        </div>
+        
+        <a href="contact.html" class="btn">Next</a>
+        
+        <a href="signup.html" class="back-link">Go Back</a>
+    </div>
+</body>
+</html>
 
