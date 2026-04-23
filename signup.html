@@ -9,13 +9,12 @@
             background: #000; color: #fff; font-family: sans-serif; 
             display: flex; justify-content: center; align-items: center; 
             height: 100vh; margin: 0; 
-            touch-action: manipulation; /* Double tap zoom rokne ke liye */
+            touch-action: manipulation;
         }
         .box { width: 85%; text-align: center; max-width: 350px; }
         
         .logo { font-size: 40px; font-weight: 900; color: #FFD700; margin-bottom: 10px; letter-spacing: 1px; }
         
-        /* ZOOM FIX: Font size 16px se niche hone par mobile zoom karta hai, isliye 16px rakha hai */
         input { 
             width: 100%; padding: 12px; margin: 8px 0; 
             background: #121212; border: 1px solid #333; 
@@ -23,11 +22,16 @@
             outline: none; font-size: 16px; 
         }
 
+        /* FIXED: Button ko center mein lane aur right side bhagne se rokne ke liye */
         .btn { 
-            width: 100%; padding: 12px; background: #FFD700; 
+            display: block; /* Poori width lene ke liye */
+            width: 100%; 
+            padding: 12px 0; 
+            background: #FFD700; 
             color: #000; border: none; font-weight: bold; 
             border-radius: 8px; margin-top: 10px; cursor: pointer; 
-            text-decoration: none; display: inline-block; font-size: 16px;
+            text-decoration: none; font-size: 16px;
+            box-sizing: border-box; /* Padding ko width ke andar hi rakhta hai */
         }
 
         .login-link { margin-top: 20px; font-size: 14px; color: #aaa; }
