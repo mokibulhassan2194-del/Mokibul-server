@@ -8,7 +8,6 @@
         body { 
             background-color: #000; color: #fff; font-family: sans-serif; 
             margin: 0; padding-bottom: 70px; 
-            /* Extra zoom preventer */
             touch-action: manipulation; 
         }
         .header { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100; }
@@ -60,11 +59,18 @@
     <div class="max-menu-options" id="maxMenu">
         <a href="upload.html" class="max-btn-opt">🎬 Reels</a>
         <a href="upload.html" class="max-btn-opt">🖼️ Post</a>
-        <a href="view-story.html" class="max-btn-opt story-max-btn">📱 Story <span class="badge-25h">25h Mode</span></a>
+        <a href="upload.html" class="max-btn-opt story-max-btn">📱 Story <span class="badge-25h">25h Mode</span></a>
     </div>
 
     <div class="stories-container">
-        <div class="story-wrapper" onclick="location.href='upload.html'"><div class="story-circle"><img src="https://picsum.photos/id/64/100/100"><div class="plus-icon">+</div></div><div class="story-label">Your Story</div></div>
+        <div class="story-wrapper" onclick="toggleMaxPlus()">
+            <div class="story-circle">
+                <img src="https://picsum.photos/id/64/100/100">
+                <div class="plus-icon">+</div>
+            </div>
+            <div class="story-label">Your Story</div>
+        </div>
+        
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/20/100/100"></div><div class="story-label">ankit_99</div></div>
