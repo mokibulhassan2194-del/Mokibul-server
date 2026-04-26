@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
     <title>Max Ful | Chat</title>
     <style>
         * { box-sizing: border-box; }
@@ -12,17 +12,11 @@
             width: 100%; height: 100%;
             background-color: #000;
             color: #fff; font-family: sans-serif;
-            overflow: hidden; /* ताकि पेज फालतू न हिले */
-        }
-
-        /* मुख्य ढांचा */
-        .main-wrapper {
             display: flex;
             flex-direction: column;
-            height: 100vh;
         }
 
-        /* हेडर: ऊपर चिपका रहेगा */
+        /* हेडर अपनी जगह फिक्स रहेगा */
         .header {
             height: 60px;
             background: #000;
@@ -30,13 +24,13 @@
             align-items: center;
             padding: 0 15px;
             border-bottom: 1px solid #222;
-            flex-shrink: 0;
+            flex-shrink: 0; /* इसे दबने नहीं देगा */
         }
         .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 15px; }
         .user-pic { width: 35px; height: 35px; border-radius: 50%; border: 1.5px solid #FFC107; margin-right: 10px; }
         .user-name { font-weight: bold; font-size: 16px; }
 
-        /* चैट एरिया: यह बीच में स्क्रॉल होगा */
+        /* चैट एरिया: यह कीबोर्ड आने पर अपने आप छोटा हो जाएगा */
         .chat-container {
             flex-grow: 1;
             overflow-y: auto;
@@ -44,17 +38,16 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            -webkit-overflow-scrolling: touch;
+            background: #000;
         }
 
-        /* मैसेज बबल्स */
-        .bubble { max-width: 75%; padding: 10px 15px; border-radius: 18px; font-size: 14px; line-height: 1.4; }
+        .bubble { max-width: 75%; padding: 10px 15px; border-radius: 18px; font-size: 14px; }
         .received { background: #262626; align-self: flex-start; }
         .sent { background: #FFC107; color: #000; align-self: flex-end; font-weight: 500; }
 
-        /* इनपुट बार: हमेशा कीबोर्ड के ऊपर रहेगा */
+        /* इनपुट एरिया: यह हमेशा कीबोर्ड के ठीक ऊपर रहेगा */
         .chat-input-area {
-            height: 70px;
+            min-height: 60px;
             background: #000;
             display: flex;
             align-items: center;
@@ -68,7 +61,7 @@
             border: none;
             border-radius: 25px;
             color: #fff;
-            padding: 12px 18px;
+            padding: 10px 15px;
             flex: 1;
             outline: none;
             font-size: 16px;
@@ -77,7 +70,7 @@
         .send-btn {
             color: #FFC107;
             font-weight: bold;
-            margin-left: 12px;
+            margin-left: 10px;
             background: none;
             border: none;
             font-size: 16px;
@@ -86,34 +79,32 @@
 </head>
 <body>
 
-    <div class="main-wrapper">
-        <div class="header">
-            <a href="messages.html" class="back-btn">←</a>
-            <img src="https://picsum.photos/id/91/100/100" class="user-pic">
-            <span class="user-name">Sahil Khan</span>
-        </div>
+    <div class="header">
+        <a href="messages.html" class="back-btn">←</a>
+        <img src="https://picsum.photos/id/91/100/100" class="user-pic">
+        <span class="user-name">Sahil Khan</span>
+    </div>
 
-        <div class="chat-container" id="chatBox">
-            <div class="bubble received">Oye Makibul! App to ekdam Instagram jaisi lag rahi hai bhai! 🔥</div>
-            <div class="bubble sent">Haan bhai, mehnat rang la rahi hai. Abhi chat system bhi chalu kar diya! 😎</div>
-        </div>
+    <div class="chat-container" id="chatBox">
+        <div class="bubble received">Oye Makibul! App to ekdam Instagram jaisi lag rahi hai bhai! 🔥</div>
+        <div class="bubble sent">Haan bhai, mehnat rang la rahi hai. Abhi chat system bhi chalu kar diya! 😎</div>
+    </div>
 
-        <div class="chat-input-area">
-            <input type="text" class="message-input" placeholder="Message..." id="msgInput">
-            <button class="send-btn">Send</button>
-        </div>
+    <div class="chat-input-area">
+        <input type="text" class="message-input" placeholder="Message..." id="msgInput">
+        <button class="send-btn">Send</button>
     </div>
 
     <script>
-        // चैट को नीचे रखने के लिए
-        const chatBox = document.getElementById('chatBox');
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        // कीबोर्ड आने पर व्यू पोर्ट एडजस्ट करना
-        window.visualViewport.addEventListener('resize', () => {
-            document.body.style.height = window.visualViewport.height + 'px';
-            chatBox.scrollTop = chatBox.scrollHeight;
-        });
+        // कीबोर्ड खुलने पर स्क्रीन को एडजस्ट करने का जुगाड़
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                document.body.style.height = window.visualViewport.height + 'px';
+                window.scrollTo(0, 0);
+                const chatBox = document.getElementById('chatBox');
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
     </script>
 
 </body>
