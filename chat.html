@@ -5,32 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Chat</title>
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; }
-        
-        /* ऊपर का हेडर */
-        .header { 
-            display: flex; align-items: center; padding: 10px 15px; 
-            border-bottom: 1px solid #222; position: sticky; top: 0; 
-            background: #000; z-index: 100;
+        /* नया फिक्स कोड यहाँ शुरू होता है */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* सफेद हिस्सा रोकने के लिए */
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
         }
+
+        .header {
+            position: fixed; /* अब यह अपनी जगह से नहीं हिलेगा */
+            top: 0;
+            width: 100%;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #222;
+            box-sizing: border-box;
+        }
+
         .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 15px; }
         .user-pic { width: 35px; height: 35px; border-radius: 50%; border: 1.5px solid #FFD700; margin-right: 10px; }
         .user-name { font-weight: bold; font-size: 16px; }
 
-        /* चैट एरिया */
         .chat-container {
+            /* कीबोर्ड के लिए जगह छोड़ते हुए हाइट सेट की है */
+            height: calc(100vh - 130px); 
+            overflow-y: auto;
+            margin-top: 60px; /* हेडर के नीचे से शुरू होगा */
             padding: 15px;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            padding-bottom: 80px; /* नीचे इनपुट के लिए जगह */
+            box-sizing: border-box;
         }
 
         .bubble { max-width: 75%; padding: 10px 15px; border-radius: 18px; font-size: 14px; line-height: 1.4; }
         .received { background: #262626; align-self: flex-start; color: #fff; }
         .sent { background: #FFD700; align-self: flex-end; color: #000; font-weight: 500; }
 
-        /* नीचे वाला इनपुट बार */
         .chat-input-area {
             position: fixed;
             bottom: 0;
@@ -41,6 +59,7 @@
             align-items: center;
             border-top: 1px solid #222;
             box-sizing: border-box;
+            z-index: 1000;
         }
 
         .message-input {
@@ -51,7 +70,7 @@
             padding: 10px 15px;
             flex: 1;
             outline: none;
-            font-size: 16px; /* 16px से ब्राउजर ज़ूम नहीं करता */
+            font-size: 16px; /* ज़ूम रोकने के लिए */
         }
 
         .send-btn {
@@ -60,7 +79,6 @@
             margin-left: 15px;
             background: none;
             border: none;
-            cursor: pointer;
             font-size: 15px;
         }
     </style>
@@ -74,9 +92,9 @@
     </div>
 
     <div class="chat-container" id="chatBox">
-        <div class="bubble received">Oye Makibul! App to ekdam Instagram jaisi lag rahi hai bhai! 🔥</div>
-        <div class="bubble sent">Haan bhai, mehnat rang la rahi hai. Abhi chat system bhi chalu kar diya! 😎</div>
-    </div>
+        <div class="bubble received">Oye Makibul! App तो एकदम Instagram जैसी लग रही है भाई! 🔥</div>
+        <div class="bubble sent">Haan bhai, मेहनत रंग ला रही है। Abhi chat system भी चालू कर दिया! 😎</div>
+        </div>
 
     <div class="chat-input-area">
         <input type="text" class="message-input" placeholder="Message..." id="msgInput">
@@ -84,15 +102,13 @@
     </div>
 
     <script>
-        // पेज लोड होते ही इनपुट पर फोकस ताकि कीबोर्ड खुल सके
         window.onload = function() {
             const input = document.getElementById('msgInput');
             input.focus();
             
-            // मोबाइल पर कभी-कभी तुरंत फोकस नहीं होता, इसलिए थोड़ा डिले
-            setTimeout(() => {
-                input.click();
-            }, 300);
+            // चैट को हमेशा नीचे (Latest Message पर) रखने के लिए
+            const chatBox = document.getElementById('chatBox');
+            chatBox.scrollTop = chatBox.scrollHeight;
         };
     </script>
 
