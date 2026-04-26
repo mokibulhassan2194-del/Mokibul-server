@@ -17,31 +17,39 @@
         }
         .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 20px; }
         
-        .search-container { padding: 5px 15px; }
-        .search-box { 
-            background: #262626; padding: 10px 12px; 
-            border-radius: 10px; color: #8e8e8e; font-size: 15px; 
-            display: flex; align-items: center; gap: 10px;
+        .search-container { padding: 10px 15px; }
+        .search-box-wrapper { 
+            background: #262626; padding: 8px 12px; 
+            border-radius: 10px; display: flex; align-items: center; gap: 10px;
         }
+        .search-input {
+            background: transparent; border: none; color: #fff; 
+            outline: none; width: 100%; font-size: 15px;
+        }
+        .search-input::placeholder { color: #8e8e8e; }
         
-        .chat-list { padding-top: 10px; }
+        .chat-list { padding-top: 5px; }
         .chat-item { 
             display: flex; align-items: center; padding: 12px 15px; 
             text-decoration: none; color: #fff; 
+            transition: background 0.2s;
         }
+        /* मोबाइल पर टच करने पर फीडबैक के लिए */
+        .chat-item:active { background-color: #1a1a1a; }
 
         .profile-pic-wrapper {
-            width: 60px; height: 60px; border-radius: 50%; 
-            padding: 2px; border: 1.5px solid #FFD700; margin-right: 15px;
+            width: 56px; height: 56px; border-radius: 50%; 
+            padding: 2px; border: 2px solid #FFD700; margin-right: 15px;
+            flex-shrink: 0; /* फोटो दबे नहीं */
         }
         .profile-pic { 
             width: 100%; height: 100%; border-radius: 50%; 
-            object-fit: cover; background: #333; 
+            object-fit: cover; background: #333; display: block;
         }
         
-        .chat-info { flex: 1; border-bottom: 0.1px solid #1a1a1a; padding-bottom: 10px; }
+        .chat-info { flex: 1; border-bottom: 0.5px solid #222; padding-bottom: 12px; }
         .name { font-weight: bold; font-size: 15px; margin-bottom: 2px; }
-        .last-msg { color: #8e8e8e; font-size: 13px; }
+        .last-msg { color: #8e8e8e; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
@@ -52,7 +60,10 @@
     </div>
 
     <div class="search-container">
-        <div class="search-box">🔍 Search</div>
+        <div class="search-box-wrapper">
+            <span>🔍</span>
+            <input type="text" class="search-input" placeholder="Search">
+        </div>
     </div>
 
     <div class="chat-list">
