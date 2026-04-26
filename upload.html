@@ -15,7 +15,7 @@
             border-bottom: 0.1px solid #333; background: #000;
         }
         .header h2 { font-size: 18px; margin: 0; color: #FFD700; }
-        .next-link { color: #FFD700; font-weight: bold; text-decoration: none; font-size: 16px; }
+        .next-link { color: #FFD700; font-weight: bold; text-decoration: none; font-size: 16px; cursor: pointer; }
 
         /* Preview Area */
         .preview-container { 
@@ -31,7 +31,7 @@
             justify-content: center; margin: 0 auto 15px; font-size: 40px; color: #FFD700;
         }
 
-        /* Bottom Mode Switcher (Instagram Style) */
+        /* Bottom Mode Switcher */
         .mode-selector {
             height: 60px; background: #000; display: flex; 
             justify-content: center; align-items: center; gap: 40px;
@@ -44,14 +44,28 @@
         .mode-btn.active { color: #fff; border-bottom: 2px solid #FFD700; padding-bottom: 5px; }
 
         #fileInput { display: none; }
+
+        /* Fake Loader */
+        #loader {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center;
+            flex-direction: column;
+        }
+        .spinner { width: 40px; height: 40px; border: 4px solid #333; border-top: 4px solid #FFD700; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
+    <div id="loader">
+        <div class="spinner"></div>
+        <p style="margin-top: 15px; color: #FFD700; font-weight: bold;">Uploading to Max Ful...</p>
+    </div>
+
     <div class="header">
         <a href="home.html" style="text-decoration:none; color: #fff; font-size: 24px;">✕</a>
         <h2 id="pageTitle">New Reel</h2>
-        <a href="javascript:void(0)" class="next-link" onclick="uploadData()">Next</a>
+        <div class="next-link" onclick="handleNext()">Next</div>
     </div>
 
     <div class="preview-container" onclick="document.getElementById('fileInput').click()">
@@ -65,8 +79,8 @@
     </div>
 
     <div class="mode-selector">
-        <div class="mode-btn active" onclick="setMode('REEL', this)">Reel</div>
-        <div class="mode-btn" onclick="setMode('STORY', this)">Story</div>
+        <div class="mode-btn active" id="btnReel" onclick="setMode('REEL')">Reel</div>
+        <div class="mode-btn" id="btnStory" onclick="setMode('STORY')">Story</div>
     </div>
 
     <input type="file" id="fileInput" onchange="handleFile(event)">
@@ -75,15 +89,14 @@
         let currentMode = 'REEL';
         let selectedFile = null;
 
-        function setMode(mode, btn) {
+        function setMode(mode) {
             currentMode = mode;
-            // UI Update
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            document.getElementById('btnReel').classList.toggle('active', mode === 'REEL');
+            document.getElementById('btnStory').classList.toggle('active', mode === 'STORY');
+            
             document.getElementById('pageTitle').innerText = "New " + (mode === 'REEL' ? 'Reel' : 'Story');
             document.getElementById('mainText').innerText = "Select " + (mode === 'REEL' ? 'Reel' : 'Photo/Video') + " from Gallery";
             
-            // Input type reset
             const input = document.getElementById('fileInput');
             input.accept = mode === 'REEL' ? "video/*" : "image/*,video/*";
         }
@@ -110,25 +123,27 @@
             }
         }
 
-        function uploadData() {
+        function handleNext() {
             if (!selectedFile) {
-                alert("Please select a file first!");
+                alert("Pahle Gallery se kuch chuno bhai! 😂");
                 return;
             }
 
-            if (currentMode === 'STORY') {
-                // 25 Hours Logic: Current Time + 25 Hours in milliseconds
-                const expiryTime = Date.now() + (25 * 60 * 60 * 1000);
-                
-                // Saving to LocalStorage for now
-                localStorage.setItem('last_story_time', expiryTime);
-                localStorage.setItem('has_story', 'true');
-                
-                alert("Max Ful Story updated for 25 hours!");
-                window.location.href = "home.html";
-            } else {
-                window.location.href = "share-reel.html";
-            }
+            // Show Loader
+            document.getElementById('loader').style.display = 'flex';
+
+            setTimeout(() => {
+                if (currentMode === 'STORY') {
+                    // 25 Hours Logic
+                    const expiryTime = Date.now() + (25 * 60 * 60 * 1000);
+                    localStorage.setItem('max_story_expiry', expiryTime);
+                    alert("Max Ful Story updated for 25 hours!");
+                    window.location.href = "home.html";
+                } else {
+                    // Reel logic (Redirection to Share Page)
+                    window.location.href = "share-reel.html";
+                }
+            }, 2000); // 2 second ka fake upload time
         }
     </script>
 </body>
