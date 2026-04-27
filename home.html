@@ -47,12 +47,15 @@
     </div>
 
     <div class="stories-container">
-        <div class="story-wrapper" onclick="location.href='upload.html'">
-            <div class="story-circle">
-                <img src="https://picsum.photos/id/64/100/100">
-                <div class="plus-icon">+</div>
-            </div>
-            <div class="story-label">Your Story</div>
+        <div class="story-wrapper">
+            <label for="story-input" style="cursor: pointer;">
+                <div class="story-circle">
+                    <img src="https://picsum.photos/id/64/100/100">
+                    <div class="plus-icon">+</div>
+                </div>
+                <div class="story-label">Your Story</div>
+            </label>
+            <input type="file" id="story-input" accept="image/*,video/*" style="display: none;">
         </div>
         
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
