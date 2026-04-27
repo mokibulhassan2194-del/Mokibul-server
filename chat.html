@@ -24,13 +24,13 @@
             align-items: center;
             padding: 0 15px;
             border-bottom: 1px solid #222;
-            flex-shrink: 0; /* इसे दबने नहीं देगा */
+            flex-shrink: 0;
         }
         .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 15px; }
         .user-pic { width: 35px; height: 35px; border-radius: 50%; border: 1.5px solid #FFC107; margin-right: 10px; }
         .user-name { font-weight: bold; font-size: 16px; }
 
-        /* चैट एरिया: यह कीबोर्ड आने पर अपने आप छोटा हो जाएगा */
+        /* चैट एरिया */
         .chat-container {
             flex-grow: 1;
             overflow-y: auto;
@@ -41,11 +41,11 @@
             background: #000;
         }
 
-        .bubble { max-width: 75%; padding: 10px 15px; border-radius: 18px; font-size: 14px; }
+        .bubble { max-width: 75%; padding: 10px 15px; border-radius: 18px; font-size: 14px; word-wrap: break-word; }
         .received { background: #262626; align-self: flex-start; }
         .sent { background: #FFC107; color: #000; align-self: flex-end; font-weight: 500; }
 
-        /* इनपुट एरिया: यह हमेशा कीबोर्ड के ठीक ऊपर रहेगा */
+        /* इनपुट एरिया */
         .chat-input-area {
             min-height: 60px;
             background: #000;
@@ -74,6 +74,7 @@
             background: none;
             border: none;
             font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -92,16 +93,44 @@
 
     <div class="chat-input-area">
         <input type="text" class="message-input" placeholder="Message..." id="msgInput">
-        <button class="send-btn">Send</button>
+        <button class="send-btn" id="sendBtn">Send</button>
     </div>
 
     <script>
-        // कीबोर्ड खुलने पर स्क्रीन को एडजस्ट करने का जुगाड़
+        const sendBtn = document.getElementById('sendBtn');
+        const msgInput = document.getElementById('msgInput');
+        const chatBox = document.getElementById('chatBox');
+
+        // मैसेज भेजने का फंक्शन
+        function sendMessage() {
+            const messageText = msgInput.value.trim();
+            
+            if (messageText !== "") {
+                const newBubble = document.createElement('div');
+                newBubble.classList.add('bubble', 'sent');
+                newBubble.innerText = messageText;
+
+                chatBox.appendChild(newBubble);
+                msgInput.value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        // बटन पर क्लिक
+        sendBtn.addEventListener('click', sendMessage);
+
+        // एंटर कीबोर्ड बटन
+        msgInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // कीबोर्ड फिक्स
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', () => {
                 document.body.style.height = window.visualViewport.height + 'px';
                 window.scrollTo(0, 0);
-                const chatBox = document.getElementById('chatBox');
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
         }
