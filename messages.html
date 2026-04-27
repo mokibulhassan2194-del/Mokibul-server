@@ -2,88 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Max Ful | Messages</title>
     <style>
-        body { 
-            background-color: #000; color: #fff; font-family: sans-serif; 
-            margin: 0; touch-action: manipulation; 
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; background-color: #000;
+            color: #fff; font-family: sans-serif;
         }
-        
-        .header { 
-            display: flex; align-items: center; padding: 15px; 
-            border-bottom: 1px solid #222; position: sticky; top: 0; 
-            background: #000; z-index: 100;
+        .header {
+            padding: 15px; display: flex; align-items: center;
+            border-bottom: 1px solid #222; position: sticky; top: 0; background: #000;
         }
         .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 20px; }
+        .title { font-size: 20px; font-weight: bold; flex-grow: 1; }
         
-        .search-container { padding: 10px 15px; }
-        .search-box-wrapper { 
-            background: #262626; padding: 8px 12px; 
-            border-radius: 10px; display: flex; align-items: center; gap: 10px;
-        }
-        .search-input {
-            background: transparent; border: none; color: #fff; 
-            outline: none; width: 100%; font-size: 15px;
-        }
-        .search-input::placeholder { color: #8e8e8e; }
+        .chat-list { display: flex; flex-direction: column; }
         
-        .chat-list { padding-top: 5px; }
-        .chat-item { 
-            display: flex; align-items: center; padding: 12px 15px; 
-            text-decoration: none; color: #fff; 
-            transition: background 0.2s;
+        /* चैट लिस्ट आइटम */
+        .chat-item {
+            display: flex; align-items: center; padding: 15px;
+            text-decoration: none; color: #fff; border-bottom: 1px solid #111;
         }
-        /* मोबाइल पर टच करने पर फीडबैक के लिए */
-        .chat-item:active { background-color: #1a1a1a; }
-
-        .profile-pic-wrapper {
-            width: 56px; height: 56px; border-radius: 50%; 
-            padding: 2px; border: 2px solid #FFD700; margin-right: 15px;
-            flex-shrink: 0; /* फोटो दबे नहीं */
-        }
-        .profile-pic { 
-            width: 100%; height: 100%; border-radius: 50%; 
-            object-fit: cover; background: #333; display: block;
-        }
+        .chat-item:active { background-color: #111; }
         
-        .chat-info { flex: 1; border-bottom: 0.5px solid #222; padding-bottom: 12px; }
-        .name { font-weight: bold; font-size: 15px; margin-bottom: 2px; }
-        .last-msg { color: #8e8e8e; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-pic {
+            width: 55px; height: 55px; border-radius: 50%;
+            border: 2px solid #FFC107; margin-right: 15px;
+        }
+        .chat-info { display: flex; flex-direction: column; }
+        .user-name { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
+        .last-msg { font-size: 13px; color: #aaa; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <a href="home.html" class="back-btn">←</a>
-        <span style="font-size: 19px; font-weight: bold;">Messages</span>
-    </div>
-
-    <div class="search-container">
-        <div class="search-box-wrapper">
-            <span>🔍</span>
-            <input type="text" class="search-input" placeholder="Search">
-        </div>
+        <a href="index.html" class="back-btn">←</a>
+        <span class="title">Messages</span>
     </div>
 
     <div class="chat-list">
         <a href="chat.html" class="chat-item">
-            <div class="profile-pic-wrapper">
-                <img src="https://picsum.photos/id/91/100/100" class="profile-pic" alt="Sahil">
-            </div>
+            <img src="https://picsum.photos/id/91/100/100" class="user-pic">
             <div class="chat-info">
-                <div class="name">Sahil Khan</div>
-                <div class="last-msg">Bhai app ekdam kadak hai! · 2h</div>
+                <span class="user-name">Sahil Khan</span>
+                <span class="last-msg">Abhi chat system bhi chalu kar diya! 😎</span>
             </div>
         </a>
 
         <a href="#" class="chat-item">
-            <div class="profile-pic-wrapper">
-                <img src="https://picsum.photos/id/60/100/100" class="profile-pic" alt="Team">
-            </div>
+            <img src="https://picsum.photos/id/101/100/100" class="user-pic">
             <div class="chat-info">
-                <div class="name">Team Max Ful</div>
-                <div class="last-msg">Welcome to your new app! · 5h</div>
+                <span class="user-name">Rakibul Khan</span>
+                <span class="last-msg">Bhai, Max Ful kab launch ho raha hai?</span>
+            </div>
+        </a>
+
+        <a href="#" class="chat-item">
+            <img src="https://picsum.photos/id/64/100/100" class="user-pic">
+            <div class="chat-info">
+                <span class="user-name">Almina</span>
+                <span class="last-msg">Hero, kya kar rahe ho? ❤️</span>
             </div>
         </a>
     </div>
