@@ -11,22 +11,31 @@
         .reel { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; background: #000; overflow: hidden; }
         video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* BUTTONS KO THODA AUR UPAR KIYA HAI (bottom: 100px) */
+        /* SIDE ACTIONS */
         .side-actions { position: absolute; right: 12px; bottom: 100px; display: flex; flex-direction: column; gap: 20px; z-index: 1000; align-items: center; }
         .btn { background: none; border: none; color: white; text-align: center; cursor: pointer; }
         .btn span { display: block; font-size: 12px; margin-top: 4px; }
         .icon { width: 34px; height: 34px; fill: white; transition: 0.3s; filter: drop-shadow(0 0 2px rgba(0,0,0,0.5)); }
         .liked { fill: #ff2d55 !important; } 
 
-        .details { position: absolute; left: 15px; bottom: 110px; color: white; z-index: 1000; pointer-events: none; max-width: 70%; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
-        .details b { font-size: 16px; display: block; margin-bottom: 5px; }
-        .details p { margin: 0; font-size: 14px; opacity: 0.9; }
+        /* DETAILS AND FOLLOW BUTTON */
+        .details { position: absolute; left: 15px; bottom: 110px; color: white; z-index: 1000; max-width: 80%; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+        .user-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .details b { font-size: 16px; pointer-events: auto; }
+        
+        /* असली इंस्टाग्राम वाला फॉलो बटन */
+        .follow-btn { 
+            background: transparent; border: 1px solid white; color: white; 
+            padding: 4px 12px; border-radius: 6px; font-size: 12px; 
+            font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+        .following { border-color: #555; color: #888; }
 
-        /* MUSIC ICON FIXED */
+        .details p { margin: 0; font-size: 14px; opacity: 0.9; pointer-events: none; }
+
         .music-note { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; animation: rotate 3s linear infinite; background: #222; margin-top: 10px; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* DOUBLE TAP HEART ANIMATION CSS */
         .heart-pop { position: absolute; font-size: 80px; color: #ff2d55; pointer-events: none; transform: translate(-50%, -50%) scale(0); animation: heartBurst 0.6s ease-out forwards; z-index: 999; }
         @keyframes heartBurst { 
             0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 
@@ -46,23 +55,35 @@
     <div class="reel" ondblclick="handleDoubleTap(event, this)">
         <video src="3021.mp4" loop autoplay muted playsinline onclick="togglePlay(this)"></video>
         <div class="side-actions">
-            <div class="btn" id="likeBtn1" onclick="toggleLike(this)"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>1.5k</span></div>
+            <div class="btn" onclick="toggleLike(this)"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>1.5k</span></div>
             <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg><span>450</span></div>
             <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg><span>Share</span></div>
             <div class="music-note">🎵</div>
         </div>
-        <div class="details"><b>@makibul_vlogs</b><p>Coding is hard but I am harder! 🔥</p></div>
+        <div class="details">
+            <div class="user-row">
+                <b>@makibul_vlogs</b>
+                <button class="follow-btn" onclick="followMe(this)">Follow</button>
+            </div>
+            <p>Coding is hard but I am harder! 🔥</p>
+        </div>
     </div>
 
     <div class="reel" ondblclick="handleDoubleTap(event, this)">
         <video src="video2.mp4" loop playsinline onclick="togglePlay(this)"></video>
         <div class="side-actions">
-            <div class="btn" id="likeBtn2" onclick="toggleLike(this)"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>2.1k</span></div>
+            <div class="btn" onclick="toggleLike(this)"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>2.1k</span></div>
             <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg><span>120</span></div>
             <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg><span>Share</span></div>
             <div class="music-note">🎵</div>
         </div>
-        <div class="details"><b>@makibul_vlogs</b><p>Success is a journey! 🚀</p></div>
+        <div class="details">
+            <div class="user-row">
+                <b>@makibul_vlogs</b>
+                <button class="follow-btn" onclick="followMe(this)">Follow</button>
+            </div>
+            <p>Success is a journey! 🚀</p>
+        </div>
     </div>
 
 </div>
@@ -70,7 +91,7 @@
 <div class="bottom-nav">
     <a href="home.html" class="nav-item">🏠</a>
     <a href="search.html" class="nav-item">🔍</a>
-    <a href="#" style="font-size:35px; color:gold; text-decoration:none;">+</a>
+    <a href="upload.html" style="font-size:35px; color:gold; text-decoration:none;">+</a>
     <a href="reels.html" class="nav-item active">🎬</a>
     <a href="profile.html" class="nav-item">👤</a>
 </div>
@@ -78,7 +99,7 @@
 <script>
     const wrapper = document.getElementById('mainContainer');
     
-    // Auto Play/Pause on Scroll
+    // Scroll Auto Play
     if (wrapper) {
         wrapper.addEventListener('scroll', () => {
             const vids = document.querySelectorAll('video');
@@ -97,28 +118,26 @@
         element.querySelector('.icon').classList.toggle('liked'); 
     }
 
-    // DOUBLE TAP HEART FUNCTION
+    // Follow Function
+    function followMe(btn) {
+        if(btn.innerHTML === "Follow") {
+            btn.innerHTML = "Following";
+            btn.classList.add('following');
+        } else {
+            btn.innerHTML = "Follow";
+            btn.classList.remove('following');
+        }
+    }
+
     function handleDoubleTap(e, reelElement) {
-        // Create Heart Element
         const heart = document.createElement('div');
         heart.innerHTML = '❤️';
         heart.className = 'heart-pop';
-        
-        // Position heart where user clicked
-        const x = e.clientX;
-        const y = e.clientY;
-        heart.style.left = x + 'px';
-        heart.style.top = y + 'px';
-        
+        heart.style.left = e.clientX + 'px';
+        heart.style.top = e.clientY + 'px';
         reelElement.appendChild(heart);
-
-        // Like the button automatically
         const likeBtn = reelElement.querySelector('.icon');
-        if (!likeBtn.classList.contains('liked')) {
-            likeBtn.classList.add('liked');
-        }
-
-        // Remove heart after animation
+        if (!likeBtn.classList.contains('liked')) { likeBtn.classList.add('liked'); }
         setTimeout(() => { heart.remove(); }, 600);
     }
 </script>
