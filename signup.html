@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Sign Up</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
     <style>
         body { 
             background: #000; color: #fff; font-family: sans-serif; 
@@ -19,19 +24,18 @@
             width: 100%; padding: 12px; margin: 8px 0; 
             background: #121212; border: 1px solid #333; 
             color: #fff; border-radius: 8px; box-sizing: border-box; 
-            outline: none; font-size: 16px; 
+            outline: none; font-size: 16px; text-align: center;
         }
 
-        /* FIXED: Button ko center mein lane aur right side bhagne se rokne ke liye */
         .btn { 
-            display: block; /* Poori width lene ke liye */
+            display: block; 
             width: 100%; 
             padding: 12px 0; 
             background: #FFD700; 
             color: #000; border: none; font-weight: bold; 
             border-radius: 8px; margin-top: 10px; cursor: pointer; 
             text-decoration: none; font-size: 16px;
-            box-sizing: border-box; /* Padding ko width ke andar hi rakhta hai */
+            box-sizing: border-box;
         }
 
         .login-link { margin-top: 20px; font-size: 14px; color: #aaa; }
@@ -43,15 +47,66 @@
         <div class="logo">Max ful</div>
         <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">Sign up to see photos and videos.</p>
         
-        <input type="text" placeholder="Full Name">
-        <input type="text" placeholder="Username">
-        <input type="password" placeholder="Password">
+        <input type="text" id="fullName" placeholder="Full Name">
+        <input type="email" id="email" placeholder="Email or Username">
+        <input type="password" id="pass" placeholder="Password (Min 6 chars)">
         
-        <a href="birthday.html" class="btn">Sign Up</a>
+        <button onclick="handleSignup()" class="btn">Sign Up</button>
         
         <div class="login-link">
             Already have an account? <a href="index.html">Log In</a>
         </div>
     </div>
+
+    <script>
+        // Aapka Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
+            authDomain: "max-ful-apps-cce76.firebaseapp.com",
+            projectId: "max-ful-apps-cce76",
+            storageBucket: "max-ful-apps-cce76.firebasestorage.app",
+            messagingSenderId: "1097891042184",
+            appId: "1:1097891042184:web:23c2d391f35a008774603d"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        function handleSignup() {
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('pass').value;
+
+            if(name === "" || email === "" || password === "") {
+                alert("Bhai, saari details bharo!");
+                return;
+            }
+
+            if(password.length < 6) {
+                alert("Password kam se kam 6 characters ka rakho!");
+                return;
+            }
+
+            // 1. Firebase Auth mein account banana
+            auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // 2. Database mein extra details save karna
+                return db.collection("users").doc(userCredential.user.uid).set({
+                    fullName: name,
+                    email: email,
+                    joinedAt: new Date().toLocaleString()
+                });
+            })
+            .then(() => {
+                alert("Mubarak ho! Account ban gaya.");
+                window.location.href = "birthday.html"; // Agle page par bhej dena
+            })
+            .catch((error) => {
+                alert("Galti: " + error.message);
+            });
+        }
+    </script>
 </body>
 </html>
