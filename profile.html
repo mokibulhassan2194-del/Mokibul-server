@@ -7,8 +7,7 @@
     <style>
         body { 
             background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; padding-bottom: 70px; 
-            touch-action: manipulation; 
+            margin: 0; padding-bottom: 70px; touch-action: manipulation; 
         }
         
         /* Header */
@@ -16,80 +15,78 @@
             display: flex; justify-content: space-between; align-items: center;
             padding: 10px 15px; border-bottom: 1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100;
         }
-        .username { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .blue-tick { color: #0095f6; font-size: 18px; }
+        .username { font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .blue-tick { color: #0095f6; font-size: 16px; }
 
         /* Profile Info */
         .profile-info { padding: 15px 15px 5px; display: flex; align-items: center; gap: 25px; }
         .profile-pic-container {
-            width: 85px; height: 85px; 
-            border-radius: 50%; border: 1.5px solid #262626; 
-            padding: 3px; position: relative;
+            width: 80px; height: 80px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px;
         }
         .has-story { border: 2.5px solid #FFD700; }
         .profile-pic-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
         .stats { display: flex; flex-grow: 1; justify-content: space-around; text-align: center; }
-        .stat-num { font-weight: bold; font-size: 18px; display: block; color: #fff; }
+        .stat-num { font-weight: bold; font-size: 18px; display: block; }
         .stat-label { font-size: 13px; color: #efefef; }
 
-        /* Bio Details */
+        /* Bio */
         .profile-details { padding: 5px 15px 10px; }
-        .full-name { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
-        .bio { font-size: 14px; color: #fff; line-height: 1.4; white-space: pre-wrap; }
+        .full-name { font-weight: 600; font-size: 15px; }
+        .bio { font-size: 14px; line-height: 1.4; white-space: pre-wrap; }
 
         /* Buttons */
         .btn-container { display: flex; gap: 8px; padding: 10px 15px; }
         .edit-btn {
-            flex: 1; background: #262626; color: #fff; 
-            text-align: center; padding: 8px; border-radius: 8px;
-            text-decoration: none; font-size: 14px; font-weight: 600;
-            transition: opacity 0.2s; border: none; cursor: pointer;
+            flex: 1; background: #262626; color: #fff; text-align: center; 
+            padding: 8px; border-radius: 8px; font-size: 14px; font-weight: 600; 
+            border: none; cursor: pointer; text-decoration: none;
         }
-        .edit-btn:active { opacity: 0.7; }
 
         /* Highlights */
-        .highlights { display: flex; gap: 18px; padding: 10px 15px; overflow-x: auto; scrollbar-width: none; }
-        .highlights::-webkit-scrollbar { display: none; }
+        .highlights { display: flex; gap: 15px; padding: 10px 15px; overflow-x: auto; scrollbar-width: none; }
         .highlight-item { text-align: center; min-width: 64px; }
         .highlight-circle { 
-            width: 60px; height: 60px; border-radius: 50%; border: 1px solid #262626; 
-            padding: 2px; background: #000; margin: 0 auto 4px; 
-            display: flex; align-items: center; justify-content: center;
+            width: 58px; height: 58px; border-radius: 50%; border: 1px solid #262626; 
+            padding: 2px; background: #000; margin-bottom: 4px; display: flex; align-items: center; justify-content: center;
         }
         .highlight-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .highlight-text { font-size: 12px; color: #fff; }
+        .highlight-text { font-size: 12px; }
 
-        /* Modal (Pop-up) List Styling */
+        /* Full Screen Modal */
         .modal {
             display: none; position: fixed; z-index: 2000; left: 0; top: 0;
-            width: 100%; height: 100%; background-color: rgba(0,0,0,0.8);
+            width: 100%; height: 100%; background-color: #000;
         }
         .modal-content {
-            background-color: #121212; margin: 15% auto; padding: 0;
-            border-radius: 15px; width: 90%; max-width: 400px; height: 60vh;
-            overflow: hidden; display: flex; flex-direction: column;
+            width: 100%; height: 100%; display: flex; flex-direction: column;
         }
         .modal-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px; border-bottom: 1px solid #262626;
         }
-        .user-list { overflow-y: auto; flex-grow: 1; padding: 15px; }
-        .user-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .user-item img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
-        .user-info { flex-grow: 1; }
-        .user-name { font-weight: bold; font-size: 14px; }
-        .user-realname { color: #8e8e8e; font-size: 12px; }
-        .follow-mini-btn { background: #0095f6; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+        .modal-tabs { display: flex; border-bottom: 1px solid #262626; }
+        .modal-tab { 
+            flex: 1; text-align: center; padding: 12px; font-size: 14px; color: #8e8e8e; 
+            border-bottom: 2px solid transparent; 
+        }
+        .modal-tab.active { color: #fff; border-bottom: 2px solid #fff; font-weight: bold; }
+
+        .user-list { overflow-y: auto; flex-grow: 1; padding: 10px 15px; }
+        .user-item { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+        .user-item img { width: 54px; height: 54px; border-radius: 50%; border: 1.5px solid #262626; padding: 2px; }
+        .user-info { flex-grow: 1; margin-left: 12px; }
+        .user-name { font-weight: 600; font-size: 14px; }
+        .user-realname { color: #8e8e8e; font-size: 13px; }
+        .msg-btn { background: #262626; color: #fff; border: none; padding: 7px 15px; border-radius: 8px; font-weight: 600; font-size: 13px; }
 
         /* Tabs & Grid */
         .tabs { display: flex; justify-content: space-around; border-top: 1px solid #262626; margin-top: 10px; }
         .tab-item { padding: 12px; font-size: 22px; color: #8e8e8e; flex: 1; text-align: center; }
         .active-tab { color: #fff; border-bottom: 1.5px solid #fff; }
         .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-        .grid-item { aspect-ratio: 1/1; background: #111; position: relative; overflow: hidden; }
+        .grid-item { aspect-ratio: 1/1; background: #111; position: relative; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
-        .play-count { position: absolute; bottom: 8px; left: 8px; font-size: 12px; color: #fff; font-weight: bold; }
 
         /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
@@ -99,21 +96,21 @@
 <body>
 
     <div class="profile-header">
-        <div class="username">makibul_vlogs <span class="blue-tick">Verified</span></div>
-        <div style="display: flex; gap: 22px; align-items: center;">
-            <a href="upload.html" style="text-decoration:none; color: #fff; font-size: 26px;">➕</a>
-            <a href="settings.html" style="text-decoration:none; color: #fff; font-size: 28px;">☰</a>
+        <div class="username">makibul_vlogs <span class="blue-tick">✔️</span></div>
+        <div style="display: flex; gap: 20px;">
+            <span>➕</span>
+            <span>☰</span>
         </div>
     </div>
 
     <div class="profile-info">
         <div class="profile-pic-container has-story">
-            <img src="https://picsum.photos/id/64/200/200" alt="Profile">
+            <img src="https://picsum.photos/id/64/200/200">
         </div>
         <div class="stats">
             <div><span class="stat-num">12</span><span class="stat-label">Posts</span></div>
-            <div onclick="showUsers('Followers')" style="cursor:pointer;"><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
-            <div onclick="showUsers('Following')" style="cursor:pointer;"><span class="stat-num">150</span><span class="stat-label">Following</span></div>
+            <div onclick="openUserList('Followers')" style="cursor:pointer;"><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
+            <div onclick="openUserList('Following')" style="cursor:pointer;"><span class="stat-num">150</span><span class="stat-label">Following</span></div>
         </div>
     </div>
 
@@ -125,24 +122,15 @@
     </div>
 
     <div class="btn-container">
-        <a href="edit-profile.html" class="edit-btn">Edit Profile</a>
-        <button class="edit-btn" onclick="shareProfile()">Share Profile</button>
+        <a href="#" class="edit-btn">Edit Profile</a>
+        <button class="edit-btn">Share Profile</button>
     </div>
 
     <div class="highlights">
-        <div class="highlight-item">
-            <div class="highlight-circle"><img src="https://picsum.photos/id/120/100/100"></div>
-            <span class="highlight-text">Gym</span>
-        </div>
-        <div class="highlight-item">
-            <div class="highlight-circle"><img src="https://picsum.photos/id/10/100/100"></div>
-            <span class="highlight-text">Travel</span>
-        </div>
-        <div class="highlight-item">
-            <div class="highlight-circle"><img src="https://picsum.photos/id/2/100/100"></div>
-            <span class="highlight-text">Vlogs</span>
-        </div>
-        <div class="highlight-item"><div class="highlight-circle" style="font-size:30px;">+</div><span class="highlight-text">New</span></div>
+        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/101/100"></div><span class="highlight-text">Gym</span></div>
+        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/102/100"></div><span class="highlight-text">Travel</span></div>
+        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/103/100"></div><span class="highlight-text">Vlogs</span></div>
+        <div class="highlight-item"><div class="highlight-circle" style="font-size:24px;">+</div><span class="highlight-text">New</span></div>
     </div>
 
     <div class="tabs">
@@ -152,76 +140,97 @@
     </div>
 
     <div class="post-grid">
-        <div class="grid-item"><img src="https://picsum.photos/id/101/300/500"><div class="play-count">▶ 105k</div></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/102/300/500"><div class="play-count">▶ 82k</div></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/103/300/500"><div class="play-count">▶ 45k</div></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/10/300/300"></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/11/300/300"></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/12/300/300"></div>
     </div>
 
     <div id="userModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 id="modalTitle" style="margin:0;">Users</h4>
-                <span style="cursor:pointer; font-size:20px;" onclick="closeModal()">✕</span>
+                <div style="display: flex; align-items: center; gap: 25px;">
+                    <span style="font-size: 24px; cursor: pointer;" onclick="closeModal()">←</span>
+                    <h3 id="modalTitle" style="margin: 0; font-size: 20px;">Following</h3>
+                </div>
+                <span style="font-size: 22px;">👤+</span>
             </div>
+            
+            <div class="modal-tabs">
+                <div class="modal-tab" id="followerTab">Followers</div>
+                <div class="modal-tab active" id="followingTab">Following</div>
+                <div class="modal-tab">Subscriptions</div>
+            </div>
+
+            <div style="padding: 12px 15px; font-size: 14px; color: #efefef; display: flex; justify-content: space-between;">
+                <span>Sorted by <b>Default</b></span>
+                <span>⇅</span>
+            </div>
+
             <div class="user-list" id="listBody">
                 </div>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <a href="home.html" class="nav-link">🏠</a>
-        <a href="search.html" class="nav-link">🔍</a>
-        <a href="upload.html" style="font-size: 32px; color: #FFD700; text-decoration: none;">➕</a>
-        <a href="reels.html" class="nav-link">🎬</a>
-        <a href="profile.html" class="nav-link">👤</a>
+        <a href="#" class="nav-link">🏠</a>
+        <a href="#" class="nav-link">🔍</a>
+        <a href="#" style="font-size: 32px; color: #FFD700;">➕</a>
+        <a href="#" class="nav-link">🎬</a>
+        <a href="#" class="nav-link">👤</a>
     </div>
 
     <script>
-        function showUsers(title) {
+        function openUserList(type) {
             document.getElementById('userModal').style.display = "block";
-            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalTitle').innerText = "_mokibull_200"; // Aapki ID
+            
             const listBody = document.getElementById('listBody');
-            listBody.innerHTML = ""; // Clear old list
+            listBody.innerHTML = "";
 
-            // Fake Users for demo
+            // User data based on your screenshot
             const users = [
-                {n: "rahul_vlogs", r: "Rahul Kumar"},
-                {n: "sneha_art", r: "Sneha Singh"},
-                {n: "tech_boy", r: "Aaryan Dev"},
-                {n: "insta_queen", r: "Priya"},
-                {n: "mokibul_fan", r: "Hassan Ali"},
-                {n: "cricket_lover", r: "Imran Khan"}
+                {n: "itz_xx_killer_", r: "itz xx killer ki...", img: "https://i.pravatar.cc/150?u=1"},
+                {n: "anowarrrrrrrr", r: "1 new post • 🔵", img: "https://i.pravatar.cc/150?u=2"},
+                {n: "zuharashid", r: "Zuha Rashid", img: "https://i.pravatar.cc/150?u=3", v: true},
+                {n: "akshaykumar", r: "Akshay Kumar", img: "https://i.pravatar.cc/150?u=4", v: true},
+                {n: "mokibul1945", r: "Khan Mokibul", img: "https://i.pravatar.cc/150?u=5"},
+                {n: "shoriful_2490", r: "shoriful", img: "https://i.pravatar.cc/150?u=6"},
+                {n: "akkib_07", r: "akkib hussain", img: "https://i.pravatar.cc/150?u=7"},
+                {n: "mokibul7297", r: "Mokibul Hass...", img: "https://i.pravatar.cc/150?u=8"}
             ];
 
             users.forEach(u => {
+                let tick = u.v ? '<span style="color:#0095f6;"> ✔️</span>' : '';
                 listBody.innerHTML += `
                     <div class="user-item">
-                        <img src="https://i.pravatar.cc/150?u=${u.n}">
-                        <div class="user-info">
-                            <div class="user-name">${u.n}</div>
-                            <div class="user-realname">${u.r}</div>
+                        <div style="display: flex; align-items: center;">
+                            <img src="${u.img}">
+                            <div class="user-info">
+                                <div class="user-name">${u.n}${tick}</div>
+                                <div class="user-realname">${u.r}</div>
+                            </div>
                         </div>
-                        <button class="follow-mini-btn">Follow</button>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <button class="msg-btn">Message</button>
+                            <span style="font-size: 18px;">⋮</span>
+                        </div>
                     </div>
                 `;
             });
+
+            // Set active tab styling
+            if(type === 'Followers') {
+                document.getElementById('followerTab').classList.add('active');
+                document.getElementById('followingTab').classList.remove('active');
+            } else {
+                document.getElementById('followerTab').classList.remove('active');
+                document.getElementById('followingTab').classList.add('active');
+            }
         }
 
         function closeModal() {
             document.getElementById('userModal').style.display = "none";
         }
-
-        function shareProfile() {
-            alert("Profile Link Copied!");
-        }
-
-        // Close modal if clicked outside
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('userModal')) {
-                closeModal();
-            }
-        }
     </script>
 </body>
-    </html>
-    
+</html>
