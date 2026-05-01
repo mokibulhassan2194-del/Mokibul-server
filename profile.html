@@ -10,7 +10,6 @@
             margin: 0; padding-bottom: 70px; touch-action: manipulation; 
         }
         
-        /* Header */
         .profile-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 10px 15px; border-bottom: 1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100;
@@ -18,7 +17,6 @@
         .username { font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         .blue-tick { color: #0095f6; font-size: 16px; }
 
-        /* Profile Info */
         .profile-info { padding: 15px 15px 5px; display: flex; align-items: center; gap: 25px; }
         .profile-pic-container {
             width: 80px; height: 80px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px;
@@ -30,12 +28,10 @@
         .stat-num { font-weight: bold; font-size: 18px; display: block; }
         .stat-label { font-size: 13px; color: #efefef; }
 
-        /* Bio */
         .profile-details { padding: 5px 15px 10px; }
         .full-name { font-weight: 600; font-size: 15px; }
         .bio { font-size: 14px; line-height: 1.4; white-space: pre-wrap; }
 
-        /* Buttons */
         .btn-container { display: flex; gap: 8px; padding: 10px 15px; }
         .edit-btn {
             flex: 1; background: #262626; color: #fff; text-align: center; 
@@ -43,7 +39,6 @@
             border: none; cursor: pointer; text-decoration: none;
         }
 
-        /* Highlights */
         .highlights { display: flex; gap: 15px; padding: 10px 15px; overflow-x: auto; scrollbar-width: none; }
         .highlight-item { text-align: center; min-width: 64px; }
         .highlight-circle { 
@@ -53,7 +48,6 @@
         .highlight-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .highlight-text { font-size: 12px; }
 
-        /* Full Screen Modal */
         .modal {
             display: none; position: fixed; z-index: 2000; left: 0; top: 0;
             width: 100%; height: 100%; background-color: #000;
@@ -80,7 +74,6 @@
         .user-realname { color: #8e8e8e; font-size: 13px; }
         .msg-btn { background: #262626; color: #fff; border: none; padding: 7px 15px; border-radius: 8px; font-weight: 600; font-size: 13px; }
 
-        /* Tabs & Grid */
         .tabs { display: flex; justify-content: space-around; border-top: 1px solid #262626; margin-top: 10px; }
         .tab-item { padding: 12px; font-size: 22px; color: #8e8e8e; flex: 1; text-align: center; }
         .active-tab { color: #fff; border-bottom: 1.5px solid #fff; }
@@ -88,7 +81,6 @@
         .grid-item { aspect-ratio: 1/1; background: #111; position: relative; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-link { color: #fff; text-decoration: none; font-size: 26px; }
     </style>
@@ -161,42 +153,29 @@
                 <div class="modal-tab">Subscriptions</div>
             </div>
 
-            <div style="padding: 12px 15px; font-size: 14px; color: #efefef; display: flex; justify-content: space-between;">
-                <span>Sorted by <b>Default</b></span>
-                <span>⇅</span>
-            </div>
-
-            <div class="user-list" id="listBody">
-                </div>
+            <div class="user-list" id="listBody"></div>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <a href="#" class="nav-link">🏠</a>
-        <a href="#" class="nav-link">🔍</a>
-        <a href="#" style="font-size: 32px; color: #FFD700;">➕</a>
-        <a href="#" class="nav-link">🎬</a>
-        <a href="#" class="nav-link">👤</a>
+        <a href="home.html" class="nav-link">🏠</a>
+        <a href="search.html" class="nav-link">🔍</a>
+        <a href="upload.html" style="font-size: 32px; color: #FFD700;">➕</a>
+        <a href="reels.html" class="nav-link">🎬</a>
+        <a href="profile.html" class="nav-link">👤</a>
     </div>
 
     <script>
         function openUserList(type) {
             document.getElementById('userModal').style.display = "block";
-            document.getElementById('modalTitle').innerText = "_mokibull_200"; // Aapki ID
-            
             const listBody = document.getElementById('listBody');
             listBody.innerHTML = "";
 
-            // User data based on your screenshot
             const users = [
                 {n: "itz_xx_killer_", r: "itz xx killer ki...", img: "https://i.pravatar.cc/150?u=1"},
                 {n: "anowarrrrrrrr", r: "1 new post • 🔵", img: "https://i.pravatar.cc/150?u=2"},
                 {n: "zuharashid", r: "Zuha Rashid", img: "https://i.pravatar.cc/150?u=3", v: true},
-                {n: "akshaykumar", r: "Akshay Kumar", img: "https://i.pravatar.cc/150?u=4", v: true},
-                {n: "mokibul1945", r: "Khan Mokibul", img: "https://i.pravatar.cc/150?u=5"},
-                {n: "shoriful_2490", r: "shoriful", img: "https://i.pravatar.cc/150?u=6"},
-                {n: "akkib_07", r: "akkib hussain", img: "https://i.pravatar.cc/150?u=7"},
-                {n: "mokibul7297", r: "Mokibul Hass...", img: "https://i.pravatar.cc/150?u=8"}
+                {n: "akshaykumar", r: "Akshay Kumar", img: "https://i.pravatar.cc/150?u=4", v: true}
             ];
 
             users.forEach(u => {
@@ -210,22 +189,10 @@
                                 <div class="user-realname">${u.r}</div>
                             </div>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <button class="msg-btn">Message</button>
-                            <span style="font-size: 18px;">⋮</span>
-                        </div>
+                        <button class="msg-btn">Message</button>
                     </div>
                 `;
             });
-
-            // Set active tab styling
-            if(type === 'Followers') {
-                document.getElementById('followerTab').classList.add('active');
-                document.getElementById('followingTab').classList.remove('active');
-            } else {
-                document.getElementById('followerTab').classList.remove('active');
-                document.getElementById('followingTab').classList.add('active');
-            }
         }
 
         function closeModal() {
