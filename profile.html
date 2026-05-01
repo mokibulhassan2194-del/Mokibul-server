@@ -10,21 +10,22 @@
             margin: 0; padding-bottom: 70px; touch-action: manipulation; 
         }
         
-        /* Header सुधार: आइकन साइज बढ़ा दिया गया है */
         .profile-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px 15px; border-bottom: 1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100;
         }
-        .header-right { display: flex; gap: 22px; align-items: center; }
-        .header-btn { text-decoration: none; color: #fff; font-size: 24px; cursor: pointer; }
+        /* आइकन के क्लिक एरिया को फिक्स किया गया है */
+        .header-right { display: flex; gap: 20px; align-items: center; }
+        .header-btn { 
+            text-decoration: none; color: #fff; font-size: 26px; 
+            display: inline-block; cursor: pointer; padding: 5px;
+        }
         
         .username { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         .blue-tick { color: #0095f6; font-size: 18px; }
 
         .profile-info { padding: 15px 15px 5px; display: flex; align-items: center; gap: 25px; }
-        .profile-pic-container {
-            width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px;
-        }
+        .profile-pic-container { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; }
         .has-story { border: 2.5px solid #FFD700; }
         .profile-pic-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
@@ -37,40 +38,14 @@
         .bio { font-size: 14px; line-height: 1.4; white-space: pre-wrap; }
 
         .btn-container { display: flex; gap: 8px; padding: 10px 15px; }
-        .edit-btn {
-            flex: 1; background: #262626; color: #fff; text-align: center; 
-            padding: 9px; border-radius: 8px; font-size: 14px; font-weight: 600; 
-            border: none; cursor: pointer; text-decoration: none;
-        }
+        .edit-btn { flex: 1; background: #262626; color: #fff; text-align: center; padding: 9px; border-radius: 8px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; text-decoration: none; }
 
-        .highlights { display: flex; gap: 15px; padding: 10px 15px; overflow-x: auto; scrollbar-width: none; }
-        .highlight-item { text-align: center; min-width: 64px; }
-        .highlight-circle { 
-            width: 60px; height: 60px; border-radius: 50%; border: 1px solid #262626; 
-            padding: 2px; background: #000; margin-bottom: 4px; display: flex; align-items: center; justify-content: center;
-        }
-        .highlight-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .highlight-text { font-size: 12px; }
+        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 10px;}
+        .grid-item { aspect-ratio: 1/1; background: #111; }
+        .grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Modal */
-        .modal {
-            display: none; position: fixed; z-index: 2000; left: 0; top: 0;
-            width: 100%; height: 100%; background-color: #000;
-        }
-        .modal-content { width: 100%; height: 100%; display: flex; flex-direction: column; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #262626; }
-
-        /* Bottom Nav सुधार: आइकन साइज */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-link { color: #fff; text-decoration: none; font-size: 26px; }
-
-        /* Tabs & Grid */
-        .tabs { display: flex; justify-content: space-around; border-top: 1px solid #262626; margin-top: 10px; }
-        .tab-item { padding: 12px; font-size: 22px; color: #8e8e8e; flex: 1; text-align: center; }
-        .active-tab { color: #fff; border-bottom: 1.5px solid #fff; }
-        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-        .grid-item { aspect-ratio: 1/1; background: #111; position: relative; }
-        .grid-item img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -89,8 +64,8 @@
         </div>
         <div class="stats">
             <div><span class="stat-num">12</span><span class="stat-label">Posts</span></div>
-            <div onclick="openUserList('Followers')" style="cursor:pointer;"><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
-            <div onclick="openUserList('Following')" style="cursor:pointer;"><span class="stat-num">150</span><span class="stat-label">Following</span></div>
+            <div style="cursor:pointer;"><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
+            <div style="cursor:pointer;"><span class="stat-num">150</span><span class="stat-label">Following</span></div>
         </div>
     </div>
 
@@ -102,21 +77,8 @@
     </div>
 
     <div class="btn-container">
-        <a href="edit_profile.html" class="edit-btn">Edit Profile</a>
-        <button class="edit-btn" onclick="alert('Profile Link Copied!')">Share Profile</button>
-    </div>
-
-    <div class="highlights">
-        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/101/100"></div><span class="highlight-text">Gym</span></div>
-        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/102/100"></div><span class="highlight-text">Travel</span></div>
-        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/103/100"></div><span class="highlight-text">Vlogs</span></div>
-        <div class="highlight-item"><div class="highlight-circle" style="font-size:24px;">+</div><span class="highlight-text">New</span></div>
-    </div>
-
-    <div class="tabs">
-        <div class="tab-item active-tab">🔳</div>
-        <div class="tab-item">🎬</div>
-        <div class="tab-item">👥</div>
+        <a href="edit-profile.html" class="edit-btn">Edit Profile</a>
+        <button class="edit-btn">Share Profile</button>
     </div>
 
     <div class="post-grid">
@@ -128,19 +90,10 @@
     <div class="bottom-nav">
         <a href="home.html" class="nav-link">🏠</a>
         <a href="search.html" class="nav-link">🔍</a>
-        <a href="upload.html" style="font-size: 38px; color: #FFD700; text-decoration: none; font-weight: bold;">+</a>
+        <a href="upload.html" style="font-size: 38px; color: #FFD700; text-decoration: none;">+</a>
         <a href="reels.html" class="nav-link">🎬</a>
         <a href="profile.html" class="nav-link">👤</a>
     </div>
 
-    <script>
-        function openUserList(type) {
-            document.getElementById('userModal').style.display = "block";
-            // ... (बाकी कोड समान रहेगा)
-        }
-        function closeModal() {
-            document.getElementById('userModal').style.display = "none";
-        }
-    </script>
 </body>
 </html>
