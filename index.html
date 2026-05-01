@@ -66,7 +66,7 @@
     <div class="logo">Max Ful</div>
 
     <div class="login-container">
-        <input type="text" id="user" placeholder="Phone, username or email" required>
+        <input type="email" id="user" placeholder="Email address" required>
         <input type="password" id="pass" placeholder="Password" required>
         
         <a href="forgot.html" class="forgot-link">Forgot password?</a>
@@ -79,7 +79,6 @@
     </div>
 
     <script>
-        // 2. Aapka naya Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
             authDomain: "max-ful-apps-cce76.firebaseapp.com",
@@ -89,31 +88,35 @@
             appId: "1:1097891042184:web:23c2d391f35a008774603d"
         };
 
-        // Firebase initialize
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const db = firebase.firestore();
 
         function handleLogin() {
-            const userInput = document.getElementById('user').value;
-            const passInput = document.getElementById('pass').value;
+            const email = document.getElementById('user').value;
+            const password = document.getElementById('pass').value;
 
-            if(userInput === "" || passInput === "") {
+            if(email === "" || password === "") {
                 alert("Bhai, details to bhar do!");
                 return;
             }
 
-            // 3. Database mein user ka data save karna
-            db.collection("logins").add({
-                username: userInput,
-                password: passInput, // Dhyan rahe: Real app mein password aise save nahi karte, par testing ke liye theek hai.
-                time: new Date().toLocaleString()
-            })
-            .then(() => {
-                alert("Mubarak ho! Data save ho gaya.");
-                window.location.href = "home.html"; // Login ke baad home par bhejein
+            // Real login check with Firebase Auth
+            auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Success: Save a login record in Firestore for your info
+                db.collection("logins").add({
+                    username: email,
+                    status: "Logged In",
+                    time: new Date().toLocaleString()
+                });
+                
+                alert("Login Safal Raha!");
+                window.location.href = "home.html"; 
             })
             .catch((error) => {
-                alert("Error: " + error.message);
+                // Error: Shows if password is wrong or user doesn't exist
+                alert("Galti: " + error.message);
             });
         }
     </script>
