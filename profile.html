@@ -6,24 +6,17 @@
     <title>Max Ful | Profile</title>
     <style>
         body { 
-            background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; padding-bottom: 70px; touch-action: manipulation; 
+            background-color: #000; color: #fff; font-family: -apple-system, sans-serif; 
+            margin: 0; padding-bottom: 70px; 
         }
         
         .profile-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px 15px; border-bottom: 1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100;
         }
-        /* आइकन के क्लिक एरिया को फिक्स किया गया है */
         .header-right { display: flex; gap: 20px; align-items: center; }
-        .header-btn { 
-            text-decoration: none; color: #fff; font-size: 26px; 
-            display: inline-block; cursor: pointer; padding: 5px;
-        }
+        .header-btn { text-decoration: none; color: #fff; font-size: 26px; padding: 5px; cursor: pointer; }
         
-        .username { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .blue-tick { color: #0095f6; font-size: 18px; }
-
         .profile-info { padding: 15px 15px 5px; display: flex; align-items: center; gap: 25px; }
         .profile-pic-container { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; }
         .has-story { border: 2.5px solid #FFD700; }
@@ -33,25 +26,30 @@
         .stat-num { font-weight: bold; font-size: 18px; display: block; }
         .stat-label { font-size: 13px; color: #efefef; }
 
-        .profile-details { padding: 5px 15px 10px; }
-        .full-name { font-weight: 600; font-size: 15px; }
-        .bio { font-size: 14px; line-height: 1.4; white-space: pre-wrap; }
+        /* Highlights (गोल कहानी) का स्टाइल */
+        .highlights { display: flex; gap: 15px; padding: 10px 15px; overflow-x: auto; scrollbar-width: none; }
+        .highlight-item { text-align: center; min-width: 64px; }
+        .highlight-circle { 
+            width: 60px; height: 60px; border-radius: 50%; border: 1px solid #262626; 
+            padding: 2px; background: #000; margin-bottom: 4px; display: flex; align-items: center; justify-content: center;
+        }
+        .highlight-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .highlight-text { font-size: 12px; }
 
-        .btn-container { display: flex; gap: 8px; padding: 10px 15px; }
-        .edit-btn { flex: 1; background: #262626; color: #fff; text-align: center; padding: 9px; border-radius: 8px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; text-decoration: none; }
-
-        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 10px;}
-        .grid-item { aspect-ratio: 1/1; background: #111; }
-        .grid-item img { width: 100%; height: 100%; object-fit: cover; }
-
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-link { color: #fff; text-decoration: none; font-size: 26px; }
+        /* Modal खिड़की का स्टाइल */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: #000; }
+        .modal-content { display: flex; flex-direction: column; height: 100%; }
+        .modal-header { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #262626; gap: 20px; }
+        .user-list { overflow-y: auto; padding: 15px; }
+        .user-item { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .user-item img { width: 45px; height: 45px; border-radius: 50%; }
+        .msg-btn { background: #262626; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <div class="profile-header">
-        <div class="username">makibul_vlogs <span class="blue-tick">✔️</span></div>
+        <div style="font-size: 20px; font-weight: bold;">makibul_vlogs <span style="color:#0095f6;">✔️</span></div>
         <div class="header-right">
             <a href="upload.html" class="header-btn">➕</a>
             <a href="settings.html" class="header-btn">☰</a>
@@ -64,36 +62,71 @@
         </div>
         <div class="stats">
             <div><span class="stat-num">12</span><span class="stat-label">Posts</span></div>
-            <div style="cursor:pointer;"><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
-            <div style="cursor:pointer;"><span class="stat-num">150</span><span class="stat-label">Following</span></div>
+            <div onclick="openUserList('Followers')" style="cursor:pointer;"><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
+            <div onclick="openUserList('Following')" style="cursor:pointer;"><span class="stat-num">150</span><span class="stat-label">Following</span></div>
         </div>
     </div>
 
-    <div class="profile-details">
-        <div class="full-name">Makibul Islam</div>
-        <div class="bio">🎬 4K Video Creator | Tech Enthusiast
+    <div style="padding: 10px 15px;">
+        <div style="font-weight: 600;">Makibul Islam</div>
+        <div style="font-size: 14px; white-space: pre-wrap;">🎬 4K Video Creator | Tech Enthusiast
 🚀 Working on Max Ful App
 📍 India</div>
     </div>
 
-    <div class="btn-container">
-        <a href="edit-profile.html" class="edit-btn">Edit Profile</a>
-        <button class="edit-btn">Share Profile</button>
+    <div style="display: flex; gap: 8px; padding: 10px 15px;">
+        <a href="edit-profile.html" style="flex:1; background:#262626; color:#fff; text-align:center; padding:8px; border-radius:8px; text-decoration:none; font-weight:600; font-size:14px;">Edit Profile</a>
+        <button style="flex:1; background:#262626; color:#fff; border:none; padding:8px; border-radius:8px; font-weight:600; font-size:14px;">Share Profile</button>
     </div>
 
-    <div class="post-grid">
-        <div class="grid-item"><img src="https://picsum.photos/id/10/300/300"></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/11/300/300"></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/12/300/300"></div>
+    <div class="highlights">
+        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/101/100"></div><span class="highlight-text">Gym</span></div>
+        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/102/100"></div><span class="highlight-text">Travel</span></div>
+        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/103/100"></div><span class="highlight-text">Vlogs</span></div>
+        <div class="highlight-item"><div class="highlight-circle" style="font-size:24px;">+</div><span class="highlight-text">New</span></div>
     </div>
 
-    <div class="bottom-nav">
-        <a href="home.html" class="nav-link">🏠</a>
-        <a href="search.html" class="nav-link">🔍</a>
-        <a href="upload.html" style="font-size: 38px; color: #FFD700; text-decoration: none;">+</a>
-        <a href="reels.html" class="nav-link">🎬</a>
-        <a href="profile.html" class="nav-link">👤</a>
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span style="font-size: 24px; cursor: pointer;" onclick="closeModal()">←</span>
+                <h3 id="modalTitle" style="margin:0;">makibul_vlogs</h3>
+            </div>
+            <div class="user-list" id="listBody"></div>
+        </div>
     </div>
 
+    <script>
+        function openUserList(type) {
+            document.getElementById('userModal').style.display = "block";
+            const listBody = document.getElementById('listBody');
+            listBody.innerHTML = `<h4>${type}</h4>`; // यहाँ से लिस्ट शुरू होगी
+            
+            // डमी डेटा
+            const users = [
+                {n: "itz_xx_killer_", r: "Killer Boy", img: "https://i.pravatar.cc/150?u=1"},
+                {n: "akshaykumar", r: "Akshay Kumar", img: "https://i.pravatar.cc/150?u=4", v: true}
+            ];
+
+            users.forEach(u => {
+                let tick = u.v ? '<span style="color:#0095f6;"> ✔️</span>' : '';
+                listBody.innerHTML += `
+                    <div class="user-item">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <img src="${u.img}">
+                            <div>
+                                <div style="font-weight:600; font-size:14px;">${u.n}${tick}</div>
+                                <div style="color:#8e8e8e; font-size:12px;">${u.r}</div>
+                            </div>
+                        </div>
+                        <button class="msg-btn">Message</button>
+                    </div>`;
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('userModal').style.display = "none";
+        }
+    </script>
 </body>
 </html>
