@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Scrollable</title>
+    <title>Max Ful | Reels Fixed</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -13,59 +13,51 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        /* रील कंटेनर - यहाँ स्क्रॉलिंग फिक्स की गई है */
+        /* रील कंटेनर - स्क्रॉलिंग फिक्स */
         .reels-container {
-            height: 100vh;
+            height: calc(100vh - 55px); /* नेविगेशन बार की जगह छोड़कर */
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
-            -webkit-overflow-scrolling: touch; /* मोबाइल स्मूथनेस के लिए */
+            -webkit-overflow-scrolling: touch;
         }
         
-        /* वीडियो का डिब्बा - पूरी स्क्रीन लेगा */
         .reel-video {
-            height: 100vh; 
+            height: calc(100vh - 55px); /* पूरी स्क्रीन में वीडियो */
             width: 100%; 
             position: relative;
             scroll-snap-align: start; 
             background: #000;
         }
         
-        video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
+        video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* साइड एक्शन्स */
+        /* साइड बटन - नेविगेशन से ऊपर किया */
         .reel-actions {
-            position: absolute; right: 12px;
-            bottom: 100px; 
+            position: absolute; right: 15px;
+            bottom: 40px; /* इसे अब नेविगेशन के ठीक ऊपर रखा गया है */
             display: flex; flex-direction: column; gap: 20px; align-items: center;
             z-index: 10;
         }
-        .action-item { text-align: center; font-size: 28px; cursor: pointer; }
-        .action-item span { display: block; font-size: 12px; margin-top: 4px; }
+        .action-item { text-align: center; font-size: 28px; cursor: pointer; text-shadow: 1px 1px 10px rgba(0,0,0,0.8); }
+        .action-item span { display: block; font-size: 12px; margin-top: 4px; font-weight: bold; }
 
-        /* म्यूजिक डिस्क रोटेशन */
+        /* रोटेटिंग म्यूजिक आइकन */
         .music-disc {
-            width: 30px; height: 30px; border-radius: 50%;
+            width: 32px; height: 32px; border-radius: 50%;
             border: 2px solid #fff; animation: rotate 3s linear infinite;
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* यूजर इन्फो */
-        .reel-info { position: absolute; left: 15px; bottom: 90px; max-width: 80%; z-index: 10; }
+        /* यूजर जानकारी */
+        .reel-info { position: absolute; left: 15px; bottom: 35px; max-width: 80%; z-index: 10; }
         .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
         .user-meta img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid white; }
-        .follow-btn { 
-            border: 1px solid #fff; padding: 4px 12px; border-radius: 6px; 
-            font-size: 13px; font-weight: bold; cursor: pointer; 
-        }
+        .follow-btn { border: 1px solid #fff; padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; }
 
         /* बॉटम नेविगेशन */
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; height: 55px; 
-            background: rgba(0,0,0,0.9); border-top: 0.1px solid #262626; 
+            background: #000; border-top: 0.1px solid #262626; 
             display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
         }
         .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
@@ -75,12 +67,12 @@
 <body>
 
     <div class="reels-container">
-        
         <div class="reel-video">
             <video src="reel1.mp4" loop playsinline autoplay muted></video>
             <div class="reel-actions">
                 <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>1.5k</span></div>
                 <div class="action-item"><i class="far fa-comment"></i><span>450</span></div>
+                <div class="action-item"><i class="far fa-paper-plane"></i></div>
                 <img src="https://picsum.photos/50/50" class="music-disc">
             </div>
             <div class="reel-info">
@@ -89,7 +81,7 @@
                     <span class="user-name">@makibul_vlogs</span>
                     <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
                 </div>
-                <div class="caption">Coding is hard but I am harder! 🔥</div>
+                <div class="caption">Fixing the UI bugs! 👨‍💻🔥</div>
             </div>
         </div>
 
@@ -106,27 +98,9 @@
                     <span class="user-name">@maxful_official</span>
                     <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
                 </div>
-                <div class="caption">New Update Coming Soon! 🚀</div>
+                <div class="caption">Scroll is now working! ✅</div>
             </div>
         </div>
-
-        <div class="reel-video">
-            <video src="reel3.mp4" loop playsinline></video>
-            <div class="reel-actions">
-                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>3k</span></div>
-                <div class="action-item"><i class="far fa-comment"></i><span>90</span></div>
-                <img src="https://picsum.photos/52/52" class="music-disc">
-            </div>
-            <div class="reel-info">
-                <div class="user-meta">
-                    <img src="https://picsum.photos/102/102">
-                    <span class="user-name">@android_dev</span>
-                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
-                </div>
-                <div class="caption">Testing the scroll feature... it works! ✅</div>
-            </div>
-        </div>
-
     </div>
 
     <div class="bottom-nav">
@@ -150,7 +124,7 @@
             btn.style.opacity = (btn.innerText === "Following") ? "0.6" : "1";
         }
 
-        // ऑटो प्ले/पॉज़ जब स्क्रॉल करें
+        // वीडियो ऑटो-प्ले लॉजिक
         const videos = document.querySelectorAll('video');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -160,7 +134,7 @@
                     entry.target.pause();
                 }
             });
-        }, { threshold: 0.5 });
+        }, { threshold: 0.6 });
 
         videos.forEach(video => observer.observe(video));
     </script>
