@@ -2,70 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>New Post | Max Ful</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Upload | Max Ful</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { 
-            margin: 0; background: #000; color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            margin: 0; background: #000; color: white; font-family: sans-serif; 
             display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
         }
         
-        /* Header */
         .header { 
-            padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 0.1px solid #262626; background: #000;
+            padding: 15px; display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 0.1px solid #333; background: #000;
         }
-        .header a { text-decoration: none; color: #fff; font-size: 24px; }
-        .header h2 { font-size: 16px; margin: 0; font-weight: bold; flex: 1; text-align: center; }
-        .next-link { color: #0095f6; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .header h2 { font-size: 18px; margin: 0; color: #FFD700; }
+        .next-link { color: #FFD700; font-weight: bold; text-decoration: none; font-size: 16px; cursor: pointer; }
 
-        /* Preview Area */
         .preview-container { 
-            width: 100%; flex: 1; background: #000; display: flex; 
-            align-items: center; justify-content: center; position: relative;
+            width: 100%; flex: 1; background: #111; display: flex; 
+            align-items: center; justify-content: center; position: relative; 
         }
-        #videoPreview, #imagePreview { width: 100%; height: 100%; object-fit: contain; display: none; }
+        #videoPreview, #imagePreview { width: 100%; height: 100%; object-fit: cover; display: none; }
         
-        .center-placeholder { text-align: center; color: #a8a8a8; cursor: pointer; }
-        .center-placeholder i { font-size: 50px; margin-bottom: 10px; display: block; }
-
-        /* --- FIXED MODE SELECTOR --- */
-        .bottom-selector {
-            width: 100%; background: rgba(0,0,0,0.9);
-            padding: 15px 0; border-top: 0.1px solid #262626;
-            display: flex; justify-content: center; align-items: center;
+        .upload-options { text-align: center; display: flex; gap: 40px; }
+        .opt-box { cursor: pointer; transition: 0.3s; }
+        .opt-box:active { transform: scale(0.9); }
+        
+        /* Instagram जैसा आइकॉन स्टाइल */
+        .icon-circle { 
+            width: 70px; height: 70px; border: 2px solid #FFD700; 
+            border-radius: 20px; display: flex; align-items: center; 
+            justify-content: center; margin-bottom: 10px; font-size: 30px; color: #FFD700;
         }
-        .mode-container {
-            display: flex; gap: 30px; /* रील और पोस्ट के बीच की दूरी */
-        }
-        .mode-btn { 
-            font-size: 13px; font-weight: bold; color: #8e8e8e; 
-            text-transform: uppercase; cursor: pointer; transition: 0.2s;
-            padding-bottom: 5px;
-        }
-        .mode-btn.active { 
-            color: #fff; border-bottom: 2px solid #fff; /* सक्रिय मोड के नीचे सफेद लाइन */
-        }
-        /* --------------------------- */
+        .opt-box p { font-size: 14px; font-weight: bold; margin: 0; color: #eee; }
 
         #fileInput { display: none; }
-        
+
+        /* Loader */
         #loader {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center;
+            flex-direction: column;
         }
-        .spinner { width: 30px; height: 30px; border: 3px solid #333; border-top: 3px solid #0095f6; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #333; border-top: 4px solid #FFD700; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div id="loader"><div class="spinner"></div></div>
+    <div id="loader">
+        <div class="spinner"></div>
+        <p style="margin-top: 15px; color: #FFD700; font-weight: bold;">Uploading to Max Ful...</p>
+    </div>
 
     <div class="header">
-        <a href="profile.html">✕</a>
-        <h2 id="pageTitle">New post</h2>
+        <a href="home.html" style="text-decoration:none; color: #fff; font-size: 24px;">✕</a>
+        <h2 id="pageTitle">Create</h2>
         <div class="next-link" onclick="handleNext()">Next</div>
     </div>
 
@@ -73,16 +65,15 @@
         <video id="videoPreview" autoplay muted loop playsinline></video>
         <img id="imagePreview">
         
-        <div class="center-placeholder" id="placeholder" onclick="triggerInput()">
-            <i class="far fa-image"></i>
-            <p>Tap to select media</p>
-        </div>
-    </div>
-
-    <div class="bottom-selector">
-        <div class="mode-container">
-            <div class="mode-btn active" id="postMode" onclick="setMode('POST')">Post</div>
-            <div class="mode-btn" id="reelMode" onclick="setMode('REEL')">Reel</div>
+        <div class="upload-options" id="placeholder">
+            <div class="opt-box" onclick="openGallery('REEL')">
+                <div class="icon-circle"><i class="fa-solid fa-clapperboard"></i></div>
+                <p>Reel</p>
+            </div>
+            <div class="opt-box" onclick="openGallery('POST')">
+                <div class="icon-circle"><i class="fa-regular fa-square-plus"></i></div>
+                <p>Post</p>
+            </div>
         </div>
     </div>
 
@@ -92,16 +83,11 @@
         let currentMode = 'POST';
         let selectedFile = null;
 
-        function setMode(mode) {
+        function openGallery(mode) {
             currentMode = mode;
-            document.getElementById('postMode').classList.toggle('active', mode === 'POST');
-            document.getElementById('reelMode').classList.toggle('active', mode === 'REEL');
-            document.getElementById('pageTitle').innerText = mode === 'POST' ? 'New post' : 'New reel';
-        }
-
-        function triggerInput() {
             const input = document.getElementById('fileInput');
-            input.accept = currentMode === 'REEL' ? "video/*" : "image/*,video/*";
+            // रील के लिए सिर्फ वीडियो, पोस्ट के लिए फोटो/वीडियो दोनों
+            input.accept = mode === 'REEL' ? "video/*" : "image/*,video/*";
             input.click();
         }
 
@@ -109,9 +95,11 @@
             const file = event.target.files[0];
             if (!file) return;
             selectedFile = file;
+
             document.getElementById('placeholder').style.display = 'none';
             const vPrev = document.getElementById('videoPreview');
             const iPrev = document.getElementById('imagePreview');
+
             if (file.type.startsWith('video/')) {
                 vPrev.src = URL.createObjectURL(file);
                 vPrev.style.display = 'block';
@@ -125,13 +113,13 @@
 
         function handleNext() {
             if (!selectedFile) {
-                alert("Please select something first!");
+                alert("Bhai, pehle kuch select toh karo! 😂");
                 return;
             }
             document.getElementById('loader').style.display = 'flex';
             setTimeout(() => {
                 window.location.href = currentMode === 'REEL' ? "share-reel.html" : "share-post.html";
-            }, 1000);
+            }, 2000);
         }
     </script>
 </body>
