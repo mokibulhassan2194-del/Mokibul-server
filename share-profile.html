@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Profile | Max Ful</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 50px 20px; margin: 0; }
+        .share-box { border: 1px solid #262626; padding: 30px 20px; border-radius: 15px; background: #121212; max-width: 400px; margin: auto; }
+        .user-icon { font-size: 50px; color: #0095f6; margin-bottom: 15px; }
+        h3 { margin-bottom: 10px; }
+        p { color: #a8a8a8; font-size: 14px; margin-bottom: 25px; }
+        .btn { background: #0095f6; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; width: 80%; }
+        .back-link { display: block; margin-top: 20px; color: #a8a8a8; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="share-box">
+        <div class="user-icon"><i class="fas fa-circle-user"></i></div>
+        <h3>Share Profile</h3>
+        <p>अपनी प्रोफाइल लिंक कॉपी करें और दोस्तों को भेजें।</p>
+        <button class="btn" onclick="copyLink()">Copy Link</button>
+        <a href="profile.html" class="back-link">← Back to Profile</a>
+    </div>
+
+    <script>
+        function copyLink() {
+            // यहाँ तुम्हारी वेबसाइट का असली लिंक आएगा
+            const profileLink = window.location.href.replace('share-profile.html', 'profile.html');
+            navigator.clipboard.writeText(profileLink).then(() => {
+                alert('Profile Link Copied to Clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
 
