@@ -6,33 +6,87 @@
     <title>Share Profile | Max Ful</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 50px 20px; margin: 0; }
-        .share-box { border: 1px solid #262626; padding: 30px 20px; border-radius: 15px; background: #121212; max-width: 400px; margin: auto; }
-        .user-icon { font-size: 50px; color: #0095f6; margin-bottom: 15px; }
-        h3 { margin-bottom: 10px; }
-        p { color: #a8a8a8; font-size: 14px; margin-bottom: 25px; }
-        .btn { background: #0095f6; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; width: 80%; }
-        .back-link { display: block; margin-top: 20px; color: #a8a8a8; text-decoration: none; font-size: 14px; }
+        body { 
+            background-color: #000; color: #fff; 
+            font-family: -apple-system, sans-serif; 
+            margin: 0; display: flex; flex-direction: column; 
+            height: 100vh; align-items: center; justify-content: center;
+        }
+
+        /* बैक बटन */
+        .close-btn {
+            position: absolute; top: 20px; left: 20px;
+            font-size: 24px; color: #fff; text-decoration: none;
+        }
+
+        /* Instagram Style Profile Card */
+        .profile-card {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            width: 280px; padding: 20px; border-radius: 20px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .card-content {
+            background: #fff; color: #000; border-radius: 15px; padding: 30px 10px;
+        }
+        .card-content img {
+            width: 100px; height: 100px; border-radius: 50%;
+            object-fit: cover; border: 3px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .card-content h3 { margin: 15px 0 5px; font-size: 20px; }
+        .card-content p { color: #666; font-size: 14px; margin: 0; }
+
+        /* Bottom Share Options */
+        .share-options {
+            margin-top: 30px; display: flex; gap: 20px; justify-content: center; width: 100%;
+        }
+        .option {
+            display: flex; flex-direction: column; align-items: center;
+            color: #fff; text-decoration: none; font-size: 12px; cursor: pointer;
+        }
+        .icon-circle {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: #262626; display: flex; align-items: center;
+            justify-content: center; font-size: 20px; margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
-    <div class="share-box">
-        <div class="user-icon"><i class="fas fa-circle-user"></i></div>
-        <h3>Share Profile</h3>
-        <p>अपनी प्रोफाइल लिंक कॉपी करें और दोस्तों को भेजें।</p>
-        <button class="btn" onclick="copyLink()">Copy Link</button>
-        <a href="profile.html" class="back-link">← Back to Profile</a>
+
+    <a href="profile.html" class="close-btn"><i class="fas fa-xmark"></i></a>
+
+    <div class="profile-card">
+        <div class="card-content">
+            <img src="https://picsum.photos/id/64/200/200">
+            <h3>mokibul_hassan</h3>
+            <p>Max Ful Official</p>
+        </div>
+    </div>
+
+    <div class="share-options">
+        <div class="option" onclick="copyLink()">
+            <div class="icon-circle"><i class="fas fa-link"></i></div>
+            <span>Copy Link</span>
+        </div>
+        <div class="option">
+            <div class="icon-circle"><i class="fas fa-share-nodes"></i></div>
+            <span>Share Profile</span>
+        </div>
+        <div class="option">
+            <div class="icon-circle"><i class="fas fa-download"></i></div>
+            <span>Save Image</span>
+        </div>
     </div>
 
     <script>
         function copyLink() {
-            // यहाँ तुम्हारी वेबसाइट का असली लिंक आएगा
             const profileLink = window.location.href.replace('share-profile.html', 'profile.html');
             navigator.clipboard.writeText(profileLink).then(() => {
-                alert('Profile Link Copied to Clipboard!');
+                alert('Link Copied!');
             });
         }
     </script>
+
 </body>
 </html>
-
