@@ -24,24 +24,8 @@
             z-index: 1000; border-bottom: 0.1px solid #262626;
         }
         .username-area { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .header-icons { display: flex; gap: 20px; font-size: 20px; }
-        .menu-btn { cursor: pointer; padding: 5px; }
-
-        /* Settings Overlay/Menu */
-        .menu-overlay {
-            position: fixed; bottom: -100%; left: 0; width: 100%; height: auto;
-            background: #262626; border-radius: 15px 15px 0 0;
-            transition: 0.3s ease-in-out; z-index: 2000; padding: 20px 0;
-        }
-        .menu-overlay.active { bottom: 0; }
-        .menu-item {
-            padding: 15px 20px; display: flex; align-items: center; gap: 15px;
-            font-size: 16px; border-bottom: 0.1px solid #363636; color: white; text-decoration: none;
-        }
-        .menu-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; z-index: 1500;
-        }
+        .header-icons { display: flex; gap: 20px; font-size: 20px; align-items: center; }
+        .menu-btn { cursor: pointer; color: #fff; text-decoration: none; }
 
         /* Profile Details */
         .profile-container { padding: 15px; width: 100%; }
@@ -58,7 +42,7 @@
         .bio-text { font-size: 14px; white-space: pre-wrap; margin-top: 2px; }
 
         .btns { display: flex; gap: 8px; margin-bottom: 20px; padding: 0 5px; }
-        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; cursor: pointer; }
+        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; cursor: pointer; text-decoration: none; }
 
         .tabs { display: flex; border-top: 0.1px solid #262626; width: 100%; }
         .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; cursor: pointer; }
@@ -81,16 +65,10 @@
         </div>
         <div class="header-icons">
             <i class="far fa-square-plus"></i>
-            <i class="fas fa-bars menu-btn" onclick="toggleMenu()"></i>
+            <a href="setting.html" class="menu-btn">
+                <i class="fas fa-bars"></i>
+            </a>
         </div>
-    </div>
-
-    <div class="menu-bg" id="menuBg" onclick="toggleMenu()"></div>
-    <div class="menu-overlay" id="menuOverlay">
-        <div class="menu-item" onclick="editProfile()"><i class="fas fa-user-edit"></i> Edit Profile</div>
-        <div class="menu-item"><i class="fas fa-cog"></i> Settings</div>
-        <div class="menu-item"><i class="fas fa-history"></i> Your Activity</div>
-        <div class="menu-item" style="color: #ed4956;"><i class="fas fa-sign-out-alt"></i> Log Out</div>
     </div>
 
     <div class="profile-container">
@@ -137,19 +115,6 @@
     </div>
 
     <script>
-        // Menu Toggle Function
-        function toggleMenu() {
-            const menu = document.getElementById('menuOverlay');
-            const bg = document.getElementById('menuBg');
-            if (menu.classList.contains('active')) {
-                menu.classList.remove('active');
-                bg.style.display = 'none';
-            } else {
-                menu.classList.add('active');
-                bg.style.display = 'block';
-            }
-        }
-
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
             authDomain: "max-ful-apps-cce76.firebaseapp.com",
@@ -186,9 +151,6 @@
                     name: nName, bio: nBio, username: nUser,
                     followers: "0", following: "0", posts: "3"
                 }, {merge: true});
-                // एडिट होने के बाद मेनू बंद कर दें
-                document.getElementById('menuOverlay').classList.remove('active');
-                document.getElementById('menuBg').style.display = 'none';
             }
         }
         window.onload = loadData;
