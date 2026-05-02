@@ -87,7 +87,7 @@
         </div>
 
         <div class="btns">
-            <div class="btn" onclick="editProfile()">Edit Profile</div>
+            <a href="edit-profile.html" class="btn">Edit Profile</a>
             <div class="btn">Share profile</div>
         </div>
     </div>
@@ -105,22 +105,12 @@
     </div>
 
     <div class="bottom-nav">
-        <a href="#" class="nav-item"><i class="fas fa-house"></i></a> 
-        <a href="#" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
-        <a href="#" class="nav-item"><i class="far fa-square-plus"></i></a> 
-        <a href="#" class="nav-item"><i class="fas fa-clapperboard"></i></a> 
-        <a href="#" class="nav-item"><i class="fas fa-circle-user"></i></a> 
+        <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
+        <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
+        <a href="upload.html" class="nav-item"><i class="far fa-square-plus"></i></a> 
+        <a href="reels.html" class="nav-item"><i class="fas fa-clapperboard"></i></a> 
+        <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a> 
     </div>
 
-    <script>
-        // बिना Firebase वाला सीधा Edit फंक्शन
-        function editProfile() {
-            const nName = prompt("नया नाम डालें:", document.getElementById('display-name').innerText);
-            const nBio = prompt("नया बायो डालें:", document.getElementById('display-bio').innerText);
-            
-            if(nName) document.getElementById('display-name').innerText = nName;
-            if(nBio) document.getElementById('display-bio').innerText = nBio;
-        }
-    </script>
 </body>
 </html>
