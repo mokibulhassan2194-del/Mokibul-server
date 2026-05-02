@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Real Share</title>
+    <title>Max Ful | Reels Final Fix</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -39,6 +39,12 @@
         .action-item { text-align: center; font-size: 28px; cursor: pointer; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
         .action-item span { display: block; font-size: 12px; margin-top: 5px; font-weight: 500; }
 
+        .music-disc {
+            width: 35px; height: 35px; border-radius: 50%;
+            border: 2px solid #fff; animation: rotate 4s linear infinite;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
         .reel-info { 
             position: absolute; left: 15px; 
             bottom: 130px; 
@@ -46,37 +52,10 @@
         }
         .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .user-meta img { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #fff; }
+        .user-name { font-weight: bold; font-size: 15px; }
+        .follow-btn { border: 1.5px solid #fff; padding: 4px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; }
 
-        /* --- UPDATED SHARE MENU STYLE --- */
-        .share-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none; z-index: 2000;
-        }
-        .share-menu {
-            position: fixed; bottom: -100%; left: 0; width: 100%;
-            background: #262626; border-radius: 15px 15px 0 0;
-            padding: 15px 0; transition: bottom 0.3s cubic-bezier(0.17, 0.84, 0.44, 1); 
-            z-index: 2001; max-height: 70vh;
-        }
-        .share-menu.active { bottom: 0; }
-        .share-handle { width: 40px; height: 4px; background: #444; border-radius: 2px; margin: 0 auto 15px; }
-        
-        .search-container { padding: 0 15px 15px; }
-        .search-box { width: 100%; padding: 10px; border-radius: 10px; border: none; background: #363636; color: #fff; font-size: 14px; }
-
-        .user-list { 
-            display: flex; overflow-x: auto; padding: 10px 15px; gap: 20px; 
-            border-bottom: 0.5px solid #363636; scrollbar-width: none;
-        }
-        .user-list::-webkit-scrollbar { display: none; }
-        .user-item { text-align: center; min-width: 65px; cursor: pointer; }
-        .user-item img { width: 55px; height: 55px; border-radius: 50%; background: #444; margin-bottom: 5px; }
-        .user-item span { font-size: 11px; color: #ccc; }
-
-        .share-options { display: flex; padding: 20px 15px; justify-content: space-around; }
-        .share-option { text-align: center; cursor: pointer; }
-        .share-option i { width: 50px; height: 50px; background: #333; border-radius: 50%; line-height: 50px; font-size: 22px; margin-bottom: 8px; }
-        .close-share { text-align: center; padding: 15px; color: #ff3b3b; font-weight: bold; cursor: pointer; border-top: 0.5px solid #363636; }
+        .caption { font-size: 14px; line-height: 1.5; text-shadow: 1px 1px 4px rgba(0,0,0,1); }
 
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; height: 60px; 
@@ -85,6 +64,26 @@
         }
         .nav-item { color: #fff; font-size: 24px; text-decoration: none; opacity: 0.6; }
         .nav-item.active { opacity: 1; }
+
+        /* --- INSTAGRAM STYLE SHARE MENU --- */
+        .share-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; z-index: 2000;
+        }
+        .share-menu {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: #262626; border-radius: 15px 15px 0 0;
+            padding: 20px 0; transition: bottom 0.3s ease-out; z-index: 2001;
+            max-height: 50vh; overflow-y: auto;
+        }
+        .share-menu.active { bottom: 0; }
+        .share-header { text-align: center; font-weight: bold; padding-bottom: 15px; border-bottom: 0.5px solid #444; }
+        .share-options { display: flex; flex-wrap: wrap; padding: 20px; justify-content: space-around; gap: 20px; }
+        .share-option { text-align: center; width: 70px; cursor: pointer; }
+        .share-option i { width: 50px; height: 50px; background: #333; border-radius: 50%; line-height: 50px; font-size: 20px; margin-bottom: 8px; }
+        .share-option.whatsapp i { background: #25D366; }
+        .share-option.copy i { background: #555; }
+        .close-share { padding: 10px; text-align: center; color: #ff3b3b; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -93,16 +92,16 @@
         <div class="reel-video">
             <video src="reel1.mp4" loop playsinline autoplay muted></video>
             <div class="reel-actions">
-                <div class="action-item"><i class="far fa-heart"></i><span>2.1k</span></div>
+                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>2.1k</span></div>
                 <div class="action-item"><i class="far fa-comment"></i><span>120</span></div>
-                <div class="action-item" onclick="openShare()"><i class="fa-solid fa-paper-plane" style="transform: rotate(-15deg);"></i><span>Share</span></div>
-                <img src="https://picsum.photos/60/60" style="width:35px; height:35px; border-radius:50%; border:2px solid #fff;">
+                <div class="action-item" onclick="openShare()"><i class="fa-regular fa-paper-plane"></i><span>Share</span></div>
+                <img src="https://picsum.photos/60/60" class="music-disc">
             </div>
             <div class="reel-info">
                 <div class="user-meta">
                     <img src="https://picsum.photos/100/100">
                     <span class="user-name">@makibul_vlogs</span>
-                    <div class="follow-btn">Follow</div>
+                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
                 </div>
                 <div class="caption">Success is a journey! 🚀🔥</div>
             </div>
@@ -111,63 +110,86 @@
 
     <div class="share-overlay" id="overlay" onclick="closeShare()"></div>
     <div class="share-menu" id="shareMenu">
-        <div class="share-handle"></div>
-        <div class="search-container">
-            <input type="text" class="search-box" placeholder="Search">
-        </div>
-        
-        <div class="user-list">
-            <div class="user-item" onclick="sendToUser('Mokibul')">
-                <img src="https://picsum.photos/60/60?1"><span>Mokibul</span>
-            </div>
-            <div class="user-item" onclick="sendToUser('Android Dev')">
-                <img src="https://picsum.photos/60/60?2"><span>Dev</span>
-            </div>
-            <div class="user-item" onclick="sendToUser('User 3')">
-                <img src="https://picsum.photos/60/60?3"><span>User 3</span>
-            </div>
-            <div class="user-item" onclick="sendToUser('Friend')">
-                <img src="https://picsum.photos/60/60?4"><span>Friend</span>
-            </div>
-        </div>
-
+        <div class="share-header">Share to</div>
         <div class="share-options">
-            <div class="share-option" onclick="shareTo('whatsapp')"><i class="fab fa-whatsapp" style="color:#25D366;"></i><br><span>WhatsApp</span></div>
-            <div class="share-option" onclick="shareTo('copy')"><i class="fas fa-link"></i><br><span>Copy Link</span></div>
-            <div class="share-option" onclick="shareTo('system')"><i class="fas fa-share-nodes"></i><br><span>More</span></div>
+            <div class="share-option whatsapp" onclick="shareTo('whatsapp')">
+                <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
+            </div>
+            <div class="share-option" onclick="shareTo('insta')">
+                <i class="fab fa-instagram"></i><span>Stories</span>
+            </div>
+            <div class="share-option copy" onclick="shareTo('copy')">
+                <i class="fas fa-link"></i><span>Copy Link</span>
+            </div>
+            <div class="share-option" onclick="shareTo('system')">
+                <i class="fas fa-share-nodes"></i><span>More</span>
+            </div>
         </div>
         <div class="close-share" onclick="closeShare()">Cancel</div>
     </div>
 
     <div class="bottom-nav">
         <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
+        <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
+        <a href="upload.html" class="nav-item" style="color: #FFD700; font-size: 28px;"><i class="far fa-square-plus"></i></a> 
         <a href="reels.html" class="nav-item active"><i class="fas fa-clapperboard"></i></a> 
         <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a> 
     </div>
 
     <script>
+        function toggleLike(element) {
+            const heart = element.querySelector('i');
+            heart.classList.toggle('fas');
+            heart.classList.toggle('far');
+            heart.style.color = heart.classList.contains('fas') ? "#ff0050" : "#fff";
+        }
+
+        function toggleFollow(btn) {
+            btn.innerText = (btn.innerText === "Follow") ? "Following" : "Follow";
+            btn.style.opacity = (btn.innerText === "Following") ? "0.6" : "1";
+        }
+
+        // --- SHARE FUNCTIONS ---
         function openShare() {
             document.getElementById('overlay').style.display = 'block';
-            setTimeout(() => { document.getElementById('shareMenu').classList.add('active'); }, 10);
+            setTimeout(() => {
+                document.getElementById('shareMenu').classList.add('active');
+            }, 10);
         }
 
         function closeShare() {
             document.getElementById('shareMenu').classList.remove('active');
-            setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 300);
-        }
-
-        function sendToUser(name) {
-            alert("Reel sent to " + name + "! ✅");
-            closeShare();
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+            }, 300);
         }
 
         function shareTo(platform) {
-            if(platform === 'copy') {
-                navigator.clipboard.writeText(window.location.href);
+            const url = window.location.href;
+            if(platform === 'whatsapp') {
+                window.open(`https://api.whatsapp.com/send?text=${url}`);
+            } else if(platform === 'copy') {
+                navigator.clipboard.writeText(url);
                 alert("Link Copied!");
+            } else if(platform === 'system') {
+                if(navigator.share) {
+                    navigator.share({title: 'Max Ful', url: url});
+                }
             }
             closeShare();
         }
+
+        const videos = document.querySelectorAll('video');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.play();
+                } else {
+                    entry.target.pause();
+                }
+            });
+        }, { threshold: 0.6 });
+        videos.forEach(video => observer.observe(video));
     </script>
 </body>
 </html>
