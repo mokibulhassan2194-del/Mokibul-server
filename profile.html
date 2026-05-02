@@ -12,7 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             margin: 0; padding: 0; width: 100%; overflow-x: hidden; touch-action: manipulation;
         }
-        body { padding-bottom: 70px; } /* नेविगेशन के लिए नीचे जगह छोड़ी है */
+        body { padding-bottom: 70px; } 
         * { box-sizing: border-box; }
 
         /* Header */
@@ -32,6 +32,7 @@
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
+        .stat-link { text-decoration: none; color: inherit; cursor: pointer; }
         .stat-val { font-weight: bold; font-size: 17px; display: block; }
         .stat-name { font-size: 13px; color: #a8a8a8; }
 
@@ -40,7 +41,7 @@
         .bio-text { font-size: 14px; white-space: pre-wrap; margin-top: 2px; }
 
         .btns { display: flex; gap: 8px; margin-bottom: 20px; padding: 0 5px; }
-        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; cursor: pointer; text-decoration: none; }
+        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; cursor: pointer; text-decoration: none; display: block; }
 
         .tabs { display: flex; border-top: 0.1px solid #262626; width: 100%; }
         .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; cursor: pointer; }
@@ -50,17 +51,13 @@
         .grid-item { aspect-ratio: 1/1; background: #121212; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* प्रोफेशनल बॉटम नेविगेशन - होम पेज जैसा लुक */
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; height: 55px; 
             background: #000; border-top: 0.1px solid #262626; 
             display: flex; justify-content: space-around; 
             align-items: center; z-index: 1000; 
         }
-        .nav-item { 
-            color: #fff; font-size: 25px; /* बड़ा और साफ़ साइज */
-            text-decoration: none; opacity: 0.7; transition: 0.2s; 
-        }
+        .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; transition: 0.2s; }
         .nav-item.active { opacity: 1; }
     </style>
 </head>
@@ -85,9 +82,15 @@
                 <img src="https://picsum.photos/id/64/200/200" id="user-img">
             </div>
             <div class="stats-row">
-                <div><span class="stat-val">3</span><span class="stat-name">Posts</span></div>
-                <div><span class="stat-val">120</span><span class="stat-name">Followers</span></div>
-                <div><span class="stat-val">150</span><span class="stat-name">Following</span></div>
+                <div class="stat-link">
+                    <span class="stat-val">3</span><span class="stat-name">Posts</span>
+                </div>
+                <a href="followers.html" class="stat-link">
+                    <span class="stat-val">120</span><span class="stat-name">Followers</span>
+                </a>
+                <a href="following.html" class="stat-link">
+                    <span class="stat-val">150</span><span class="stat-name">Following</span>
+                </a>
             </div>
         </div>
 
@@ -98,7 +101,7 @@
 
         <div class="btns">
             <a href="edit-profile.html" class="btn">Edit Profile</a>
-            <div class="btn">Share profile</div>
+            <a href="share-profile.html" class="btn">Share profile</a>
         </div>
     </div>
 
