@@ -7,24 +7,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* बॉडी को फिक्स किया ताकि पूरा पेज स्क्रॉल न हो */
         html, body { 
             background-color: #000; color: #fff; margin: 0; padding: 0; 
             width: 100%; height: 100%; overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
+        /* स्क्रॉलिंग के लिए मुख्य कंटेनर */
         .reels-container {
             height: 100vh; 
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox के लिए */
         }
+        .reels-container::-webkit-scrollbar { display: none; } /* Chrome/Safari के लिए */
         
+        /* हर रील की हाइट पूरी स्क्रीन के बराबर */
         .reel-video {
             height: 100vh; 
             width: 100%; 
             position: relative;
             scroll-snap-align: start; 
+            scroll-snap-stop: always;
             background: #000;
         }
         
@@ -65,7 +71,6 @@
         .nav-item { color: #fff; font-size: 24px; text-decoration: none; opacity: 0.6; }
         .nav-item.active { opacity: 1; }
 
-        /* --- INSTAGRAM STYLE SHARE MENU --- */
         .share-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); display: none; z-index: 2000;
@@ -103,7 +108,25 @@
                     <span class="user-name">@makibul_vlogs</span>
                     <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
                 </div>
-                <div class="caption">Success is a journey! 🚀🔥</div>
+                <div class="caption">सफलता एक यात्रा है! 🚀🔥</div>
+            </div>
+        </div>
+
+        <div class="reel-video">
+            <video src="reel2.mp4" loop playsinline muted></video>
+            <div class="reel-actions">
+                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>5k</span></div>
+                <div class="action-item"><i class="far fa-comment"></i><span>300</span></div>
+                <div class="action-item" onclick="openShare()"><i class="fa-regular fa-paper-plane"></i><span>Share</span></div>
+                <img src="https://picsum.photos/61/61" class="music-disc">
+            </div>
+            <div class="reel-info">
+                <div class="user-meta">
+                    <img src="https://picsum.photos/101/101">
+                    <span class="user-name">@max_ful_dev</span>
+                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
+                </div>
+                <div class="caption">Coding is life! 💻✨</div>
             </div>
         </div>
     </div>
@@ -137,6 +160,7 @@
     </div>
 
     <script>
+        // पुराने सारे फंक्शंस वैसे ही हैं
         function toggleLike(element) {
             const heart = element.querySelector('i');
             heart.classList.toggle('fas');
@@ -149,36 +173,25 @@
             btn.style.opacity = (btn.innerText === "Following") ? "0.6" : "1";
         }
 
-        // --- SHARE FUNCTIONS ---
         function openShare() {
             document.getElementById('overlay').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('shareMenu').classList.add('active');
-            }, 10);
+            setTimeout(() => { document.getElementById('shareMenu').classList.add('active'); }, 10);
         }
 
         function closeShare() {
             document.getElementById('shareMenu').classList.remove('active');
-            setTimeout(() => {
-                document.getElementById('overlay').style.display = 'none';
-            }, 300);
+            setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 300);
         }
 
         function shareTo(platform) {
             const url = window.location.href;
-            if(platform === 'whatsapp') {
-                window.open(`https://api.whatsapp.com/send?text=${url}`);
-            } else if(platform === 'copy') {
-                navigator.clipboard.writeText(url);
-                alert("Link Copied!");
-            } else if(platform === 'system') {
-                if(navigator.share) {
-                    navigator.share({title: 'Max Ful', url: url});
-                }
-            }
+            if(platform === 'whatsapp') { window.open(`https://api.whatsapp.com/send?text=${url}`); }
+            else if(platform === 'copy') { navigator.clipboard.writeText(url); alert("Link Copied!"); }
+            else if(platform === 'system') { if(navigator.share) { navigator.share({title: 'Max Ful', url: url}); } }
             closeShare();
         }
 
+        // ऑटो-प्ले और स्क्रॉल ऑब्जर्वर
         const videos = document.querySelectorAll('video');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -186,9 +199,10 @@
                     entry.target.play();
                 } else {
                     entry.target.pause();
+                    entry.target.currentTime = 0; // वापस शुरू से करने के लिए
                 }
             });
-        }, { threshold: 0.6 });
+        }, { threshold: 0.7 }); // 70% रील दिखने पर प्ले होगा
         videos.forEach(video => observer.observe(video));
     </script>
 </body>
