@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; overflow-x: hidden; }
+        body { background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding-bottom: 70px; overflow-x: hidden; }
         
         /* Search Box Styling */
         .search-box { padding: 15px; position: sticky; top: 0; background: #000; z-index: 100; }
@@ -25,9 +27,10 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: #000; border-top: 1px solid #333; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { color: #fff; text-decoration: none; text-align: center; font-size: 12px; }
+        /* प्रोफेशनल बॉटम नेविगेशन */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+        .nav-item { color: #fff; text-decoration: none; font-size: 24px; opacity: 0.7; transition: 0.2s; }
+        .nav-item.active { opacity: 1; }
     </style>
 </head>
 <body>
@@ -45,21 +48,20 @@
     <div id="search-results"></div>
 
     <div class="bottom-nav">
-        <a href="home.html" class="nav-item">🏠<br>Home</a>
-        <a href="search.html" class="nav-item">🔍<br>Search</a>
-        <a href="#" style="font-size: 25px; color: #FFD700;">+</a>
-        <a href="reels.html" class="nav-item">🎬<br>Reels</a>
-        <a href="profile.html" class="nav-item">👤<br>Profile</a>
+        <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a>
+        <a href="search.html" class="nav-item active"><i class="fas fa-magnifying-glass"></i></a>
+        <a href="upload.html" class="nav-item" style="color: #FFD700; font-size: 28px;"><i class="far fa-square-plus"></i></a>
+        <a href="reels.html" class="nav-item"><i class="fas fa-clapperboard"></i></a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a>
     </div>
 
     <script>
-        // Fake Database (Followers और Link के साथ)
         const allUsers = [
             { name: "priya.art", followers: 150000, pic: "https://via.placeholder.com/150", link: "profile.html" },
             { name: "makibul_islam", followers: 55000, pic: "https://via.placeholder.com/150", link: "profile.html" },
             { name: "ankit_99", followers: 12000, pic: "https://via.placeholder.com/150", link: "profile.html" },
             { name: "rahul_vlogs", followers: 8500, pic: "https://via.placeholder.com/150", link: "profile.html" },
-            { name: "mr_beast_fan", followers: 200000, pic: "https://via.placeholder.com/150", link: "mrbeast.html" } // ये रहा बदलाव!
+            { name: "mr_beast_fan", followers: 200000, pic: "https://via.placeholder.com/150", link: "mrbeast.html" }
         ];
 
         function doSearch() {
