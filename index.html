@@ -30,7 +30,16 @@
             text-align: center; 
         }
 
+        /* Error state for input */
+        .input-error { border-color: #ff4d4d !important; }
+
         input:focus { border-color: #FFD700; background: #222; }
+
+        /* Professional Error Message Styling */
+        #error-message {
+            color: #ff4d4d; font-size: 13px; margin-top: -5px; margin-bottom: 15px;
+            display: none; line-height: 1.4;
+        }
 
         .forgot-link {
             display: block; text-align: center; font-size: 13px; color: #FFD700;
@@ -58,8 +67,6 @@
             font-size: 14px; text-decoration: none; display: inline-block; box-sizing: border-box;
             transition: 0.3s; text-align: center;
         }
-        .create-btn:hover { border-color: #FFD700; background: #111; }
-        #recaptcha-container { margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -70,9 +77,11 @@
         <input type="text" id="userInput" placeholder="Phone, username or email" required>
         <input type="password" id="pass" placeholder="Password">
         
+        <p id="error-message"></p>
+
         <a href="forgot.html" class="forgot-link">Forgot password?</a>
         
-        <button type="button" onclick="handleLogin()" class="login-btn">Log In</button>
+        <button type="button" onclick="handleLogin()" id="loginBtn" class="login-btn">Log In</button>
 
         <div id="recaptcha-container"></div>
 
@@ -93,49 +102,68 @@
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const db = firebase.firestore();
 
-        // OTP setup
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-            'size': 'invisible'
-        });
+        // Error dikhane ka professional tareeka
+        function displayError(msg) {
+            const errorElement = document.getElementById('error-message');
+            const inputField = document.getElementById('userInput');
+            errorElement.innerText = msg;
+            errorElement.style.display = "block";
+            inputField.classList.add('input-error');
+        }
 
         function handleLogin() {
-            const input = document.getElementById('userInput').value;
+            let input = document.getElementById('userInput').value.trim();
             const password = document.getElementById('pass').value;
+            const errorElement = document.getElementById('error-message');
+            const inputField = document.getElementById('userInput');
+
+            // Reset UI
+            errorElement.style.display = "none";
+            inputField.classList.remove('input-error');
 
             if(input === "") {
-                alert("Bhai, detail to bhar do!");
+                displayError("Please enter your phone, username or email.");
                 return;
             }
 
-            // 1. Check if it's a Phone Number (Starts with +)
+            // 1. PHONE LOGIN (+ se shuru ho to)
             if(input.startsWith('+')) {
-                const appVerifier = window.recaptchaVerifier;
+                const appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {'size': 'invisible'});
                 auth.signInWithPhoneNumber(input, appVerifier)
                 .then((confirmationResult) => {
-                    const code = window.prompt("OTP bhej diya hai, yahan likhein:");
+                    const code = window.prompt("Enter OTP:");
                     if (code) {
                         confirmationResult.confirm(code).then(() => {
                             window.location.href = "home.html";
-                        }).catch(() => alert("Galat OTP!"));
+                        }).catch(() => displayError("Invalid OTP code. Please try again."));
                     }
-                }).catch((err) => alert("SMS Error: " + err.message));
+                }).catch((err) => displayError(err.message));
             } 
-            // 2. Otherwise assume it's Email/Username
+            
+            // 2. EMAIL/USERNAME LOGIN
             else {
                 if(password === "") {
-                    alert("Bhai, password bhi chahiye!");
+                    displayError("Please enter your password.");
                     return;
                 }
-                
-                // Normal Email Login
-                auth.signInWithEmailAndPassword(input, password)
+
+                // Agar user ne @ nahi lagaya, to hum peeche se add kar denge taaki Firebase reject na kare
+                let finalLogin = input.includes('@') ? input : input + "@maxful.com";
+
+                auth.signInWithEmailAndPassword(finalLogin, password)
                 .then(() => {
                     window.location.href = "home.html";
                 })
                 .catch((error) => {
-                    alert("Error: " + error.message);
+                    // Instagram jaisa error message
+                    if (error.code === 'auth/wrong-password') {
+                        displayError("Sorry, your password was incorrect. Please double-check your password.");
+                    } else if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-email') {
+                        displayError("The username you entered doesn't belong to an account. Please check your username and try again.");
+                    } else {
+                        displayError("An error occurred. Please try again later.");
+                    }
                 });
             }
         }
