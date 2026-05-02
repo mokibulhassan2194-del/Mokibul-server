@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Real Share</title>
+    <title>Max Ful | Reels Pro Design</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -14,77 +14,55 @@
         }
 
         .reels-container {
-            height: 100vh; 
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            -webkit-overflow-scrolling: touch;
+            height: 100vh; overflow-y: scroll;
+            scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch;
         }
         
         .reel-video {
-            height: 100vh; 
-            width: 100%; 
-            position: relative;
-            scroll-snap-align: start; 
-            background: #000;
+            height: 100vh; width: 100%; position: relative;
+            scroll-snap-align: start; background: #000;
         }
         
         video { width: 100%; height: 100%; object-fit: cover; }
 
+        /* साइड बटन्स */
         .reel-actions {
-            position: absolute; right: 15px;
-            bottom: 130px; 
-            display: flex; flex-direction: column; gap: 24px; align-items: center;
-            z-index: 10;
+            position: absolute; right: 15px; bottom: 100px; 
+            display: flex; flex-direction: column; gap: 22px; align-items: center; z-index: 10;
         }
-        .action-item { text-align: center; font-size: 28px; cursor: pointer; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
-        .action-item span { display: block; font-size: 12px; margin-top: 5px; font-weight: 500; }
+        .action-item { text-align: center; cursor: pointer; }
+        .action-item i { font-size: 28px; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
+        .action-item span { display: block; font-size: 12px; margin-top: 5px; }
 
-        .reel-info { 
-            position: absolute; left: 15px; 
-            bottom: 130px; 
-            max-width: 75%; z-index: 10; 
-        }
-        .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .user-meta img { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #fff; }
-
-        /* --- UPDATED SHARE MENU STYLE --- */
+        /* इंस्टाग्राम जैसा शेयर मेनू */
         .share-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); display: none; z-index: 2000;
         }
         .share-menu {
             position: fixed; bottom: -100%; left: 0; width: 100%;
-            background: #262626; border-radius: 15px 15px 0 0;
-            padding: 15px 0; transition: bottom 0.3s cubic-bezier(0.17, 0.84, 0.44, 1); 
-            z-index: 2001; max-height: 70vh;
+            background: #262626; border-radius: 20px 20px 0 0;
+            padding: 15px 0; transition: bottom 0.3s cubic-bezier(0.17, 0.84, 0.44, 1); z-index: 2001;
         }
         .share-menu.active { bottom: 0; }
         .share-handle { width: 40px; height: 4px; background: #444; border-radius: 2px; margin: 0 auto 15px; }
         
-        .search-container { padding: 0 15px 15px; }
-        .search-box { width: 100%; padding: 10px; border-radius: 10px; border: none; background: #363636; color: #fff; font-size: 14px; }
+        .search-bar { padding: 0 15px 15px; }
+        .search-bar input { width: 100%; padding: 10px; border-radius: 10px; border: none; background: #363636; color: #fff; }
 
+        /* यूजर लिस्ट स्क्रॉल */
         .user-list { 
-            display: flex; overflow-x: auto; padding: 10px 15px; gap: 20px; 
-            border-bottom: 0.5px solid #363636; scrollbar-width: none;
+            display: flex; overflow-x: auto; padding: 10px 15px; gap: 18px; 
+            border-bottom: 0.5px solid #363636; scrollbar-width: none; 
         }
         .user-list::-webkit-scrollbar { display: none; }
-        .user-item { text-align: center; min-width: 65px; cursor: pointer; }
+        .user-item { text-align: center; min-width: 65px; }
         .user-item img { width: 55px; height: 55px; border-radius: 50%; background: #444; margin-bottom: 5px; }
-        .user-item span { font-size: 11px; color: #ccc; }
+        .user-item p { font-size: 11px; margin: 0; color: #ccc; }
 
-        .share-options { display: flex; padding: 20px 15px; justify-content: space-around; }
-        .share-option { text-align: center; cursor: pointer; }
-        .share-option i { width: 50px; height: 50px; background: #333; border-radius: 50%; line-height: 50px; font-size: 22px; margin-bottom: 8px; }
-        .close-share { text-align: center; padding: 15px; color: #ff3b3b; font-weight: bold; cursor: pointer; border-top: 0.5px solid #363636; }
-
-        .bottom-nav { 
-            position: fixed; bottom: 0; width: 100%; height: 60px; 
-            background: rgba(0,0,0,0.9); border-top: 0.5px solid #262626; 
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
-        }
-        .nav-item { color: #fff; font-size: 24px; text-decoration: none; opacity: 0.6; }
-        .nav-item.active { opacity: 1; }
+        .app-options { display: flex; justify-content: space-around; padding: 20px; }
+        .app-item { text-align: center; cursor: pointer; }
+        .app-item i { width: 50px; height: 50px; background: #333; border-radius: 50%; line-height: 50px; font-size: 22px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -93,80 +71,42 @@
         <div class="reel-video">
             <video src="reel1.mp4" loop playsinline autoplay muted></video>
             <div class="reel-actions">
-                <div class="action-item"><i class="far fa-heart"></i><span>2.1k</span></div>
-                <div class="action-item"><i class="far fa-comment"></i><span>120</span></div>
+                <div class="action-item"><i class="far fa-heart"></i><span>1.5k</span></div>
+                <div class="action-item"><i class="far fa-comment"></i><span>450</span></div>
                 <div class="action-item" onclick="openShare()"><i class="fa-solid fa-paper-plane" style="transform: rotate(-15deg);"></i><span>Share</span></div>
-                <img src="https://picsum.photos/60/60" style="width:35px; height:35px; border-radius:50%; border:2px solid #fff;">
-            </div>
-            <div class="reel-info">
-                <div class="user-meta">
-                    <img src="https://picsum.photos/100/100">
-                    <span class="user-name">@makibul_vlogs</span>
-                    <div class="follow-btn">Follow</div>
-                </div>
-                <div class="caption">Success is a journey! 🚀🔥</div>
+                <img src="https://picsum.photos/50/50" style="width:30px; height:30px; border-radius:50%; border:2px solid #fff;">
             </div>
         </div>
     </div>
 
     <div class="share-overlay" id="overlay" onclick="closeShare()"></div>
-    <div class="share-menu" id="shareMenu">
+    <div class="share-menu" id="shareSheet">
         <div class="share-handle"></div>
-        <div class="search-container">
-            <input type="text" class="search-box" placeholder="Search">
-        </div>
+        <div class="search-bar"><input type="text" placeholder="Search"></div>
         
         <div class="user-list">
-            <div class="user-item" onclick="sendToUser('Mokibul')">
-                <img src="https://picsum.photos/60/60?1"><span>Mokibul</span>
-            </div>
-            <div class="user-item" onclick="sendToUser('Android Dev')">
-                <img src="https://picsum.photos/60/60?2"><span>Dev</span>
-            </div>
-            <div class="user-item" onclick="sendToUser('User 3')">
-                <img src="https://picsum.photos/60/60?3"><span>User 3</span>
-            </div>
-            <div class="user-item" onclick="sendToUser('Friend')">
-                <img src="https://picsum.photos/60/60?4"><span>Friend</span>
-            </div>
+            <div class="user-item"><img src="https://i.pravatar.cc/100?u=1"><p>User 1</p></div>
+            <div class="user-item"><img src="https://i.pravatar.cc/100?u=2"><p>User 2</p></div>
+            <div class="user-item"><img src="https://i.pravatar.cc/100?u=3"><p>User 3</p></div>
+            <div class="user-item"><img src="https://i.pravatar.cc/100?u=4"><p>User 4</p></div>
+            <div class="user-item"><img src="https://i.pravatar.cc/100?u=5"><p>User 5</p></div>
         </div>
 
-        <div class="share-options">
-            <div class="share-option" onclick="shareTo('whatsapp')"><i class="fab fa-whatsapp" style="color:#25D366;"></i><br><span>WhatsApp</span></div>
-            <div class="share-option" onclick="shareTo('copy')"><i class="fas fa-link"></i><br><span>Copy Link</span></div>
-            <div class="share-option" onclick="shareTo('system')"><i class="fas fa-share-nodes"></i><br><span>More</span></div>
+        <div class="app-options">
+            <div class="app-item" style="color: #25D366;"><i class="fab fa-whatsapp"></i><p>WhatsApp</p></div>
+            <div class="app-item"><i class="fas fa-link"></i><p>Link</p></div>
+            <div class="app-item"><i class="fas fa-share-nodes"></i><p>More</p></div>
         </div>
-        <div class="close-share" onclick="closeShare()">Cancel</div>
-    </div>
-
-    <div class="bottom-nav">
-        <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
-        <a href="reels.html" class="nav-item active"><i class="fas fa-clapperboard"></i></a> 
-        <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a> 
     </div>
 
     <script>
         function openShare() {
             document.getElementById('overlay').style.display = 'block';
-            setTimeout(() => { document.getElementById('shareMenu').classList.add('active'); }, 10);
+            setTimeout(() => { document.getElementById('shareSheet').classList.add('active'); }, 10);
         }
-
         function closeShare() {
-            document.getElementById('shareMenu').classList.remove('active');
+            document.getElementById('shareSheet').classList.remove('active');
             setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 300);
-        }
-
-        function sendToUser(name) {
-            alert("Reel sent to " + name + "! ✅");
-            closeShare();
-        }
-
-        function shareTo(platform) {
-            if(platform === 'copy') {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Link Copied!");
-            }
-            closeShare();
         }
     </script>
 </body>
