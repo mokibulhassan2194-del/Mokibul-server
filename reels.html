@@ -7,146 +7,131 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        .reels-wrapper { height: 100vh; width: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-        .reels-wrapper::-webkit-scrollbar { display: none; }
-        .reel { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; background: #000; overflow: hidden; }
-        video { width: 100%; height: 100%; object-fit: cover; }
-
-        /* SIDE ACTIONS */
-        .side-actions { position: absolute; right: 12px; bottom: 100px; display: flex; flex-direction: column; gap: 20px; z-index: 1000; align-items: center; }
-        .btn { background: none; border: none; color: white; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-        .btn span { display: block; font-size: 12px; margin-top: 5px; font-weight: 500; }
-        .reel-icon { font-size: 28px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.5)); transition: 0.2s; }
-        .liked { color: #ff2d55 !important; } 
-
-        /* DETAILS AND FOLLOW BUTTON */
-        .details { position: absolute; left: 15px; bottom: 110px; color: white; z-index: 1000; max-width: 80%; }
-        .user-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .details b { font-size: 15px; }
-        
-        .follow-btn { 
-            background: transparent; border: 1px solid white; color: white; 
-            padding: 4px 14px; border-radius: 8px; font-size: 13px; 
-            font-weight: 600; cursor: pointer;
+        html, body { 
+            background-color: #000; color: #fff; 
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow: hidden; /* बॉडी का स्क्रॉल बंद */
         }
-        .following { border-color: #555; color: #888; }
 
-        .details p { margin: 0; font-size: 14px; opacity: 0.9; }
+        /* रील कंटेनर - स्क्रॉलिंग यहाँ होगी */
+        .reels-container {
+            height: calc(100vh - 55px); /* नेविगेशन बार के लिए जगह छोड़ी */
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory; /* वीडियो चिपक कर रुकेंगे */
+        }
 
-        .music-note-disk { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; animation: rotate 3s linear infinite; background: linear-gradient(45deg, #222, #555); margin-top: 10px; }
+        .reel-video {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            scroll-snap-align: start;
+            background: #111;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* साइड के आइकन (Like, Comment, Share) */
+        .reel-actions {
+            position: absolute;
+            right: 12px;
+            bottom: 120px; /* आइकन को थोड़ा ऊपर किया */
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            align-items: center;
+        }
+        .action-item { text-align: center; font-size: 26px; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+        .action-item span { display: block; font-size: 12px; margin-top: 4px; }
+
+        /* म्यूजिक आइकन - इसे ऊपर किया गया */
+        .music-disc {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            animation: rotate 3s linear infinite;
+            margin-top: 10px;
+        }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .heart-pop { position: absolute; font-size: 80px; color: #ff2d55; pointer-events: none; transform: translate(-50%, -50%) scale(0); animation: heartBurst 0.6s ease-out forwards; z-index: 999; }
-        @keyframes heartBurst { 
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 
-            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        /* यूजर जानकारी (नीचे बायीं ओर) */
+        .reel-info {
+            position: absolute;
+            left: 15px;
+            bottom: 75px; /* नेविगेशन से थोड़ा ऊपर */
+            max-width: 80%;
         }
+        .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .user-meta img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid #fff; }
+        .user-name { font-weight: bold; font-size: 15px; }
+        .follow-btn { border: 1px solid #fff; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
 
-        /* प्रोफेशनल बॉटम नेविगेशन */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; display: flex; justify-content: space-around; align-items: center; z-index: 2000; border-top: 0.1px solid #262626; }
-        .nav-item { color: white; text-decoration: none; font-size: 24px; opacity: 0.7; transition: 0.2s; }
-        .nav-item.active { opacity: 1; }
+        /* बॉटम नेविगेशन - जैसा होम पेज पर है */
+        .bottom-nav { 
+            position: fixed; bottom: 0; width: 100%; height: 55px; 
+            background: #000; border-top: 0.1px solid #262626; 
+            display: flex; justify-content: space-around; 
+            align-items: center; z-index: 1000; 
+        }
+        .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
+        .active { opacity: 1; }
     </style>
 </head>
 <body>
 
-<div class="reels-wrapper" id="mainContainer">
-    
-    <div class="reel" ondblclick="handleDoubleTap(event, this)">
-        <video src="3021.mp4" loop autoplay muted playsinline onclick="togglePlay(this)"></video>
-        <div class="side-actions">
-            <div class="btn" onclick="toggleLike(this)">
-                <i class="far fa-heart reel-icon"></i>
-                <span>1.5k</span>
+    <div class="reels-container">
+        <div class="reel-video">
+            <video src="your-video-1.mp4" loop playsinline autoplay muted onclick="this.paused?this.play():this.paused()"></video>
+            
+            <div class="reel-actions">
+                <div class="action-item"><i class="fas fa-heart"></i><span>1.5k</span></div>
+                <div class="action-item"><i class="fas fa-comment"></i><span>450</span></div>
+                <div class="action-item"><i class="fas fa-paper-plane"></i><span>Share</span></div>
+                <div class="action-item"><i class="fas fa-ellipsis-vertical"></i></div>
+                <img src="https://picsum.photos/50/50" class="music-disc">
             </div>
-            <div class="btn">
-                <i class="far fa-comment reel-icon"></i>
-                <span>450</span>
+
+            <div class="reel-info">
+                <div class="user-meta">
+                    <img src="https://picsum.photos/100/100" alt="user">
+                    <span class="user-name">@makibul_vlogs</span>
+                    <div class="follow-btn">Follow</div>
+                </div>
+                <div class="caption">Coding is hard but I am harder! 🔥</div>
             </div>
-            <div class="btn">
-                <i class="far fa-paper-plane reel-icon"></i>
-                <span>Share</span>
-            </div>
-            <div class="btn">
-                <i class="fas fa-ellipsis-vertical reel-icon"></i>
-            </div>
-            <div class="music-note-disk"><i class="fas fa-music" style="font-size: 12px;"></i></div>
         </div>
-        <div class="details">
-            <div class="user-row">
-                <b>@makibul_vlogs</b>
-                <button class="follow-btn" onclick="followMe(this)">Follow</button>
+
+        <div class="reel-video">
+            <video src="your-video-2.mp4" loop playsinline onclick="this.paused?this.play():this.paused()"></video>
+            <div class="reel-actions">
+                <div class="action-item"><i class="fas fa-heart"></i><span>2.1k</span></div>
+                <div class="action-item"><i class="fas fa-comment"></i><span>120</span></div>
+                <div class="action-item"><i class="fas fa-paper-plane"></i></div>
+                <img src="https://picsum.photos/51/51" class="music-disc">
             </div>
-            <p>Coding is hard but I am harder! 🔥</p>
+            <div class="reel-info">
+                <div class="user-meta">
+                    <img src="https://picsum.photos/101/101" alt="user">
+                    <span class="user-name">@maxful_coder</span>
+                    <div class="follow-btn">Follow</div>
+                </div>
+                <div class="caption">Success is a journey! 🚀</div>
+            </div>
         </div>
     </div>
 
-</div>
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
+        <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
+        <a href="upload.html" class="nav-item" style="color: #FFD700; font-size: 28px;"><i class="far fa-square-plus"></i></a> 
+        <a href="reels.html" class="nav-item active"><i class="fas fa-clapperboard"></i></a> 
+        <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a> 
+    </div>
 
-<div class="bottom-nav">
-    <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a>
-    <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a>
-    <a href="upload.html" class="nav-item" style="color: #FFD700; font-size: 28px;"><i class="far fa-square-plus"></i></a>
-    <a href="reels.html" class="nav-item active"><i class="fas fa-clapperboard"></i></a>
-    <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a>
-</div>
-
-<script>
-    const wrapper = document.getElementById('mainContainer');
-    
-    if (wrapper) {
-        wrapper.addEventListener('scroll', () => {
-            const vids = document.querySelectorAll('video');
-            vids.forEach(v => {
-                const rect = v.getBoundingClientRect();
-                if (rect.top >= -window.innerHeight/3 && rect.top <= window.innerHeight/3) { 
-                    v.play().catch(() => {}); 
-                } else { v.pause(); }
-            });
-        }, { passive: true });
-    }
-
-    function togglePlay(video) { video.paused ? video.play() : video.pause(); }
-
-    function toggleLike(element) { 
-        const icon = element.querySelector('.reel-icon');
-        if (icon.classList.contains('far')) {
-            icon.classList.remove('far');
-            icon.classList.add('fas', 'liked');
-        } else {
-            icon.classList.remove('fas', 'liked');
-            icon.classList.add('far');
-        }
-    }
-
-    function followMe(btn) {
-        if(btn.innerHTML === "Follow") {
-            btn.innerHTML = "Following";
-            btn.classList.add('following');
-        } else {
-            btn.innerHTML = "Follow";
-            btn.classList.remove('following');
-        }
-    }
-
-    function handleDoubleTap(e, reelElement) {
-        const heart = document.createElement('div');
-        heart.innerHTML = '❤️';
-        heart.className = 'heart-pop';
-        heart.style.left = e.clientX + 'px';
-        heart.style.top = e.clientY + 'px';
-        reelElement.appendChild(heart);
-        
-        const likeIcon = reelElement.querySelector('.fa-heart');
-        if (likeIcon.classList.contains('far')) {
-            likeIcon.classList.remove('far');
-            likeIcon.classList.add('fas', 'liked');
-        }
-        
-        setTimeout(() => { heart.remove(); }, 600);
-    }
-</script>
 </body>
 </html>
