@@ -3,19 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Following | Max Ful</title>
+    <title>List | Max Ful</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; padding: 20px; }
-        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .back-btn { color: #fff; text-decoration: none; font-size: 24px; }
+        body { background-color: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; }
+        
+        /* Header */
+        .nav { 
+            display: flex; align-items: center; padding: 12px 15px; 
+            border-bottom: 0.1px solid #262626; position: sticky; top: 0; background: #000;
+        }
+        .nav a { color: white; text-decoration: none; font-size: 20px; margin-right: 20px; }
+        .nav span { font-size: 18px; font-weight: bold; }
+
+        /* User List Style */
+        .user-row { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 12px 15px; 
+        }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-pic { 
+            width: 44px; height: 44px; border-radius: 50%; 
+            object-fit: cover; background: #262626;
+        }
+        .names { display: flex; flex-direction: column; }
+        .u-name { font-weight: 600; font-size: 14px; }
+        .f-name { color: #a8a8a8; font-size: 14px; }
+
+        /* Button Style */
+        .btn-follow { 
+            background: #0095f6; color: white; border: none; 
+            padding: 6px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; 
+        }
+        .btn-following { 
+            background: #363636; color: white; border: none; 
+            padding: 6px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; 
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <a href="profile.html" class="back-btn">←</a>
-        <h2>Following</h2>
+
+    <div class="nav">
+        <a href="profile.html"><i class="fas fa-arrow-left"></i></a>
+        <span>List</span>
     </div>
-    <p style="color: #a8a8a8;">यहाँ उन लोगों की लिस्ट दिखेगी जिन्हें आप फॉलो करते हैं।</p>
+
+    <div class="user-row">
+        <div class="user-info">
+            <img src="https://i.pravatar.cc/150?u=1" class="user-pic">
+            <div class="names">
+                <span class="u-name">mr_beast</span>
+                <span class="f-name">MrBeast</span>
+            </div>
+        </div>
+        <button class="btn-following">Following</button>
+    </div>
+
+    <div class="user-row">
+        <div class="user-info">
+            <img src="https://i.pravatar.cc/150?u=2" class="user-pic">
+            <div class="names">
+                <span class="u-name">cristiano</span>
+                <span class="f-name">Cristiano Ronaldo</span>
+            </div>
+        </div>
+        <button class="btn-follow">Follow</button>
+    </div>
+
+    <div class="user-row">
+        <div class="user-info">
+            <img src="https://i.pravatar.cc/150?u=3" class="user-pic">
+            <div class="names">
+                <span class="u-name">leomessi</span>
+                <span class="f-name">Leo Messi</span>
+            </div>
+        </div>
+        <button class="btn-follow">Follow</button>
+    </div>
+
 </body>
 </html>
-
