@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Reels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         .reels-wrapper { height: 100vh; width: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .reels-wrapper::-webkit-scrollbar { display: none; }
         .reel { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; background: #000; overflow: hidden; }
@@ -13,27 +15,26 @@
 
         /* SIDE ACTIONS */
         .side-actions { position: absolute; right: 12px; bottom: 100px; display: flex; flex-direction: column; gap: 20px; z-index: 1000; align-items: center; }
-        .btn { background: none; border: none; color: white; text-align: center; cursor: pointer; }
-        .btn span { display: block; font-size: 12px; margin-top: 4px; }
-        .icon { width: 34px; height: 34px; fill: white; transition: 0.3s; filter: drop-shadow(0 0 2px rgba(0,0,0,0.5)); }
-        .liked { fill: #ff2d55 !important; } 
+        .btn { background: none; border: none; color: white; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+        .btn span { display: block; font-size: 12px; margin-top: 5px; font-weight: 500; }
+        .reel-icon { font-size: 28px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.5)); transition: 0.2s; }
+        .liked { color: #ff2d55 !important; } 
 
         /* DETAILS AND FOLLOW BUTTON */
-        .details { position: absolute; left: 15px; bottom: 110px; color: white; z-index: 1000; max-width: 80%; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+        .details { position: absolute; left: 15px; bottom: 110px; color: white; z-index: 1000; max-width: 80%; }
         .user-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .details b { font-size: 16px; pointer-events: auto; }
+        .details b { font-size: 15px; }
         
-        /* असली इंस्टाग्राम वाला फॉलो बटन */
         .follow-btn { 
             background: transparent; border: 1px solid white; color: white; 
-            padding: 4px 12px; border-radius: 6px; font-size: 12px; 
-            font-weight: bold; cursor: pointer; transition: 0.2s;
+            padding: 4px 14px; border-radius: 8px; font-size: 13px; 
+            font-weight: 600; cursor: pointer;
         }
         .following { border-color: #555; color: #888; }
 
-        .details p { margin: 0; font-size: 14px; opacity: 0.9; pointer-events: none; }
+        .details p { margin: 0; font-size: 14px; opacity: 0.9; }
 
-        .music-note { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; animation: rotate 3s linear infinite; background: #222; margin-top: 10px; }
+        .music-note-disk { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; animation: rotate 3s linear infinite; background: linear-gradient(45deg, #222, #555); margin-top: 10px; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .heart-pop { position: absolute; font-size: 80px; color: #ff2d55; pointer-events: none; transform: translate(-50%, -50%) scale(0); animation: heartBurst 0.6s ease-out forwards; z-index: 999; }
@@ -43,9 +44,10 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
         }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: #000; display: flex; justify-content: space-around; align-items: center; z-index: 2000; border-top: 0.5px solid #333; }
-        .nav-item { color: white; text-decoration: none; font-size: 22px; opacity: 0.6; }
-        .active { opacity: 1; color: gold; }
+        /* प्रोफेशनल बॉटम नेविगेशन */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; display: flex; justify-content: space-around; align-items: center; z-index: 2000; border-top: 0.1px solid #262626; }
+        .nav-item { color: white; text-decoration: none; font-size: 24px; opacity: 0.7; transition: 0.2s; }
+        .nav-item.active { opacity: 1; }
     </style>
 </head>
 <body>
@@ -55,10 +57,22 @@
     <div class="reel" ondblclick="handleDoubleTap(event, this)">
         <video src="3021.mp4" loop autoplay muted playsinline onclick="togglePlay(this)"></video>
         <div class="side-actions">
-            <div class="btn" onclick="toggleLike(this)"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>1.5k</span></div>
-            <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg><span>450</span></div>
-            <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg><span>Share</span></div>
-            <div class="music-note">🎵</div>
+            <div class="btn" onclick="toggleLike(this)">
+                <i class="far fa-heart reel-icon"></i>
+                <span>1.5k</span>
+            </div>
+            <div class="btn">
+                <i class="far fa-comment reel-icon"></i>
+                <span>450</span>
+            </div>
+            <div class="btn">
+                <i class="far fa-paper-plane reel-icon"></i>
+                <span>Share</span>
+            </div>
+            <div class="btn">
+                <i class="fas fa-ellipsis-vertical reel-icon"></i>
+            </div>
+            <div class="music-note-disk"><i class="fas fa-music" style="font-size: 12px;"></i></div>
         </div>
         <div class="details">
             <div class="user-row">
@@ -69,37 +83,19 @@
         </div>
     </div>
 
-    <div class="reel" ondblclick="handleDoubleTap(event, this)">
-        <video src="video2.mp4" loop playsinline onclick="togglePlay(this)"></video>
-        <div class="side-actions">
-            <div class="btn" onclick="toggleLike(this)"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>2.1k</span></div>
-            <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg><span>120</span></div>
-            <div class="btn"><svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg><span>Share</span></div>
-            <div class="music-note">🎵</div>
-        </div>
-        <div class="details">
-            <div class="user-row">
-                <b>@makibul_vlogs</b>
-                <button class="follow-btn" onclick="followMe(this)">Follow</button>
-            </div>
-            <p>Success is a journey! 🚀</p>
-        </div>
-    </div>
-
 </div>
 
 <div class="bottom-nav">
-    <a href="home.html" class="nav-item">🏠</a>
-    <a href="search.html" class="nav-item">🔍</a>
-    <a href="upload.html" style="font-size:35px; color:gold; text-decoration:none;">+</a>
-    <a href="reels.html" class="nav-item active">🎬</a>
-    <a href="profile.html" class="nav-item">👤</a>
+    <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a>
+    <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a>
+    <a href="upload.html" class="nav-item" style="color: #FFD700; font-size: 28px;"><i class="far fa-square-plus"></i></a>
+    <a href="reels.html" class="nav-item active"><i class="fas fa-clapperboard"></i></a>
+    <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a>
 </div>
 
 <script>
     const wrapper = document.getElementById('mainContainer');
     
-    // Scroll Auto Play
     if (wrapper) {
         wrapper.addEventListener('scroll', () => {
             const vids = document.querySelectorAll('video');
@@ -115,10 +111,16 @@
     function togglePlay(video) { video.paused ? video.play() : video.pause(); }
 
     function toggleLike(element) { 
-        element.querySelector('.icon').classList.toggle('liked'); 
+        const icon = element.querySelector('.reel-icon');
+        if (icon.classList.contains('far')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas', 'liked');
+        } else {
+            icon.classList.remove('fas', 'liked');
+            icon.classList.add('far');
+        }
     }
 
-    // Follow Function
     function followMe(btn) {
         if(btn.innerHTML === "Follow") {
             btn.innerHTML = "Following";
@@ -136,8 +138,13 @@
         heart.style.left = e.clientX + 'px';
         heart.style.top = e.clientY + 'px';
         reelElement.appendChild(heart);
-        const likeBtn = reelElement.querySelector('.icon');
-        if (!likeBtn.classList.contains('liked')) { likeBtn.classList.add('liked'); }
+        
+        const likeIcon = reelElement.querySelector('.fa-heart');
+        if (likeIcon.classList.contains('far')) {
+            likeIcon.classList.remove('far');
+            likeIcon.classList.add('fas', 'liked');
+        }
+        
         setTimeout(() => { heart.remove(); }, 600);
     }
 </script>
