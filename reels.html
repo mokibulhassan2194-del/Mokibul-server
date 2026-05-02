@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Pro Design</title>
+    <title>Max Ful | Reels Fixed</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -25,34 +25,37 @@
         
         video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* साइड बटन्स */
+        /* Actions container ko upar rakha hai z-index se taaki sheet ke piche na chhup jaaye */
         .reel-actions {
             position: absolute; right: 15px; bottom: 100px; 
-            display: flex; flex-direction: column; gap: 22px; align-items: center; z-index: 10;
+            display: flex; flex-direction: column; gap: 20px; align-items: center; z-index: 50; /* Ye z-index badha diya */
         }
         .action-item { text-align: center; cursor: pointer; }
-        .action-item i { font-size: 28px; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
+        .action-item i { font-size: 28px; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); }
         .action-item span { display: block; font-size: 12px; margin-top: 5px; }
 
-        /* इंस्टाग्राम जैसा शेयर मेनू */
-        .share-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none; z-index: 2000;
+        /* Share sheet ke open hone par blur apply karne ke liye */
+        .blur-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+            display: none; z-index: 40; /* Blur layer actions se niche rahega */
         }
+        .share-overlay.active + .blur-overlay { display: block; } /* CSS trick to show blur when sheet is active */
+
+        /* Share sheet popup */
         .share-menu {
             position: fixed; bottom: -100%; left: 0; width: 100%;
-            background: #262626; border-radius: 20px 20px 0 0;
-            padding: 15px 0; transition: bottom 0.3s cubic-bezier(0.17, 0.84, 0.44, 1); z-index: 2001;
+            background: rgba(26,26,26,0.9); border-radius: 20px 20px 0 0;
+            padding: 15px 0; transition: bottom 0.3s cubic-bezier(0.17, 0.84, 0.44, 1); z-index: 100;
         }
         .share-menu.active { bottom: 0; }
-        .share-handle { width: 40px; height: 4px; background: #444; border-radius: 2px; margin: 0 auto 15px; }
+        .share-handle { width: 40px; height: 4px; background: #555; border-radius: 2px; margin: 0 auto 15px; }
         
         .search-bar { padding: 0 15px 15px; }
         .search-bar input { width: 100%; padding: 10px; border-radius: 10px; border: none; background: #363636; color: #fff; }
 
-        /* यूजर लिस्ट स्क्रॉल */
         .user-list { 
-            display: flex; overflow-x: auto; padding: 10px 15px; gap: 18px; 
+            display: flex; overflow-x: auto; padding: 10px 15px; gap: 15px; 
             border-bottom: 0.5px solid #363636; scrollbar-width: none; 
         }
         .user-list::-webkit-scrollbar { display: none; }
@@ -70,17 +73,19 @@
     <div class="reels-container">
         <div class="reel-video">
             <video src="reel1.mp4" loop playsinline autoplay muted></video>
-            <div class="reel-actions">
+            
+            <div class="reel-actions" id="reelActions">
                 <div class="action-item"><i class="far fa-heart"></i><span>1.5k</span></div>
                 <div class="action-item"><i class="far fa-comment"></i><span>450</span></div>
                 <div class="action-item" onclick="openShare()"><i class="fa-solid fa-paper-plane" style="transform: rotate(-15deg);"></i><span>Share</span></div>
                 <img src="https://picsum.photos/50/50" style="width:30px; height:30px; border-radius:50%; border:2px solid #fff;">
             </div>
+
+            <div class="blur-overlay" id="blurOverlay"></div>
         </div>
     </div>
 
-    <div class="share-overlay" id="overlay" onclick="closeShare()"></div>
-    <div class="share-menu" id="shareSheet">
+    <div class="share-overlay" id="overlay" onclick="closeShare()"></div> <div class="share-menu" id="shareSheet">
         <div class="share-handle"></div>
         <div class="search-bar"><input type="text" placeholder="Search"></div>
         
@@ -100,13 +105,29 @@
     </div>
 
     <script>
+        // Actions container and blur overlay elements
+        const actions = document.getElementById('reelActions');
+        const blur = document.getElementById('blurOverlay');
+        const sheet = document.getElementById('shareSheet');
+        const overlay = document.getElementById('overlay');
+
         function openShare() {
-            document.getElementById('overlay').style.display = 'block';
-            setTimeout(() => { document.getElementById('shareSheet').classList.add('active'); }, 10);
+            // Show the sheet and overlay
+            overlay.classList.add('active'); // Used for CSS to show blur
+            overlay.style.display = 'block';
+            setTimeout(() => { sheet.classList.add('active'); }, 10);
+            
+            // Apply blur to background without hiding actions
+            blur.style.display = 'block';
         }
+        
         function closeShare() {
-            document.getElementById('shareSheet').classList.remove('active');
-            setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 300);
+            sheet.classList.remove('active');
+            setTimeout(() => { 
+                overlay.classList.remove('active');
+                overlay.style.display = 'none'; 
+                blur.style.display = 'none'; // Remove blur
+            }, 300);
         }
     </script>
 </body>
