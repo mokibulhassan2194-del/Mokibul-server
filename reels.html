@@ -3,124 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels</title>
+    <title>Max Ful | Reels Active</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         html, body { 
-            background-color: #000; color: #fff; 
-            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #000; color: #fff; margin: 0; padding: 0; 
+            width: 100%; height: 100%; overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            overflow: hidden; /* बॉडी का स्क्रॉल बंद */
         }
 
-        /* रील कंटेनर - स्क्रॉलिंग यहाँ होगी */
+        /* रील कंटेनर और स्क्रॉलिंग */
         .reels-container {
-            height: calc(100vh - 55px); /* नेविगेशन बार के लिए जगह छोड़ी */
+            height: calc(100vh - 55px);
             overflow-y: scroll;
-            scroll-snap-type: y mandatory; /* वीडियो चिपक कर रुकेंगे */
+            scroll-snap-type: y mandatory;
         }
-
         .reel-video {
-            height: 100%;
-            width: 100%;
-            position: relative;
-            scroll-snap-align: start;
-            background: #111;
+            height: 100%; width: 100%; position: relative;
+            scroll-snap-align: start; background: #000;
         }
+        video { width: 100%; height: 100%; object-fit: cover; }
 
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* साइड के आइकन (Like, Comment, Share) */
+        /* साइड एक्शन्स - अब सही पोजीशन पर */
         .reel-actions {
-            position: absolute;
-            right: 12px;
-            bottom: 120px; /* आइकन को थोड़ा ऊपर किया */
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-            align-items: center;
+            position: absolute; right: 12px;
+            bottom: 80px; /* म्यूजिक आइकन और बटन अब नेविगेशन के करीब हैं */
+            display: flex; flex-direction: column; gap: 20px; align-items: center;
         }
-        .action-item { text-align: center; font-size: 26px; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+        .action-item { text-align: center; font-size: 28px; cursor: pointer; transition: 0.2s; }
+        .action-item i.active { color: #ff0050; } /* लाइक होने पर लाल रंग */
         .action-item span { display: block; font-size: 12px; margin-top: 4px; }
 
-        /* म्यूजिक आइकन - इसे ऊपर किया गया */
+        /* म्यूजिक डिस्क रोटेशन */
         .music-disc {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            animation: rotate 3s linear infinite;
-            margin-top: 10px;
+            width: 30px; height: 30px; border-radius: 50%;
+            border: 2px solid #fff; animation: rotate 3s linear infinite;
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* यूजर जानकारी (नीचे बायीं ओर) */
-        .reel-info {
-            position: absolute;
-            left: 15px;
-            bottom: 75px; /* नेविगेशन से थोड़ा ऊपर */
-            max-width: 80%;
+        /* यूजर इन्फो और फॉलो बटन */
+        .reel-info { position: absolute; left: 15px; bottom: 70px; max-width: 80%; }
+        .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .user-meta img { width: 35px; height: 35px; border-radius: 50%; }
+        .follow-btn { 
+            border: 1px solid #fff; padding: 4px 12px; border-radius: 6px; 
+            font-size: 13px; font-weight: bold; cursor: pointer; 
         }
-        .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .user-meta img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid #fff; }
-        .user-name { font-weight: bold; font-size: 15px; }
-        .follow-btn { border: 1px solid #fff; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+        .follow-btn.following { background: transparent; opacity: 0.6; }
 
-        /* बॉटम नेविगेशन - जैसा होम पेज पर है */
+        /* बॉटम नेविगेशन - जैसा आपने माँगा */
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; height: 55px; 
             background: #000; border-top: 0.1px solid #262626; 
-            display: flex; justify-content: space-around; 
-            align-items: center; z-index: 1000; 
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
         }
         .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
-        .active { opacity: 1; }
+        .nav-item.active { opacity: 1; }
     </style>
 </head>
 <body>
 
     <div class="reels-container">
         <div class="reel-video">
-            <video src="your-video-1.mp4" loop playsinline autoplay muted onclick="this.paused?this.play():this.paused()"></video>
+            <video src="reel1.mp4" loop playsinline autoplay muted></video>
             
             <div class="reel-actions">
-                <div class="action-item"><i class="fas fa-heart"></i><span>1.5k</span></div>
+                <div class="action-item" onclick="toggleLike(this)">
+                    <i class="fas fa-heart"></i>
+                    <span>1.5k</span>
+                </div>
                 <div class="action-item"><i class="fas fa-comment"></i><span>450</span></div>
-                <div class="action-item"><i class="fas fa-paper-plane"></i><span>Share</span></div>
-                <div class="action-item"><i class="fas fa-ellipsis-vertical"></i></div>
+                <div class="action-item"><i class="fas fa-paper-plane"></i></div>
                 <img src="https://picsum.photos/50/50" class="music-disc">
             </div>
 
             <div class="reel-info">
                 <div class="user-meta">
-                    <img src="https://picsum.photos/100/100" alt="user">
+                    <img src="https://picsum.photos/100/100">
                     <span class="user-name">@makibul_vlogs</span>
-                    <div class="follow-btn">Follow</div>
+                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
                 </div>
                 <div class="caption">Coding is hard but I am harder! 🔥</div>
-            </div>
-        </div>
-
-        <div class="reel-video">
-            <video src="your-video-2.mp4" loop playsinline onclick="this.paused?this.play():this.paused()"></video>
-            <div class="reel-actions">
-                <div class="action-item"><i class="fas fa-heart"></i><span>2.1k</span></div>
-                <div class="action-item"><i class="fas fa-comment"></i><span>120</span></div>
-                <div class="action-item"><i class="fas fa-paper-plane"></i></div>
-                <img src="https://picsum.photos/51/51" class="music-disc">
-            </div>
-            <div class="reel-info">
-                <div class="user-meta">
-                    <img src="https://picsum.photos/101/101" alt="user">
-                    <span class="user-name">@maxful_coder</span>
-                    <div class="follow-btn">Follow</div>
-                </div>
-                <div class="caption">Success is a journey! 🚀</div>
             </div>
         </div>
     </div>
@@ -132,6 +96,32 @@
         <a href="reels.html" class="nav-item active"><i class="fas fa-clapperboard"></i></a> 
         <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a> 
     </div>
+
+    <script>
+        // लाइक बटन फंक्शन
+        function toggleLike(element) {
+            const heart = element.querySelector('i');
+            heart.classList.toggle('active');
+            heart.classList.toggle('fas'); // Solid heart
+            heart.classList.toggle('far'); // Outline heart
+            if(heart.classList.contains('active')) {
+                heart.style.color = "#ff0050";
+            } else {
+                heart.style.color = "#fff";
+            }
+        }
+
+        // फॉलो बटन फंक्शन
+        function toggleFollow(btn) {
+            if (btn.innerText === "Follow") {
+                btn.innerText = "Following";
+                btn.classList.add("following");
+            } else {
+                btn.innerText = "Follow";
+                btn.classList.remove("following");
+            }
+        }
+    </script>
 
 </body>
 </html>
