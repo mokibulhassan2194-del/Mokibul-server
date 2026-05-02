@@ -7,24 +7,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* बॉडी को फिक्स किया ताकि पूरा पेज स्क्रॉल न हो */
         html, body { 
             background-color: #000; color: #fff; margin: 0; padding: 0; 
             width: 100%; height: 100%; overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        /* स्क्रॉलिंग के लिए मुख्य कंटेनर */
         .reels-container {
             height: 100vh; 
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox के लिए */
+            scrollbar-width: none;
         }
-        .reels-container::-webkit-scrollbar { display: none; } /* Chrome/Safari के लिए */
+        .reels-container::-webkit-scrollbar { display: none; }
         
-        /* हर रील की हाइट पूरी स्क्रीन के बराबर */
         .reel-video {
             height: 100vh; 
             width: 100%; 
@@ -83,8 +80,22 @@
         }
         .share-menu.active { bottom: 0; }
         .share-header { text-align: center; font-weight: bold; padding-bottom: 15px; border-bottom: 0.5px solid #444; }
-        .share-options { display: flex; flex-wrap: wrap; padding: 20px; justify-content: space-around; gap: 20px; }
-        .share-option { text-align: center; width: 70px; cursor: pointer; }
+        
+        /* बदलाव यहाँ किया है: More को लाइन में लाने के लिए */
+        .share-options { 
+            display: flex; 
+            flex-wrap: nowrap; 
+            padding: 20px 10px; 
+            justify-content: space-around; 
+            gap: 10px; 
+            overflow-x: auto; 
+        }
+        .share-option { 
+            text-align: center; 
+            min-width: 75px; 
+            flex-shrink: 0; 
+            cursor: pointer; 
+        }
         .share-option i { width: 50px; height: 50px; background: #333; border-radius: 50%; line-height: 50px; font-size: 20px; margin-bottom: 8px; }
         .share-option.whatsapp i { background: #25D366; }
         .share-option.copy i { background: #555; }
@@ -160,7 +171,6 @@
     </div>
 
     <script>
-        // पुराने सारे फंक्शंस वैसे ही हैं
         function toggleLike(element) {
             const heart = element.querySelector('i');
             heart.classList.toggle('fas');
@@ -191,7 +201,6 @@
             closeShare();
         }
 
-        // ऑटो-प्ले और स्क्रॉल ऑब्जर्वर
         const videos = document.querySelectorAll('video');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -199,10 +208,10 @@
                     entry.target.play();
                 } else {
                     entry.target.pause();
-                    entry.target.currentTime = 0; // वापस शुरू से करने के लिए
+                    entry.target.currentTime = 0;
                 }
             });
-        }, { threshold: 0.7 }); // 70% रील दिखने पर प्ले होगा
+        }, { threshold: 0.7 });
         videos.forEach(video => observer.observe(video));
     </script>
 </body>
