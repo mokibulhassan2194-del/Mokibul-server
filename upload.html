@@ -2,39 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Upload | Max Ful</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>New Post | Max Ful</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { 
-            margin: 0; background: #000; color: white; font-family: -apple-system, sans-serif; 
+            margin: 0; background: #000; color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
         }
         
+        /* Header: Instagram स्टाइल */
         .header { 
             padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 0.1px solid #262626; background: #000;
+            border-bottom: 0.1px solid #262626; background: #000; position: sticky; top: 0; z-index: 10;
         }
-        .header h2 { font-size: 18px; margin: 0; font-weight: bold; }
-        .next-link { color: #0095f6; font-weight: bold; text-decoration: none; font-size: 16px; cursor: pointer; }
+        .header a { text-decoration: none; color: #fff; font-size: 24px; }
+        .header h2 { font-size: 18px; margin: 0; font-weight: bold; flex: 1; text-align: center; margin-right: 24px; }
+        .next-link { color: #0095f6; font-weight: bold; font-size: 16px; cursor: pointer; }
 
+        /* Preview Area */
         .preview-container { 
             width: 100%; flex: 1; background: #000; display: flex; 
-            align-items: center; justify-content: center; position: relative; 
+            align-items: center; justify-content: center; position: relative; overflow: hidden;
         }
         #videoPreview, #imagePreview { width: 100%; height: 100%; object-fit: contain; display: none; }
         
-        /* असली Instagram जैसा मोड सेलेक्टर */
-        .mode-selector {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 30px;
-            display: flex; gap: 30px; border: 1px solid #333;
+        /* Tap to select placeholder */
+        .center-placeholder { 
+            text-align: center; color: #a8a8a8; cursor: pointer; 
         }
-        .mode-btn { font-size: 14px; font-weight: bold; color: #a8a8a8; cursor: pointer; }
-        .mode-btn.active { color: #fff; }
+        .center-placeholder i { font-size: 60px; margin-bottom: 15px; display: block; }
+        .center-placeholder p { font-size: 16px; margin: 0; }
 
-        .center-placeholder { text-align: center; color: #a8a8a8; }
-        .center-placeholder i { font-size: 50px; margin-bottom: 10px; display: block; }
+        /* --- यहाँ है असली Instagram जैसा मोड सेलेक्टर (Slider) --- */
+        .mode-selector-wrapper {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: rgba(0,0,0,0.8); border-top: 1px solid #262626;
+            padding: 10px 0; display: flex; justify-content: center;
+        }
+        .mode-selector {
+            display: flex; gap: 40px; justify-content: center; width: 100%;
+            padding: 5px 0;
+        }
+        .mode-btn { 
+            font-size: 14px; font-weight: bold; color: #a8a8a8; 
+            cursor: pointer; text-transform: uppercase; 
+            letter-spacing: 1px; padding: 5px 10px;
+        }
+        .mode-btn.active { 
+            color: #fff; position: relative; 
+        }
+        /* सक्रिय मोड के नीचे की छोटी सफेद लाइन */
+        .mode-btn.active::after {
+            content: ''; position: absolute; bottom: -5px; left: 50%; 
+            transform: translateX(-50%); width: 20px; height: 2px; background: #fff;
+        }
+        /* ----------------------------------------------------- */
 
         #fileInput { display: none; }
 
@@ -54,8 +77,7 @@
     </div>
 
     <div class="header">
-        <a href="profile.html" style="text-decoration:none; color: #fff; font-size: 24px;">✕</a>
-        <h2>New post</h2>
+        <a href="profile.html">✕</a> <h2 id="pageTitle">New post</h2>
         <div class="next-link" onclick="handleNext()">Next</div>
     </div>
 
@@ -64,13 +86,15 @@
         <img id="imagePreview">
         
         <div class="center-placeholder" id="placeholder" onclick="triggerInput()">
-            <i class="fa-regular fa-image"></i>
+            <i class="far fa-image"></i>
             <p>Tap to select media</p>
         </div>
 
-        <div class="mode-selector">
-            <span class="mode-btn active" id="postMode" onclick="setMode('POST')">POST</span>
-            <span class="mode-btn" id="reelMode" onclick="setMode('REEL')">REEL</span>
+        <div class="mode-selector-wrapper">
+            <div class="mode-selector">
+                <span class="mode-btn active" id="postMode" onclick="setMode('POST')">Post</span>
+                <span class="mode-btn" id="reelMode" onclick="setMode('REEL')">Reel</span>
+            </div>
         </div>
     </div>
 
@@ -82,13 +106,21 @@
 
         function setMode(mode) {
             currentMode = mode;
+            // बटन की स्टाइल बदलें
             document.getElementById('postMode').classList.toggle('active', mode === 'POST');
             document.getElementById('reelMode').classList.toggle('active', mode === 'REEL');
+            // हेडर का टाइटल बदलें
             document.getElementById('pageTitle').innerText = mode === 'POST' ? 'New post' : 'New reel';
+            
+            // अगर कोई फाइल पहले से चुनी है, तो इनपुट को साफ़ करें ताकि नई फाइल चुनी जा सके
+            if(selectedFile) {
+                // यहाँ एक छोटा लॉजिक डाल सकते हैं जो पुरानी फाइल को साफ़ करे
+            }
         }
 
         function triggerInput() {
             const input = document.getElementById('fileInput');
+            // रील के लिए सिर्फ वीडियो, पोस्ट के लिए फोटो/वीडियो दोनों
             input.accept = currentMode === 'REEL' ? "video/*" : "image/*,video/*";
             input.click();
         }
@@ -98,15 +130,18 @@
             if (!file) return;
             selectedFile = file;
 
+            // प्लेसहोल्डर हटाएं और प्रीव्यू दिखाएं
             document.getElementById('placeholder').style.display = 'none';
             const vPrev = document.getElementById('videoPreview');
             const iPrev = document.getElementById('imagePreview');
 
             if (file.type.startsWith('video/')) {
+                // वीडियो प्रीव्यू
                 vPrev.src = URL.createObjectURL(file);
                 vPrev.style.display = 'block';
                 iPrev.style.display = 'none';
             } else {
+                // इमेज प्रीव्यू
                 iPrev.src = URL.createObjectURL(file);
                 iPrev.style.display = 'block';
                 vPrev.style.display = 'none';
@@ -118,7 +153,9 @@
                 alert("Please select a photo or video first!");
                 return;
             }
+            // लोडर दिखाएं
             document.getElementById('loader').style.display = 'flex';
+            // 1.5 सेकंड बाद शेयर पेज पर ले जाएं
             setTimeout(() => {
                 window.location.href = currentMode === 'REEL' ? "share-reel.html" : "share-post.html";
             }, 1500);
