@@ -8,30 +8,39 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
     <style>
-        body { background-color: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding-bottom: 65px; overflow-x: hidden; }
-        .profile-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100; }
-        .profile-info { padding: 12px 15px; display: flex; align-items: center; gap: 20px; }
-        .profile-pic-container { width: 77px; height: 77px; border-radius: 50%; border: 2px solid #FFD700; padding: 2px; }
+        body { background-color: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding-bottom: 65px; }
+        .profile-header { display: flex; justify-content: center; align-items: center; padding: 12px; border-bottom: 1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100; }
+        .profile-info { padding: 20px 15px; display: flex; align-items: center; gap: 25px; }
+        .profile-pic-container { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #FFD700; padding: 2px; flex-shrink: 0; }
         .profile-pic-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats { display: flex; flex-grow: 1; justify-content: space-around; text-align: center; }
-        .stat-num { font-weight: bold; font-size: 16px; display: block; }
-        .stat-label { font-size: 12px; color: #efefef; }
-        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; margin-top: 10px; }
+        .stat-num { font-weight: bold; font-size: 18px; display: block; }
+        .stat-label { font-size: 12px; color: #a8a8a8; }
+        .bio-section { padding: 0 15px 15px; }
+        .display-name { font-weight: bold; font-size: 15px; margin-bottom: 2px; }
+        .display-bio { font-size: 14px; color: #efefef; white-space: pre-wrap; }
+        
+        /* Buttons */
+        .action-buttons { padding: 0 15px; display: flex; gap: 8px; }
+        .edit-btn { flex: 1; background: #1a1a1a; color: #fff; border: 1px solid #363636; padding: 7px; border-radius: 8px; font-size: 14px; font-weight: 600; text-align: center; cursor: pointer; }
+
+        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 20px; }
         .grid-item { aspect-ratio: 1/1; background: #111; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
+
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 50px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; }
-        .nav-link { color: #fff; text-decoration: none; font-size: 22px; }
+        .nav-link { color: #fff; text-decoration: none; font-size: 24px; }
     </style>
 </head>
 <body>
 
     <div class="profile-header">
-        <div id="display-username" style="font-size: 18px; font-weight: bold;">Loading... ✔️</div>
+        <div id="display-username" style="font-weight: bold;">Loading...</div>
     </div>
 
     <div class="profile-info">
         <div class="profile-pic-container">
-            <img src="https://picsum.photos/id/64/200/200">
+            <img id="profile-img" src="https://picsum.photos/id/64/200/200">
         </div>
         <div class="stats">
             <div><span class="stat-num" id="display-posts">0</span><span class="stat-label">Posts</span></div>
@@ -40,15 +49,20 @@
         </div>
     </div>
 
-    <div style="padding: 5px 15px;">
-        <div id="display-name" style="font-weight: 600; font-size: 14px;">Loading...</div>
-        <div id="display-bio" style="font-size: 13px; line-height: 1.3; white-space: pre-wrap;">Loading bio...</div>
+    <div class="bio-section">
+        <div id="display-name" class="display-name">Loading...</div>
+        <div id="display-bio" class="display-bio">Loading bio...</div>
+    </div>
+
+    <div class="action-buttons">
+        <div class="edit-btn" onclick="editProfile()">Edit Profile</div>
+        <div class="edit-btn">Share Profile</div>
     </div>
 
     <div class="post-grid">
         <div class="grid-item"><img src="https://picsum.photos/id/10/300/300"></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/11/300/300"></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/12/300/300"></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/20/300/300"></div>
+        <div class="grid-item"><img src="https://picsum.photos/id/30/300/300"></div>
     </div>
 
     <div class="bottom-nav">
@@ -68,30 +82,38 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const userId = "ScOZEm uVToVfI4qoHO fZ"; // आपकी डॉक्यूमेंट ID
 
-        async function loadProfile() {
-            try {
-                // Aapki sahi Document ID
-                const docRef = db.collection("users").doc("ScOZEm uVToVfI4qoHO fZ");
-                const doc = await docRef.get();
-                
+        // डेटा लोड करना
+        function loadProfile() {
+            db.collection("users").doc(userId).onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    // Database ke ajeeb naamo ko yahan map kiya hai:
-                    document.getElementById('display-username').innerText = data.username || "User";
-                    document.getElementById('display-name').innerText = data.name || "No Name";
-                    document.getElementById('display-bio').innerText = data.bio || "";
-                    
-                    // Yahan dekho, aapka followers field 'followers40' hai
-                    document.getElementById('display-followers').innerText = data.followers40 || "0";
-                    
-                    // Aur following field 'following 500' hai
-                    document.getElementById('display-following').innerText = data['following 500'] || "0";
-                    
+                    document.getElementById('display-username').innerHTML = (data.username || "user") + " <span style='color:#0095f6'>✔️</span>";
+                    document.getElementById('display-name').innerText = data.name || "Name";
+                    document.getElementById('display-bio').innerText = data.bio || "No bio yet";
+                    document.getElementById('display-followers').innerText = data.followers || "0";
+                    document.getElementById('display-following').innerText = data.following || "0";
                     document.getElementById('display-posts').innerText = data.posts || "0";
                 }
-            } catch (error) {
-                console.log("Error:", error);
+            });
+        }
+
+        // प्रोफाइल एडिट करने का फंक्शन
+        async function editProfile() {
+            const newName = prompt("अपना नया नाम डालें:", document.getElementById('display-name').innerText);
+            const newBio = prompt("अपना नया बायो डालें:", document.getElementById('display-bio').innerText);
+            
+            if (newName || newBio) {
+                try {
+                    await db.collection("users").doc(userId).update({
+                        name: newName,
+                        bio: newBio
+                    });
+                    alert("प्रोफाइल अपडेट हो गई!");
+                } catch (e) {
+                    alert("Error: " + e.message);
+                }
             }
         }
 
