@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Active</title>
+    <title>Max Ful | Reels Scrollable</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -13,26 +13,37 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        /* रील कंटेनर और स्क्रॉलिंग */
+        /* रील कंटेनर - यहाँ स्क्रॉलिंग फिक्स की गई है */
         .reels-container {
-            height: calc(100vh - 55px);
+            height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch; /* मोबाइल स्मूथनेस के लिए */
         }
+        
+        /* वीडियो का डिब्बा - पूरी स्क्रीन लेगा */
         .reel-video {
-            height: 100%; width: 100%; position: relative;
-            scroll-snap-align: start; background: #000;
+            height: 100vh; 
+            width: 100%; 
+            position: relative;
+            scroll-snap-align: start; 
+            background: #000;
         }
-        video { width: 100%; height: 100%; object-fit: cover; }
+        
+        video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
 
-        /* साइड एक्शन्स - अब सही पोजीशन पर */
+        /* साइड एक्शन्स */
         .reel-actions {
             position: absolute; right: 12px;
-            bottom: 80px; /* म्यूजिक आइकन और बटन अब नेविगेशन के करीब हैं */
+            bottom: 100px; 
             display: flex; flex-direction: column; gap: 20px; align-items: center;
+            z-index: 10;
         }
-        .action-item { text-align: center; font-size: 28px; cursor: pointer; transition: 0.2s; }
-        .action-item i.active { color: #ff0050; } /* लाइक होने पर लाल रंग */
+        .action-item { text-align: center; font-size: 28px; cursor: pointer; }
         .action-item span { display: block; font-size: 12px; margin-top: 4px; }
 
         /* म्यूजिक डिस्क रोटेशन */
@@ -42,20 +53,19 @@
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* यूजर इन्फो और फॉलो बटन */
-        .reel-info { position: absolute; left: 15px; bottom: 70px; max-width: 80%; }
+        /* यूजर इन्फो */
+        .reel-info { position: absolute; left: 15px; bottom: 90px; max-width: 80%; z-index: 10; }
         .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .user-meta img { width: 35px; height: 35px; border-radius: 50%; }
+        .user-meta img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid white; }
         .follow-btn { 
             border: 1px solid #fff; padding: 4px 12px; border-radius: 6px; 
             font-size: 13px; font-weight: bold; cursor: pointer; 
         }
-        .follow-btn.following { background: transparent; opacity: 0.6; }
 
-        /* बॉटम नेविगेशन - जैसा आपने माँगा */
+        /* बॉटम नेविगेशन */
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; height: 55px; 
-            background: #000; border-top: 0.1px solid #262626; 
+            background: rgba(0,0,0,0.9); border-top: 0.1px solid #262626; 
             display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
         }
         .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
@@ -65,19 +75,14 @@
 <body>
 
     <div class="reels-container">
+        
         <div class="reel-video">
             <video src="reel1.mp4" loop playsinline autoplay muted></video>
-            
             <div class="reel-actions">
-                <div class="action-item" onclick="toggleLike(this)">
-                    <i class="fas fa-heart"></i>
-                    <span>1.5k</span>
-                </div>
-                <div class="action-item"><i class="fas fa-comment"></i><span>450</span></div>
-                <div class="action-item"><i class="fas fa-paper-plane"></i></div>
+                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>1.5k</span></div>
+                <div class="action-item"><i class="far fa-comment"></i><span>450</span></div>
                 <img src="https://picsum.photos/50/50" class="music-disc">
             </div>
-
             <div class="reel-info">
                 <div class="user-meta">
                     <img src="https://picsum.photos/100/100">
@@ -87,6 +92,41 @@
                 <div class="caption">Coding is hard but I am harder! 🔥</div>
             </div>
         </div>
+
+        <div class="reel-video">
+            <video src="reel2.mp4" loop playsinline></video>
+            <div class="reel-actions">
+                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>2.1k</span></div>
+                <div class="action-item"><i class="far fa-comment"></i><span>120</span></div>
+                <img src="https://picsum.photos/51/51" class="music-disc">
+            </div>
+            <div class="reel-info">
+                <div class="user-meta">
+                    <img src="https://picsum.photos/101/101">
+                    <span class="user-name">@maxful_official</span>
+                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
+                </div>
+                <div class="caption">New Update Coming Soon! 🚀</div>
+            </div>
+        </div>
+
+        <div class="reel-video">
+            <video src="reel3.mp4" loop playsinline></video>
+            <div class="reel-actions">
+                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>3k</span></div>
+                <div class="action-item"><i class="far fa-comment"></i><span>90</span></div>
+                <img src="https://picsum.photos/52/52" class="music-disc">
+            </div>
+            <div class="reel-info">
+                <div class="user-meta">
+                    <img src="https://picsum.photos/102/102">
+                    <span class="user-name">@android_dev</span>
+                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
+                </div>
+                <div class="caption">Testing the scroll feature... it works! ✅</div>
+            </div>
+        </div>
+
     </div>
 
     <div class="bottom-nav">
@@ -98,30 +138,31 @@
     </div>
 
     <script>
-        // लाइक बटन फंक्शन
         function toggleLike(element) {
             const heart = element.querySelector('i');
-            heart.classList.toggle('active');
-            heart.classList.toggle('fas'); // Solid heart
-            heart.classList.toggle('far'); // Outline heart
-            if(heart.classList.contains('active')) {
-                heart.style.color = "#ff0050";
-            } else {
-                heart.style.color = "#fff";
-            }
+            heart.classList.toggle('fas');
+            heart.classList.toggle('far');
+            heart.style.color = heart.classList.contains('fas') ? "#ff0050" : "#fff";
         }
 
-        // फॉलो बटन फंक्शन
         function toggleFollow(btn) {
-            if (btn.innerText === "Follow") {
-                btn.innerText = "Following";
-                btn.classList.add("following");
-            } else {
-                btn.innerText = "Follow";
-                btn.classList.remove("following");
-            }
+            btn.innerText = (btn.innerText === "Follow") ? "Following" : "Follow";
+            btn.style.opacity = (btn.innerText === "Following") ? "0.6" : "1";
         }
-    </script>
 
+        // ऑटो प्ले/पॉज़ जब स्क्रॉल करें
+        const videos = document.querySelectorAll('video');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.play();
+                } else {
+                    entry.target.pause();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        videos.forEach(video => observer.observe(video));
+    </script>
 </body>
 </html>
