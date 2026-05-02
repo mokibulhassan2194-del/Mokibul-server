@@ -2,48 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         body { 
-            background-color: #000; color: #fff; font-family: sans-serif; 
+            background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             margin: 0; padding-bottom: 70px; 
             touch-action: manipulation; 
         }
-        .header { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100; }
-        .header .logo { font-size: 26px; font-weight: 900; color: #FFD700; letter-spacing: -1px; }
-        .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; }
+        
+        /* HEADER */
+        .header { 
+            padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 0.1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100; 
+        }
+        .header .logo { font-size: 24px; font-weight: 800; color: #FFD700; letter-spacing: -1px; }
+        .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; display: flex; gap: 20px; }
 
-        /* STORIES SECTION */
-        .stories-container { display: flex; padding: 15px 10px; gap: 12px; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid #111; -webkit-overflow-scrolling: touch; }
+        /* STORIES */
+        .stories-container { display: flex; padding: 15px 10px; gap: 15px; overflow-x: auto; white-space: nowrap; border-bottom: 0.1px solid #262626; -webkit-overflow-scrolling: touch; }
         .stories-container::-webkit-scrollbar { display: none; }
         .story-wrapper { min-width: 75px; text-align: center; cursor: pointer; flex-shrink: 0; }
-        .story-circle { width: 65px; height: 65px; border-radius: 50%; padding: 3px; border: 2px solid #FFD700; position: relative; margin: 0 auto; overflow: visible; }
-        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; background: #222; }
-        .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; font-weight: bold; }
-        .story-label { font-size: 11px; margin-top: 6px; color: #ccc; display: block; overflow: hidden; text-overflow: ellipsis; }
+        .story-circle { width: 68px; height: 68px; border-radius: 50%; padding: 3px; border: 2px solid #FFD700; position: relative; margin: 0 auto; }
+        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; }
+        .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; }
+        .story-label { font-size: 12px; margin-top: 6px; color: #fff; }
 
         /* POSTS */
-        .post-card { border-bottom: 1px solid #111; margin-bottom: 10px; position: relative; }
-        .post-header { display: flex; align-items: center; padding: 10px; }
-        .post-user-pic { width: 32px; height: 32px; border-radius: 50%; background: #FFD700; margin-right: 10px; overflow: hidden; }
-        .post-user-pic img { width: 100%; height: 100%; object-fit: cover; }
+        .post-card { margin-bottom: 15px; border-bottom: 0.1px solid #1a1a1a; }
+        .post-header { display: flex; align-items: center; padding: 12px; justify-content: space-between; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .post-user-pic { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
         .post-img-container { width: 100%; aspect-ratio: 1/1; background: #1a1a1a; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .big-heart { position: absolute; font-size: 100px; color: #ff3040; opacity: 0; transform: scale(0); pointer-events: none; z-index: 10; }
+        .big-heart { position: absolute; font-size: 90px; color: #fff; opacity: 0; transform: scale(0); pointer-events: none; z-index: 10; }
         .animate-heart { animation: heartPop 0.8s ease-out; }
         @keyframes heartPop { 0% { transform: scale(0); opacity: 0; } 40% { transform: scale(1.2); opacity: 0.9; } 100% { transform: scale(1); opacity: 0; } }
-        .post-actions { padding: 12px; display: flex; gap: 15px; font-size: 20px; }
         
+        .post-actions { padding: 12px; display: flex; gap: 18px; font-size: 24px; }
+        .action-btn { cursor: pointer; transition: transform 0.1s; }
+        .action-btn:active { transform: scale(1.2); }
+
         /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { color: #fff; text-decoration: none; font-size: 22px; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+        .nav-item { color: #fff; text-decoration: none; font-size: 24px; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="logo">Max Ful</div>
-        <a href="messages.html" class="header-icons">💬</a> 
+        <div class="header-icons">
+            <i class="far fa-heart"></i>
+            <a href="messages.html" style="color:white;"><i class="fab fa-facebook-messenger"></i></a>
+        </div>
     </div>
 
     <div class="stories-container">
@@ -51,7 +64,7 @@
             <label for="direct-story-upload" style="cursor: pointer;">
                 <div class="story-circle">
                     <img src="https://picsum.photos/id/64/100/100">
-                    <div class="plus-icon">+</div>
+                    <div class="plus-icon"><i class="fas fa-plus"></i></div>
                 </div>
                 <div class="story-label">Your Story</div>
             </label>
@@ -61,31 +74,33 @@
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/20/100/100"></div><div class="story-label">ankit_99</div></div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/30/100/100"></div><div class="story-label">priya.art</div></div>
     </div>
 
     <div class="post-card">
         <div class="post-header">
-            <div class="post-user-pic"><img src="https://picsum.photos/id/64/100/100"></div>
-            <span style="font-weight: bold; font-size: 14px;">makibul_islam</span>
+            <div class="user-info">
+                <img src="https://picsum.photos/id/64/100/100" class="post-user-pic">
+                <span style="font-weight: 600; font-size: 14px;">makibul_islam</span>
+            </div>
+            <i class="fas fa-ellipsis-vertical"></i>
         </div>
         <div class="post-img-container" id="post1" ondblclick="doLike('post1')">
-            <span class="big-heart">❤️</span>
+            <span class="big-heart"><i class="fas fa-heart"></i></span>
             <img src="https://picsum.photos/id/26/500/500" style="width:100%; height:100%; object-fit:cover;">
         </div>
         <div class="post-actions">
-            <span class="action-btn" id="like-icon" onclick="toggleLike()">🤍</span>
-            <span class="action-btn">💬</span>
-            <span class="action-btn">✈️</span>
+            <i class="far fa-heart action-btn" id="like-icon" onclick="toggleLike()"></i>
+            <i class="far fa-comment action-btn"></i>
+            <i class="far fa-paper-plane action-btn"></i>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <a href="home.html" class="nav-item">🏠</a>
-        <a href="search.html" class="nav-item">🔍</a>
-        <a href="upload.html" id="mainPlus" style="font-size: 40px; color: #FFD700; text-decoration: none;">+</a>
-        <a href="reels.html" class="nav-item">🎬</a>
-        <a href="profile.html" class="nav-item">👤</a>
+        <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a>
+        <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a>
+        <a href="upload.html" class="nav-item" style="color: #FFD700; font-size: 28px;"><i class="far fa-square-plus"></i></a>
+        <a href="reels.html" class="nav-item"><i class="fas fa-clapperboard"></i></a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a>
     </div>
 
     <script>
@@ -94,17 +109,23 @@
             const heart = container.querySelector('.big-heart');
             const likeIcon = document.getElementById('like-icon');
             heart.classList.add('animate-heart');
-            likeIcon.innerHTML = '❤️';
+            
+            likeIcon.classList.remove('far');
+            likeIcon.classList.add('fas');
             likeIcon.style.color = '#ff3040';
+            
             setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
+
         function toggleLike() {
             const likeIcon = document.getElementById('like-icon');
-            if (likeIcon.innerHTML === '🤍') {
-                likeIcon.innerHTML = '❤️';
+            if (likeIcon.classList.contains('far')) {
+                likeIcon.classList.remove('far');
+                likeIcon.classList.add('fas');
                 likeIcon.style.color = '#ff3040';
             } else {
-                likeIcon.innerHTML = '🤍';
+                likeIcon.classList.remove('fas');
+                likeIcon.classList.add('far');
                 likeIcon.style.color = '#fff';
             }
         }
