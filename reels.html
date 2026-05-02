@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Final Fix</title>
+    <title>Max Ful | Reels Fixed</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -13,15 +13,16 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
+        /* स्वाइप फिक्स: इसे 100vh रखा है ताकि स्क्रॉल काम करे */
         .reels-container {
-            height: calc(100vh - 60px); /* नेविगेशन बार के लिए जगह छोड़ी */
+            height: 100vh; 
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             -webkit-overflow-scrolling: touch;
         }
         
         .reel-video {
-            height: calc(100vh - 60px);
+            height: 100vh; 
             width: 100%; 
             position: relative;
             scroll-snap-align: start; 
@@ -30,38 +31,42 @@
         
         video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* साइड बटन्स - इसे अब और ऊपर कर दिया है */
+        /* साइड बटन्स: थोड़ा और ऊपर (95px) ताकि नेविगेशन से दूर रहें */
         .reel-actions {
             position: absolute; right: 12px;
-            bottom: 70px; /* नेविगेशन बार से सुरक्षित दूरी */
-            display: flex; flex-direction: column; gap: 18px; align-items: center;
+            bottom: 95px; 
+            display: flex; flex-direction: column; gap: 22px; align-items: center;
             z-index: 10;
         }
-        .action-item { text-align: center; font-size: 26px; cursor: pointer; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .action-item span { display: block; font-size: 11px; margin-top: 4px; }
+        .action-item { text-align: center; font-size: 28px; cursor: pointer; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); }
+        .action-item span { display: block; font-size: 12px; margin-top: 4px; font-weight: 500; }
 
-        /* रोटेटिंग म्यूजिक डिस्क */
+        /* म्यूजिक डिस्क */
         .music-disc {
-            width: 30px; height: 30px; border-radius: 50%;
+            width: 32px; height: 32px; border-radius: 50%;
             border: 2px solid #fff; animation: rotate 3s linear infinite;
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* यूजर जानकारी - इसे भी ऊपर खिसकाया */
-        .reel-info { position: absolute; left: 15px; bottom: 70px; max-width: 75%; z-index: 10; }
-        .user-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-        .user-meta img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #fff; }
-        .follow-btn { border: 1px solid #fff; padding: 3px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; }
-
-        .caption { font-size: 14px; line-height: 1.4; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+        /* यूजर इन्फो और कैप्शन: थोड़ा और ऊपर सेट किया */
+        .reel-info { 
+            position: absolute; left: 15px; 
+            bottom: 95px; 
+            max-width: 78%; z-index: 10; 
+        }
+        .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .user-meta img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid #fff; }
+        .follow-btn { border: 1px solid #fff; padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; }
+        .caption { font-size: 14px; text-shadow: 1px 1px 3px rgba(0,0,0,0.9); }
 
         /* बॉटम नेविगेशन */
         .bottom-nav { 
-            position: fixed; bottom: 0; width: 100%; height: 60px; 
-            background: #000; border-top: 0.5px solid #262626; 
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
+            position: fixed; bottom: 0; width: 100%; height: 65px; 
+            background: rgba(0,0,0,0.95); border-top: 0.5px solid #262626; 
+            display: flex; justify-content: space-around; align-items: center; 
+            z-index: 1000; 
         }
-        .nav-item { color: #fff; font-size: 24px; text-decoration: none; opacity: 0.6; }
+        .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.6; }
         .nav-item.active { opacity: 1; }
     </style>
 </head>
@@ -82,11 +87,28 @@
                     <span class="user-name">@makibul_vlogs</span>
                     <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
                 </div>
-                <div class="caption">Ab fix ho gaya bhai! 🔥🚀</div>
+                <div class="caption">Swipe fixed & UI updated! 🚀🔥</div>
             </div>
         </div>
-        
+
+        <div class="reel-video">
+            <video src="reel2.mp4" loop playsinline></video>
+            <div class="reel-actions">
+                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>2k</span></div>
+                <div class="action-item"><i class="far fa-comment"></i><span>100</span></div>
+                <div class="action-item"><i class="far fa-paper-plane"></i></div>
+                <img src="https://picsum.photos/51/51" class="music-disc">
+            </div>
+            <div class="reel-info">
+                <div class="user-meta">
+                    <img src="https://picsum.photos/101/101">
+                    <span class="user-name">@maxful_dev</span>
+                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
+                </div>
+                <div class="caption">Check the smooth scroll! ✅</div>
+            </div>
         </div>
+    </div>
 
     <div class="bottom-nav">
         <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
