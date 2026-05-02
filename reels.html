@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Pro Fix</title>
+    <title>Max Ful | Reels Final Fix</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -13,7 +13,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        /* स्वाइप (Swipe) के लिए 100vh जरूरी है */
         .reels-container {
             height: 100vh; 
             overflow-y: scroll;
@@ -31,7 +30,6 @@
         
         video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* साइड बटन्स - इसे काफी ऊँचा (130px) कर दिया है जैसा आपने फोटो में माँगा */
         .reel-actions {
             position: absolute; right: 15px;
             bottom: 130px; 
@@ -41,14 +39,12 @@
         .action-item { text-align: center; font-size: 28px; cursor: pointer; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
         .action-item span { display: block; font-size: 12px; margin-top: 5px; font-weight: 500; }
 
-        /* रोटेटिंग म्यूजिक डिस्क */
         .music-disc {
             width: 35px; height: 35px; border-radius: 50%;
             border: 2px solid #fff; animation: rotate 4s linear infinite;
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* यूजर जानकारी और कैप्शन - इसे भी काफी ऊँचा सेट किया */
         .reel-info { 
             position: absolute; left: 15px; 
             bottom: 130px; 
@@ -61,7 +57,6 @@
 
         .caption { font-size: 14px; line-height: 1.5; text-shadow: 1px 1px 4px rgba(0,0,0,1); }
 
-        /* बॉटम नेविगेशन */
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; height: 60px; 
             background: rgba(0,0,0,0.9); border-top: 0.5px solid #262626; 
@@ -69,6 +64,26 @@
         }
         .nav-item { color: #fff; font-size: 24px; text-decoration: none; opacity: 0.6; }
         .nav-item.active { opacity: 1; }
+
+        /* --- INSTAGRAM STYLE SHARE MENU --- */
+        .share-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; z-index: 2000;
+        }
+        .share-menu {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: #262626; border-radius: 15px 15px 0 0;
+            padding: 20px 0; transition: bottom 0.3s ease-out; z-index: 2001;
+            max-height: 50vh; overflow-y: auto;
+        }
+        .share-menu.active { bottom: 0; }
+        .share-header { text-align: center; font-weight: bold; padding-bottom: 15px; border-bottom: 0.5px solid #444; }
+        .share-options { display: flex; flex-wrap: wrap; padding: 20px; justify-content: space-around; gap: 20px; }
+        .share-option { text-align: center; width: 70px; cursor: pointer; }
+        .share-option i { width: 50px; height: 50px; background: #333; border-radius: 50%; line-height: 50px; font-size: 20px; margin-bottom: 8px; }
+        .share-option.whatsapp i { background: #25D366; }
+        .share-option.copy i { background: #555; }
+        .close-share { padding: 10px; text-align: center; color: #ff3b3b; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -79,7 +94,7 @@
             <div class="reel-actions">
                 <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>2.1k</span></div>
                 <div class="action-item"><i class="far fa-comment"></i><span>120</span></div>
-                <div class="action-item"><i class="far fa-paper-plane"></i><span>Share</span></div>
+                <div class="action-item" onclick="openShare()"><i class="fa-regular fa-paper-plane"></i><span>Share</span></div>
                 <img src="https://picsum.photos/60/60" class="music-disc">
             </div>
             <div class="reel-info">
@@ -91,24 +106,26 @@
                 <div class="caption">Success is a journey! 🚀🔥</div>
             </div>
         </div>
-        
-        <div class="reel-video">
-            <video src="reel2.mp4" loop playsinline></video>
-            <div class="reel-actions">
-                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>5k</span></div>
-                <div class="action-item"><i class="far fa-comment"></i><span>200</span></div>
-                <div class="action-item"><i class="far fa-paper-plane"></i><span>Share</span></div>
-                <img src="https://picsum.photos/61/61" class="music-disc">
+    </div>
+
+    <div class="share-overlay" id="overlay" onclick="closeShare()"></div>
+    <div class="share-menu" id="shareMenu">
+        <div class="share-header">Share to</div>
+        <div class="share-options">
+            <div class="share-option whatsapp" onclick="shareTo('whatsapp')">
+                <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
             </div>
-            <div class="reel-info">
-                <div class="user-meta">
-                    <img src="https://picsum.photos/101/101">
-                    <span class="user-name">@android_dev</span>
-                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
-                </div>
-                <div class="caption">Swipe setup is now perfect! ✅</div>
+            <div class="share-option" onclick="shareTo('insta')">
+                <i class="fab fa-instagram"></i><span>Stories</span>
+            </div>
+            <div class="share-option copy" onclick="shareTo('copy')">
+                <i class="fas fa-link"></i><span>Copy Link</span>
+            </div>
+            <div class="share-option" onclick="shareTo('system')">
+                <i class="fas fa-share-nodes"></i><span>More</span>
             </div>
         </div>
+        <div class="close-share" onclick="closeShare()">Cancel</div>
     </div>
 
     <div class="bottom-nav">
@@ -130,6 +147,36 @@
         function toggleFollow(btn) {
             btn.innerText = (btn.innerText === "Follow") ? "Following" : "Follow";
             btn.style.opacity = (btn.innerText === "Following") ? "0.6" : "1";
+        }
+
+        // --- SHARE FUNCTIONS ---
+        function openShare() {
+            document.getElementById('overlay').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('shareMenu').classList.add('active');
+            }, 10);
+        }
+
+        function closeShare() {
+            document.getElementById('shareMenu').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+            }, 300);
+        }
+
+        function shareTo(platform) {
+            const url = window.location.href;
+            if(platform === 'whatsapp') {
+                window.open(`https://api.whatsapp.com/send?text=${url}`);
+            } else if(platform === 'copy') {
+                navigator.clipboard.writeText(url);
+                alert("Link Copied!");
+            } else if(platform === 'system') {
+                if(navigator.share) {
+                    navigator.share({title: 'Max Ful', url: url});
+                }
+            }
+            closeShare();
         }
 
         const videos = document.querySelectorAll('video');
