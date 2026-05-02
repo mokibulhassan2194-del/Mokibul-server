@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Fixed</title>
+    <title>Max Ful | Reels Final Fix</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -13,16 +13,15 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        /* रील कंटेनर - स्क्रॉलिंग फिक्स */
         .reels-container {
-            height: calc(100vh - 55px); /* नेविगेशन बार की जगह छोड़कर */
+            height: calc(100vh - 60px); /* नेविगेशन बार के लिए जगह छोड़ी */
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             -webkit-overflow-scrolling: touch;
         }
         
         .reel-video {
-            height: calc(100vh - 55px); /* पूरी स्क्रीन में वीडियो */
+            height: calc(100vh - 60px);
             width: 100%; 
             position: relative;
             scroll-snap-align: start; 
@@ -31,36 +30,38 @@
         
         video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* साइड बटन - नेविगेशन से ऊपर किया */
+        /* साइड बटन्स - इसे अब और ऊपर कर दिया है */
         .reel-actions {
-            position: absolute; right: 15px;
-            bottom: 40px; /* इसे अब नेविगेशन के ठीक ऊपर रखा गया है */
-            display: flex; flex-direction: column; gap: 20px; align-items: center;
+            position: absolute; right: 12px;
+            bottom: 70px; /* नेविगेशन बार से सुरक्षित दूरी */
+            display: flex; flex-direction: column; gap: 18px; align-items: center;
             z-index: 10;
         }
-        .action-item { text-align: center; font-size: 28px; cursor: pointer; text-shadow: 1px 1px 10px rgba(0,0,0,0.8); }
-        .action-item span { display: block; font-size: 12px; margin-top: 4px; font-weight: bold; }
+        .action-item { text-align: center; font-size: 26px; cursor: pointer; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .action-item span { display: block; font-size: 11px; margin-top: 4px; }
 
-        /* रोटेटिंग म्यूजिक आइकन */
+        /* रोटेटिंग म्यूजिक डिस्क */
         .music-disc {
-            width: 32px; height: 32px; border-radius: 50%;
+            width: 30px; height: 30px; border-radius: 50%;
             border: 2px solid #fff; animation: rotate 3s linear infinite;
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* यूजर जानकारी */
-        .reel-info { position: absolute; left: 15px; bottom: 35px; max-width: 80%; z-index: 10; }
-        .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .user-meta img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid white; }
-        .follow-btn { border: 1px solid #fff; padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; }
+        /* यूजर जानकारी - इसे भी ऊपर खिसकाया */
+        .reel-info { position: absolute; left: 15px; bottom: 70px; max-width: 75%; z-index: 10; }
+        .user-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .user-meta img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #fff; }
+        .follow-btn { border: 1px solid #fff; padding: 3px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; }
+
+        .caption { font-size: 14px; line-height: 1.4; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
 
         /* बॉटम नेविगेशन */
         .bottom-nav { 
-            position: fixed; bottom: 0; width: 100%; height: 55px; 
-            background: #000; border-top: 0.1px solid #262626; 
+            position: fixed; bottom: 0; width: 100%; height: 60px; 
+            background: #000; border-top: 0.5px solid #262626; 
             display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
         }
-        .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
+        .nav-item { color: #fff; font-size: 24px; text-decoration: none; opacity: 0.6; }
         .nav-item.active { opacity: 1; }
     </style>
 </head>
@@ -81,27 +82,11 @@
                     <span class="user-name">@makibul_vlogs</span>
                     <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
                 </div>
-                <div class="caption">Fixing the UI bugs! 👨‍💻🔥</div>
+                <div class="caption">Ab fix ho gaya bhai! 🔥🚀</div>
             </div>
         </div>
-
-        <div class="reel-video">
-            <video src="reel2.mp4" loop playsinline></video>
-            <div class="reel-actions">
-                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>2.1k</span></div>
-                <div class="action-item"><i class="far fa-comment"></i><span>120</span></div>
-                <img src="https://picsum.photos/51/51" class="music-disc">
-            </div>
-            <div class="reel-info">
-                <div class="user-meta">
-                    <img src="https://picsum.photos/101/101">
-                    <span class="user-name">@maxful_official</span>
-                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
-                </div>
-                <div class="caption">Scroll is now working! ✅</div>
-            </div>
+        
         </div>
-    </div>
 
     <div class="bottom-nav">
         <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
@@ -124,7 +109,6 @@
             btn.style.opacity = (btn.innerText === "Following") ? "0.6" : "1";
         }
 
-        // वीडियो ऑटो-प्ले लॉजिक
         const videos = document.querySelectorAll('video');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -135,7 +119,6 @@
                 }
             });
         }, { threshold: 0.6 });
-
         videos.forEach(video => observer.observe(video));
     </script>
 </body>
