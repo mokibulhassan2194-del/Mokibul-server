@@ -69,36 +69,29 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        function updateUI(data) {
-            document.getElementById('display-username').innerText = data.username || "makibul_vlogs";
-            document.getElementById('display-name').innerText = data.name || "Makibul Islam";
-            document.getElementById('display-bio').innerText = data.bio || "";
-            document.getElementById('display-followers').innerText = data.followers || "0";
-            document.getElementById('display-following').innerText = data.following || "0";
-            document.getElementById('display-posts').innerText = data.posts || "0";
-        }
-
-        // हम दोनों कलेक्शन चेक करेंगे क्योंकि आपके डेटा में कन्फ्यूजन है
         async function loadProfile() {
             try {
-                // तरीका 1: सीधी ID से (ScOZEm...)
-                let docRef = db.collection("users").doc("ScOZEm uVToVfI4qoHO fZ");
-                let doc = await docRef.get();
+                // Aapki sahi Document ID
+                const docRef = db.collection("users").doc("ScOZEm uVToVfI4qoHO fZ");
+                const doc = await docRef.get();
                 
                 if (doc.exists) {
-                    updateUI(doc.data());
-                } else {
-                    // तरीका 2: अगर वो नहीं मिला, तो पूरे "users" कलेक्शन को देखो
-                    const querySnapshot = await db.collection("users").get();
-                    if (!querySnapshot.empty) {
-                        updateUI(querySnapshot.docs[0].data());
-                    } else {
-                        document.getElementById('display-name').innerText = "Data Not Found";
-                    }
+                    const data = doc.data();
+                    // Database ke ajeeb naamo ko yahan map kiya hai:
+                    document.getElementById('display-username').innerText = data.username || "User";
+                    document.getElementById('display-name').innerText = data.name || "No Name";
+                    document.getElementById('display-bio').innerText = data.bio || "";
+                    
+                    // Yahan dekho, aapka followers field 'followers40' hai
+                    document.getElementById('display-followers').innerText = data.followers40 || "0";
+                    
+                    // Aur following field 'following 500' hai
+                    document.getElementById('display-following').innerText = data['following 500'] || "0";
+                    
+                    document.getElementById('display-posts').innerText = data.posts || "0";
                 }
             } catch (error) {
-                console.error("Error:", error);
-                document.getElementById('display-name').innerText = "Error Loading";
+                console.log("Error:", error);
             }
         }
 
