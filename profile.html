@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Official</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -60,12 +58,12 @@
 
     <div class="header">
         <div class="username-area">
-            <span id="display-username">loading...</span>
+            <span id="display-username">mokibul_hassan</span>
             <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i>
         </div>
         <div class="header-icons">
             <i class="far fa-square-plus"></i>
-            <a href="setting.html" class="menu-btn">
+            <a href="settings.html" class="menu-btn">
                 <i class="fas fa-bars"></i>
             </a>
         </div>
@@ -77,15 +75,15 @@
                 <img src="https://picsum.photos/id/64/200/200" id="user-img">
             </div>
             <div class="stats-row">
-                <div><span class="stat-val" id="posts">0</span><span class="stat-name">Posts</span></div>
-                <div><span class="stat-val" id="followers">0</span><span class="stat-name">Followers</span></div>
-                <div><span class="stat-val" id="following">0</span><span class="stat-name">Following</span></div>
+                <div><span class="stat-val">3</span><span class="stat-name">Posts</span></div>
+                <div><span class="stat-val">120</span><span class="stat-name">Followers</span></div>
+                <div><span class="stat-val">150</span><span class="stat-name">Following</span></div>
             </div>
         </div>
 
         <div class="bio-data">
-            <span class="full-name" id="display-name">Loading Name...</span>
-            <div id="display-bio" class="bio-text">Loading bio...</div>
+            <span class="full-name" id="display-name">Mokibul Hassan</span>
+            <div id="display-bio" class="bio-text">Android Developer | Max Ful Official App 🚀</div>
         </div>
 
         <div class="btns">
@@ -115,45 +113,14 @@
     </div>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
-            authDomain: "max-ful-apps-cce76.firebaseapp.com",
-            projectId: "max-ful-apps-cce76",
-            storageBucket: "max-ful-apps-cce76.firebasestorage.app",
-            messagingSenderId: "1097891042184",
-            appId: "1:1097891042184:web:23c2d391f35a008774603d"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const userId = "main_profile_01";
-
-        function loadData() {
-            db.collection("users").doc(userId).onSnapshot((doc) => {
-                if (doc.exists) {
-                    const d = doc.data();
-                    document.getElementById('display-username').innerText = d.username || "user";
-                    document.getElementById('display-name').innerText = d.name || "Set Name";
-                    document.getElementById('display-bio').innerText = d.bio || "";
-                    document.getElementById('followers').innerText = d.followers || "0";
-                    document.getElementById('following').innerText = d.following || "0";
-                    document.getElementById('posts').innerText = d.posts || "0";
-                }
-            });
+        // बिना Firebase वाला सीधा Edit फंक्शन
+        function editProfile() {
+            const nName = prompt("नया नाम डालें:", document.getElementById('display-name').innerText);
+            const nBio = prompt("नया बायो डालें:", document.getElementById('display-bio').innerText);
+            
+            if(nName) document.getElementById('display-name').innerText = nName;
+            if(nBio) document.getElementById('display-bio').innerText = nBio;
         }
-
-        async function editProfile() {
-            const nName = prompt("Name:");
-            const nBio = prompt("Bio:");
-            const nUser = prompt("Username:");
-            if(nName || nBio || nUser) {
-                await db.collection("users").doc(userId).set({
-                    name: nName, bio: nBio, username: nUser,
-                    followers: "0", following: "0", posts: "3"
-                }, {merge: true});
-            }
-        }
-        window.onload = loadData;
     </script>
 </body>
 </html>
