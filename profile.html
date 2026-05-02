@@ -3,72 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Max Ful | Profile</title>
+    <title>Max Ful | Official</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        body { background-color: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding-bottom: 65px; }
-        .profile-header { display: flex; justify-content: center; align-items: center; padding: 12px; border-bottom: 1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100; }
-        .profile-info { padding: 20px 15px; display: flex; align-items: center; gap: 25px; }
-        .profile-pic-container { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #FFD700; padding: 2px; flex-shrink: 0; }
-        .profile-pic-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .stats { display: flex; flex-grow: 1; justify-content: space-around; text-align: center; }
-        .stat-num { font-weight: bold; font-size: 18px; display: block; }
-        .stat-label { font-size: 12px; color: #a8a8a8; }
-        .bio-section { padding: 0 15px 15px; }
-        .display-name { font-weight: bold; font-size: 15px; margin-bottom: 2px; }
-        .display-bio { font-size: 14px; color: #efefef; white-space: pre-wrap; }
+        body { background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding-bottom: 60px; }
         
-        /* Buttons */
-        .action-buttons { padding: 0 15px; display: flex; gap: 8px; }
-        .edit-btn { flex: 1; background: #1a1a1a; color: #fff; border: 1px solid #363636; padding: 7px; border-radius: 8px; font-size: 14px; font-weight: 600; text-align: center; cursor: pointer; }
+        /* Top Header */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; border-bottom: 0.1px solid #262626; }
+        .username-area { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .header-icons { display: flex; gap: 20px; font-size: 20px; }
 
-        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 20px; }
-        .grid-item { aspect-ratio: 1/1; background: #111; }
+        /* Profile Info */
+        .profile-container { padding: 15px; }
+        .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 15px; }
+        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #262626; padding: 3px; position: relative; }
+        .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .add-icon { position: absolute; bottom: 0; right: 0; background: #0095f6; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border: 2px solid #000; font-size: 12px; }
+
+        .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
+        .stat-val { font-weight: bold; font-size: 17px; display: block; }
+        .stat-name { font-size: 13px; color: #a8a8a8; }
+
+        .bio-data { margin-bottom: 15px; }
+        .full-name { font-weight: 600; font-size: 14px; display: block; }
+        .bio-text { font-size: 14px; white-space: pre-wrap; margin-top: 2px; }
+
+        /* Action Buttons */
+        .btns { display: flex; gap: 8px; margin-bottom: 20px; }
+        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; cursor: pointer; }
+
+        /* Tab Icons (Grid, Reels, Tags) */
+        .tabs { display: flex; border-top: 0.1px solid #262626; }
+        .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; cursor: pointer; }
+        .tab.active { color: #fff; border-bottom: 2px solid #fff; }
+
+        /* Grid */
+        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; }
+        .grid-item { aspect-ratio: 1/1; background: #121212; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 50px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; }
-        .nav-link { color: #fff; text-decoration: none; font-size: 24px; }
+        /* Bottom Nav Bar */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 50px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+        .nav-item { color: #fff; font-size: 22px; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <div class="profile-header">
-        <div id="display-username" style="font-weight: bold;">Loading...</div>
-    </div>
-
-    <div class="profile-info">
-        <div class="profile-pic-container">
-            <img id="profile-img" src="https://picsum.photos/id/64/200/200">
+    <div class="header">
+        <div class="username-area">
+            <span id="display-username">loading...</span>
+            <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i>
         </div>
-        <div class="stats">
-            <div><span class="stat-num" id="display-posts">0</span><span class="stat-label">Posts</span></div>
-            <div><span class="stat-num" id="display-followers">0</span><span class="stat-label">Followers</span></div>
-            <div><span class="stat-num" id="display-following">0</span><span class="stat-label">Following</span></div>
+        <div class="header-icons">
+            <i class="far fa-square-plus"></i>
+            <i class="fas fa-bars"></i>
         </div>
     </div>
 
-    <div class="bio-section">
-        <div id="display-name" class="display-name">Loading...</div>
-        <div id="display-bio" class="display-bio">Loading bio...</div>
+    <div class="profile-container">
+        <div class="top-row">
+            <div class="profile-pic">
+                <img src="https://picsum.photos/id/64/200/200" id="user-img">
+                <div class="add-icon"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="stats-row">
+                <div><span class="stat-val" id="posts">0</span><span class="stat-name">Posts</span></div>
+                <div><span class="stat-val" id="followers">0</span><span class="stat-name">Followers</span></div>
+                <div><span class="stat-val" id="following">0</span><span class="stat-name">Following</span></div>
+            </div>
+        </div>
+
+        <div class="bio-data">
+            <span class="full-name" id="display-name">Loading Name...</span>
+            <div class="bio-text" id="display-bio">Loading bio information...</div>
+        </div>
+
+        <div class="btns">
+            <div class="btn" onclick="editProfile()">Edit Profile</div>
+            <div class="btn">Share profile</div>
+        </div>
     </div>
 
-    <div class="action-buttons">
-        <div class="edit-btn" onclick="editProfile()">Edit Profile</div>
-        <div class="edit-btn">Share Profile</div>
+    <div class="tabs">
+        <div class="tab active"><i class="fas fa-table-cells"></i></div>
+        <div class="tab"><i class="fas fa-film"></i></div> <div class="tab"><i class="far fa-id-badge"></i></div>
     </div>
 
     <div class="post-grid">
-        <div class="grid-item"><img src="https://picsum.photos/id/10/300/300"></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/20/300/300"></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/30/300/300"></div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=1"></div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=2"></div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=3"></div>
     </div>
 
     <div class="bottom-nav">
-        <a href="#" class="nav-link">🏠</a>
-        <a href="#" class="nav-link">👤</a>
-    </div>
+        <a href="#" class="nav-item"><i class="fas fa-house"></i></a> <a href="#" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> <a href="#" class="nav-item"><i class="far fa-square-plus"></i></a> <a href="#" class="nav-item"><i class="fas fa-clapperboard"></i></a> <a href="#" class="nav-item"><i class="fas fa-circle-user"></i></a> </div>
 
     <script>
         const firebaseConfig = {
@@ -82,42 +113,35 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const userId = "ScOZEm uVToVfI4qoHO fZ"; // आपकी डॉक्यूमेंट ID
+        const userId = "main_profile_01"; // इसे अपने हिसाब से रखें
 
-        // डेटा लोड करना
-        function loadProfile() {
+        function loadData() {
             db.collection("users").doc(userId).onSnapshot((doc) => {
                 if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('display-username').innerHTML = (data.username || "user") + " <span style='color:#0095f6'>✔️</span>";
-                    document.getElementById('display-name').innerText = data.name || "Name";
-                    document.getElementById('display-bio').innerText = data.bio || "No bio yet";
-                    document.getElementById('display-followers').innerText = data.followers || "0";
-                    document.getElementById('display-following').innerText = data.following || "0";
-                    document.getElementById('display-posts').innerText = data.posts || "0";
+                    const d = doc.data();
+                    document.getElementById('display-username').innerText = d.username || "user";
+                    document.getElementById('display-name').innerText = d.name || "Set Name";
+                    document.getElementById('display-bio').innerText = d.bio || "No bio";
+                    document.getElementById('followers').innerText = d.followers || "0";
+                    document.getElementById('following').innerText = d.following || "0";
+                    document.getElementById('posts').innerText = d.posts || "0";
                 }
             });
         }
 
-        // प्रोफाइल एडिट करने का फंक्शन
         async function editProfile() {
-            const newName = prompt("अपना नया नाम डालें:", document.getElementById('display-name').innerText);
-            const newBio = prompt("अपना नया बायो डालें:", document.getElementById('display-bio').innerText);
-            
-            if (newName || newBio) {
-                try {
-                    await db.collection("users").doc(userId).update({
-                        name: newName,
-                        bio: newBio
-                    });
-                    alert("प्रोफाइल अपडेट हो गई!");
-                } catch (e) {
-                    alert("Error: " + e.message);
-                }
+            const nName = prompt("Name:");
+            const nBio = prompt("Bio:");
+            const nUser = prompt("Username:");
+            if(nName || nBio || nUser) {
+                await db.collection("users").doc(userId).set({
+                    name: nName, bio: nBio, username: nUser,
+                    followers: "150", following: "200", posts: "3"
+                }, {merge: true});
             }
         }
 
-        window.onload = loadProfile;
+        window.onload = loadData;
     </script>
 </body>
 </html>
