@@ -59,6 +59,7 @@
             transition: 0.3s; text-align: center;
         }
         .create-btn:hover { border-color: #FFD700; background: #111; }
+        #recaptcha-container { margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -66,12 +67,14 @@
     <div class="logo">Max Ful</div>
 
     <div class="login-container">
-        <input type="email" id="user" placeholder="Email address" required>
-        <input type="password" id="pass" placeholder="Password" required>
+        <input type="text" id="userInput" placeholder="Phone, username or email" required>
+        <input type="password" id="pass" placeholder="Password">
         
         <a href="forgot.html" class="forgot-link">Forgot password?</a>
         
         <button type="button" onclick="handleLogin()" class="login-btn">Log In</button>
+
+        <div id="recaptcha-container"></div>
 
         <div class="divider">OR</div>
 
@@ -92,32 +95,49 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // OTP setup
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible'
+        });
+
         function handleLogin() {
-            const email = document.getElementById('user').value;
+            const input = document.getElementById('userInput').value;
             const password = document.getElementById('pass').value;
 
-            if(email === "" || password === "") {
-                alert("Bhai, details to bhar do!");
+            if(input === "") {
+                alert("Bhai, detail to bhar do!");
                 return;
             }
 
-            // Real login check with Firebase Auth
-            auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Success: Save a login record in Firestore for your info
-                db.collection("logins").add({
-                    username: email,
-                    status: "Logged In",
-                    time: new Date().toLocaleString()
-                });
+            // 1. Check if it's a Phone Number (Starts with +)
+            if(input.startsWith('+')) {
+                const appVerifier = window.recaptchaVerifier;
+                auth.signInWithPhoneNumber(input, appVerifier)
+                .then((confirmationResult) => {
+                    const code = window.prompt("OTP bhej diya hai, yahan likhein:");
+                    if (code) {
+                        confirmationResult.confirm(code).then(() => {
+                            window.location.href = "home.html";
+                        }).catch(() => alert("Galat OTP!"));
+                    }
+                }).catch((err) => alert("SMS Error: " + err.message));
+            } 
+            // 2. Otherwise assume it's Email/Username
+            else {
+                if(password === "") {
+                    alert("Bhai, password bhi chahiye!");
+                    return;
+                }
                 
-                alert("Login Safal Raha!");
-                window.location.href = "home.html"; 
-            })
-            .catch((error) => {
-                // Error: Shows if password is wrong or user doesn't exist
-                alert("Galti: " + error.message);
-            });
+                // Normal Email Login
+                auth.signInWithEmailAndPassword(input, password)
+                .then(() => {
+                    window.location.href = "home.html";
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+            }
         }
     </script>
 </body>
