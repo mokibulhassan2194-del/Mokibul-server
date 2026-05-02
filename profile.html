@@ -4,37 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Profile</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
     <style>
         body { 
             background-color: #000; color: #fff; font-family: -apple-system, sans-serif; 
             margin: 0; padding-bottom: 65px; overflow-x: hidden;
         }
-        
         .profile-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 10px 15px; border-bottom: 1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100;
         }
         .header-right { display: flex; gap: 18px; align-items: center; }
         .header-btn { text-decoration: none; color: #fff; font-size: 22px; cursor: pointer; }
-        
         .profile-info { padding: 12px 15px; display: flex; align-items: center; gap: 20px; }
         .profile-pic-container { width: 77px; height: 77px; border-radius: 50%; border: 1.5px solid #262626; padding: 2px; }
         .has-story { border: 2px solid #FFD700; }
         .profile-pic-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-
         .stats { display: flex; flex-grow: 1; justify-content: space-around; text-align: center; }
         .stat-num { font-weight: bold; font-size: 16px; display: block; }
         .stat-label { font-size: 12px; color: #efefef; }
-
-        .highlights { display: flex; gap: 12px; padding: 10px 15px; overflow-x: auto; scrollbar-width: none; }
-        .highlight-item { text-align: center; min-width: 56px; }
-        .highlight-circle { 
-            width: 54px; height: 54px; border-radius: 50%; border: 1px solid #262626; 
-            padding: 2px; background: #000; margin-bottom: 4px; display: flex; align-items: center; justify-content: center;
-        }
-        .highlight-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .highlight-text { font-size: 11px; }
-
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; height: 50px; 
             background: #000; border-top: 1px solid #262626; 
@@ -42,21 +32,15 @@
         }
         .nav-link { color: #fff; text-decoration: none; font-size: 22px; }
         .plus-btn { font-size: 30px; color: #FFD700; text-decoration: none; font-weight: bold; }
-
         .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; margin-top: 10px; }
         .grid-item { aspect-ratio: 1/1; background: #111; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Modal Style for Followers */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: #000; }
-        .modal-content { display: flex; flex-direction: column; height: 100%; }
-        .modal-header { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #262626; gap: 20px; }
     </style>
 </head>
 <body>
 
     <div class="profile-header">
-        <div style="font-size: 18px; font-weight: bold;">makibul_vlogs <span style="color:#0095f6;">✔️</span></div>
+        <div id="display-username" style="font-size: 18px; font-weight: bold;">Loading... <span style="color:#0095f6;">✔️</span></div>
         <div class="header-right">
             <a href="upload.html" class="header-btn">➕</a>
             <a href="settings.html" class="header-btn">☰</a>
@@ -68,17 +52,15 @@
             <img src="https://picsum.photos/id/64/200/200">
         </div>
         <div class="stats">
-            <div><span class="stat-num">12</span><span class="stat-label">Posts</span></div>
-            <div onclick="openUserList('Followers')" style="cursor:pointer;"><span class="stat-num">5.2k</span><span class="stat-label">Followers</span></div>
-            <div onclick="openUserList('Following')" style="cursor:pointer;"><span class="stat-num">150</span><span class="stat-label">Following</span></div>
+            <div><span class="stat-num" id="display-posts">0</span><span class="stat-label">Posts</span></div>
+            <div><span class="stat-num" id="display-followers">0</span><span class="stat-label">Followers</span></div>
+            <div><span class="stat-num" id="display-following">0</span><span class="stat-label">Following</span></div>
         </div>
     </div>
 
     <div style="padding: 5px 15px;">
-        <div style="font-weight: 600; font-size: 14px;">Makibul Islam</div>
-        <div style="font-size: 13px; line-height: 1.3;">🎬 4K Video Creator | Tech Enthusiast
-🚀 Working on Max Ful App
-📍 India</div>
+        <div id="display-name" style="font-weight: 600; font-size: 14px;">Loading...</div>
+        <div id="display-bio" style="font-size: 13px; line-height: 1.3; white-space: pre-wrap;">Loading bio...</div>
     </div>
 
     <div style="display: flex; gap: 6px; padding: 10px 15px;">
@@ -86,28 +68,8 @@
         <button style="flex:1; background:#262626; color:#fff; border:none; padding:7px; border-radius:6px; font-weight:600; font-size:13px;">Share Profile</button>
     </div>
 
-    <div class="highlights">
-        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/101/100"></div><span class="highlight-text">Gym</span></div>
-        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/102/100"></div><span class="highlight-text">Travel</span></div>
-        <div class="highlight-item"><div class="highlight-circle"><img src="https://picsum.photos/id/103/100"></div><span class="highlight-text">Vlogs</span></div>
-        <div class="highlight-item"><div class="highlight-circle" style="font-size:20px;">+</div><span class="highlight-text">New</span></div>
-    </div>
-
-    <div class="post-grid">
-        <div class="grid-item"><img src="https://picsum.photos/id/10/300/300"></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/11/300/300"></div>
-        <div class="grid-item"><img src="https://picsum.photos/id/12/300/300"></div>
-    </div>
-
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span style="font-size: 24px; cursor: pointer;" onclick="closeModal()">←</span>
-                <h3 id="modalTitle" style="margin:0;">List</h3>
-            </div>
-            <div id="listBody" style="padding: 15px; overflow-y: auto;"></div>
+    <div class="post-grid" id="postGrid">
         </div>
-    </div>
 
     <div class="bottom-nav">
         <a href="home.html" class="nav-link">🏠</a>
@@ -118,14 +80,43 @@
     </div>
 
     <script>
-        function openUserList(type) {
-            document.getElementById('userModal').style.display = "block";
-            document.getElementById('modalTitle').innerText = type;
-            document.getElementById('listBody').innerHTML = "<p>Loading " + type + "...</p>";
+        // --- APNI FIREBASE CONFIG YAHAN PASTE KAREIN ---
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Firebase Initialize
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // डेटा लोड करने का फंक्शन
+        function loadProfile() {
+            // "users" कलेक्शन से डेटा उठाना (जो आपने बनाया है)
+            // 'DOCUMENT_ID' की जगह वो ajeeb sa ID डालना जो Firebase में है (जैसे abiqqz...)
+            db.collection("users").doc("Y6ANmmX7TiZuQBDibHDM").get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('display-username').innerText = data.username;
+                    document.getElementById('display-name').innerText = data.name;
+                    document.getElementById('display-bio').innerText = data.bio;
+                    document.getElementById('display-followers').innerText = data.followers;
+                    document.getElementById('display-following').innerText = data.following;
+                    document.getElementById('display-posts').innerText = data.posts;
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
         }
-        function closeModal() {
-            document.getElementById('userModal').style.display = "none";
-        }
+
+        // Page load होते ही डेटा मंगाओ
+        window.onload = loadProfile;
     </script>
 </body>
 </html>
