@@ -2,50 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Official</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        body { background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding-bottom: 60px; }
-        
-        /* Top Header */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; border-bottom: 0.1px solid #262626; }
+        html, body { 
+            background-color: #000; color: #fff; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            margin: 0; padding: 0; width: 100%; overflow-x: hidden; touch-action: manipulation;
+        }
+        body { padding-bottom: 60px; }
+        * { box-sizing: border-box; }
+
+        /* Header */
+        .header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 15px; position: sticky; top: 0; background: #000; 
+            z-index: 1000; border-bottom: 0.1px solid #262626;
+        }
         .username-area { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         .header-icons { display: flex; gap: 20px; font-size: 20px; }
+        .menu-btn { cursor: pointer; padding: 5px; }
 
-        /* Profile Info */
-        .profile-container { padding: 15px; }
+        /* Settings Overlay/Menu */
+        .menu-overlay {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: auto;
+            background: #262626; border-radius: 15px 15px 0 0;
+            transition: 0.3s ease-in-out; z-index: 2000; padding: 20px 0;
+        }
+        .menu-overlay.active { bottom: 0; }
+        .menu-item {
+            padding: 15px 20px; display: flex; align-items: center; gap: 15px;
+            font-size: 16px; border-bottom: 0.1px solid #363636; color: white; text-decoration: none;
+        }
+        .menu-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; z-index: 1500;
+        }
+
+        /* Profile Details */
+        .profile-container { padding: 15px; width: 100%; }
         .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 15px; }
-        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #262626; padding: 3px; position: relative; }
+        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #262626; padding: 3px; position: relative; flex-shrink: 0; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .add-icon { position: absolute; bottom: 0; right: 0; background: #0095f6; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border: 2px solid #000; font-size: 12px; }
-
+        
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
         .stat-val { font-weight: bold; font-size: 17px; display: block; }
         .stat-name { font-size: 13px; color: #a8a8a8; }
 
-        .bio-data { margin-bottom: 15px; }
+        .bio-data { margin-bottom: 15px; padding: 0 5px; }
         .full-name { font-weight: 600; font-size: 14px; display: block; }
         .bio-text { font-size: 14px; white-space: pre-wrap; margin-top: 2px; }
 
-        /* Action Buttons */
-        .btns { display: flex; gap: 8px; margin-bottom: 20px; }
+        .btns { display: flex; gap: 8px; margin-bottom: 20px; padding: 0 5px; }
         .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; cursor: pointer; }
 
-        /* Tab Icons (Grid, Reels, Tags) */
-        .tabs { display: flex; border-top: 0.1px solid #262626; }
+        .tabs { display: flex; border-top: 0.1px solid #262626; width: 100%; }
         .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; cursor: pointer; }
         .tab.active { color: #fff; border-bottom: 2px solid #fff; }
 
-        /* Grid */
-        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; }
+        .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; width: 100%; }
         .grid-item { aspect-ratio: 1/1; background: #121212; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Bottom Nav Bar */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 50px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-item { color: #fff; font-size: 22px; text-decoration: none; }
     </style>
@@ -59,15 +81,22 @@
         </div>
         <div class="header-icons">
             <i class="far fa-square-plus"></i>
-            <i class="fas fa-bars"></i>
+            <i class="fas fa-bars menu-btn" onclick="toggleMenu()"></i>
         </div>
+    </div>
+
+    <div class="menu-bg" id="menuBg" onclick="toggleMenu()"></div>
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-item" onclick="editProfile()"><i class="fas fa-user-edit"></i> Edit Profile</div>
+        <div class="menu-item"><i class="fas fa-cog"></i> Settings</div>
+        <div class="menu-item"><i class="fas fa-history"></i> Your Activity</div>
+        <div class="menu-item" style="color: #ed4956;"><i class="fas fa-sign-out-alt"></i> Log Out</div>
     </div>
 
     <div class="profile-container">
         <div class="top-row">
             <div class="profile-pic">
                 <img src="https://picsum.photos/id/64/200/200" id="user-img">
-                <div class="add-icon"><i class="fas fa-plus"></i></div>
             </div>
             <div class="stats-row">
                 <div><span class="stat-val" id="posts">0</span><span class="stat-name">Posts</span></div>
@@ -78,7 +107,7 @@
 
         <div class="bio-data">
             <span class="full-name" id="display-name">Loading Name...</span>
-            <div class="bio-text" id="display-bio">Loading bio information...</div>
+            <div id="display-bio" class="bio-text">Loading bio...</div>
         </div>
 
         <div class="btns">
@@ -89,7 +118,8 @@
 
     <div class="tabs">
         <div class="tab active"><i class="fas fa-table-cells"></i></div>
-        <div class="tab"><i class="fas fa-film"></i></div> <div class="tab"><i class="far fa-id-badge"></i></div>
+        <div class="tab"><i class="fas fa-film"></i></div> 
+        <div class="tab"><i class="far fa-id-badge"></i></div>
     </div>
 
     <div class="post-grid">
@@ -99,9 +129,27 @@
     </div>
 
     <div class="bottom-nav">
-        <a href="#" class="nav-item"><i class="fas fa-house"></i></a> <a href="#" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> <a href="#" class="nav-item"><i class="far fa-square-plus"></i></a> <a href="#" class="nav-item"><i class="fas fa-clapperboard"></i></a> <a href="#" class="nav-item"><i class="fas fa-circle-user"></i></a> </div>
+        <a href="#" class="nav-item"><i class="fas fa-house"></i></a> 
+        <a href="#" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
+        <a href="#" class="nav-item"><i class="far fa-square-plus"></i></a> 
+        <a href="#" class="nav-item"><i class="fas fa-clapperboard"></i></a> 
+        <a href="#" class="nav-item"><i class="fas fa-circle-user"></i></a> 
+    </div>
 
     <script>
+        // Menu Toggle Function
+        function toggleMenu() {
+            const menu = document.getElementById('menuOverlay');
+            const bg = document.getElementById('menuBg');
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                bg.style.display = 'none';
+            } else {
+                menu.classList.add('active');
+                bg.style.display = 'block';
+            }
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
             authDomain: "max-ful-apps-cce76.firebaseapp.com",
@@ -113,7 +161,7 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const userId = "main_profile_01"; // इसे अपने हिसाब से रखें
+        const userId = "main_profile_01";
 
         function loadData() {
             db.collection("users").doc(userId).onSnapshot((doc) => {
@@ -121,7 +169,7 @@
                     const d = doc.data();
                     document.getElementById('display-username').innerText = d.username || "user";
                     document.getElementById('display-name').innerText = d.name || "Set Name";
-                    document.getElementById('display-bio').innerText = d.bio || "No bio";
+                    document.getElementById('display-bio').innerText = d.bio || "";
                     document.getElementById('followers').innerText = d.followers || "0";
                     document.getElementById('following').innerText = d.following || "0";
                     document.getElementById('posts').innerText = d.posts || "0";
@@ -136,11 +184,13 @@
             if(nName || nBio || nUser) {
                 await db.collection("users").doc(userId).set({
                     name: nName, bio: nBio, username: nUser,
-                    followers: "150", following: "200", posts: "3"
+                    followers: "0", following: "0", posts: "3"
                 }, {merge: true});
+                // एडिट होने के बाद मेनू बंद कर दें
+                document.getElementById('menuOverlay').classList.remove('active');
+                document.getElementById('menuBg').style.display = 'none';
             }
         }
-
         window.onload = loadData;
     </script>
 </body>
