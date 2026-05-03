@@ -2,95 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Max Ful | Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; }
+        body { background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; }
         
         /* Header */
         .header {
             display: flex; align-items: center; padding: 15px;
-            border-bottom: 1px solid #222; position: sticky; top: 0; background: #000; z-index: 100;
+            border-bottom: 0.1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100;
         }
-        .back-btn { text-decoration: none; color: #fff; font-size: 24px; margin-right: 20px; }
+        .back-btn { text-decoration: none; color: #fff; font-size: 22px; margin-right: 25px; }
         
         /* Search Box */
         .search-container { padding: 10px 15px; }
+        .search-wrapper {
+            background: #262626; border-radius: 10px; display: flex; align-items: center; padding: 10px 15px; gap: 10px;
+        }
+        .search-wrapper i { color: #8e8e8e; font-size: 14px; }
         .search-bar {
-            width: 90%; background: #262626; border: none; padding: 10px 15px;
-            border-radius: 10px; color: #fff; font-size: 14px; outline: none;
+            width: 100%; background: transparent; border: none; color: #fff; font-size: 15px; outline: none;
         }
 
-        .section-title { padding: 25px 15px 10px; font-size: 12px; color: #8e8e8e; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .section-title { 
+            padding: 25px 15px 10px; font-size: 12px; color: #8e8e8e; 
+            font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; 
+        }
 
         /* Menu Items */
         .menu-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 15px; border-bottom: 0.5px solid #1a1a1a;
-            text-decoration: none; color: #fff; transition: background 0.3s;
+            padding: 14px 15px; text-decoration: none; color: #fff; transition: 0.2s;
         }
-        .menu-item:active { background: #1a1a1a; } /* Click effect */
+        .menu-item:active { background: #1a1a1a; }
 
         .item-content { display: flex; align-items: center; gap: 15px; }
-        .icon { font-size: 20px; width: 25px; text-align: center; color: #FFD700; } /* Gold Icons */
-        .arrow { color: #555; font-size: 18px; font-weight: lighter; }
-
-        .logout-text { color: #ff4d4d; font-weight: bold; }
         
-        .version { text-align: center; color: #444; font-size: 12px; padding: 40px 0; }
+        /* असली आइकॉन स्टाइल */
+        .icon-box { 
+            width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+        }
+        .icon-user { color: #0095f6; } /* Blue */
+        .icon-privacy { color: #FFD700; } /* Gold */
+        .icon-blocked { color: #ff4d4d; } /* Red */
+        .icon-notify { color: #FFD700; }
+        .icon-moon { color: #fff; }
+        .icon-help { color: #a8a8a8; }
+        .icon-info { color: #0095f6; }
+        .icon-logout { color: #ff4d4d; }
+
+        .arrow { color: #363636; font-size: 16px; }
+        .logout-text { color: #ff4d4d; font-weight: 500; }
+        
+        .version { text-align: center; color: #8e8e8e; font-size: 12px; padding: 40px 0; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <a href="profile.html" class="back-btn">←</a>
-        <span style="font-size: 18px; font-weight: bold;">Settings</span>
+        <a href="profile.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <span style="font-size: 20px; font-weight: bold;">Settings</span>
     </div>
 
     <div class="search-container">
-        <input type="text" class="search-bar" placeholder="🔍 Search settings...">
+        <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" class="search-bar" placeholder="Search settings...">
+        </div>
     </div>
 
     <div class="section-title">Your Account</div>
     <a href="edit-profile.html" class="menu-item">
-        <div class="item-content"><span class="icon">👤</span><span>Edit Profile</span></div>
-        <span class="arrow">›</span>
+        <div class="item-content">
+            <div class="icon-box icon-user"><i class="fas fa-user-circle"></i></div>
+            <span>Edit Profile</span>
+        </div>
+        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
     </a>
 
     <div class="section-title">Privacy & Safety</div>
     <a href="privacy.html" class="menu-item">
-        <div class="item-content"><span class="icon">🔒</span><span>Account Privacy</span></div>
-        <span class="arrow">›</span>
+        <div class="item-content">
+            <div class="icon-box icon-privacy"><i class="fas fa-lock"></i></div>
+            <span>Account Privacy</span>
+        </div>
+        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
     </a>
     <a href="blocked.html" class="menu-item">
-        <div class="item-content"><span class="icon">🚫</span><span>Blocked Accounts</span></div>
-        <span class="arrow">›</span>
+        <div class="item-content">
+            <div class="icon-box icon-blocked"><i class="fas fa-user-slash"></i></div>
+            <span>Blocked Accounts</span>
+        </div>
+        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
     </a>
 
     <div class="section-title">Preferences</div>
     <a href="#" class="menu-item">
-        <div class="item-content"><span class="icon">🔔</span><span>Notifications</span></div>
-        <span class="arrow">›</span>
+        <div class="item-content">
+            <div class="icon-box icon-notify"><i class="fas fa-bell"></i></div>
+            <span>Notifications</span>
+        </div>
+        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
     </a>
     <a href="#" class="menu-item">
-        <div class="item-content"><span class="icon">🌙</span><span>Appearance</span></div>
-        <span class="arrow">›</span>
+        <div class="item-content">
+            <div class="icon-box icon-moon"><i class="fas fa-moon"></i></div>
+            <span>Appearance</span>
+        </div>
+        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
     </a>
 
     <div class="section-title">Support & About</div>
     <a href="#" class="menu-item">
-        <div class="item-content"><span class="icon">🎧</span><span>Help Center</span></div>
-        <span class="arrow">›</span>
+        <div class="item-content">
+            <div class="icon-box icon-help"><i class="fas fa-headset"></i></div>
+            <span>Help Center</span>
+        </div>
+        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
     </a>
     <a href="#" class="menu-item">
-        <div class="item-content"><span class="icon">ℹ️</span><span>About Max Ful</span></div>
-        <span class="arrow">›</span>
+        <div class="item-content">
+            <div class="icon-box icon-info"><i class="fas fa-info-circle"></i></div>
+            <span>About Max Ful</span>
+        </div>
+        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
     </a>
 
-    <div style="margin-top: 20px;">
+    <div style="margin-top: 10px; border-top: 0.1px solid #262626;">
         <a href="index.html" class="menu-item">
             <div class="item-content">
-                <span class="icon">🚪</span>
+                <div class="icon-box icon-logout"><i class="fas fa-door-open"></i></div>
                 <span class="logout-text">Log Out</span>
             </div>
         </a>
