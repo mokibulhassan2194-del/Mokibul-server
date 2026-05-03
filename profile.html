@@ -14,61 +14,27 @@
         }
         body { padding-bottom: 70px; } 
         * { box-sizing: border-box; }
-
-        /* Header */
-        .header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 10px 15px; position: sticky; top: 0; background: #000; 
-            z-index: 1000; border-bottom: 0.1px solid #262626;
-        }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; border-bottom: 0.1px solid #262626; }
         .username-area { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         .header-icons { display: flex; gap: 20px; font-size: 20px; align-items: center; }
         .header-icons a { color: #fff; text-decoration: none; }
-
-        /* Profile Details */
         .profile-container { padding: 15px; width: 100%; }
         .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 15px; }
         .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #262626; padding: 3px; flex-shrink: 0; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
         .stat-link { text-decoration: none; color: inherit; }
         .stat-val { font-weight: bold; font-size: 17px; display: block; }
         .stat-name { font-size: 13px; color: #a8a8a8; }
-
         .bio-data { margin-bottom: 15px; padding: 0 5px; }
         .full-name { font-weight: 600; font-size: 14px; display: block; }
         .bio-text { font-size: 14px; white-space: pre-wrap; margin-top: 2px; }
-
         .btns { display: flex; gap: 8px; margin-bottom: 20px; padding: 0 5px; }
         .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; display: block; }
-
-        /* Highlights */
-        .highlights-container {
-            display: flex; gap: 15px; padding: 0 15px 20px;
-            overflow-x: auto; white-space: nowrap; scrollbar-width: none;
-        }
-        .highlights-container::-webkit-scrollbar { display: none; }
-        .highlight-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .highlight-circle { width: 62px; height: 62px; border-radius: 50%; border: 1px solid #262626; padding: 3px; display: flex; align-items: center; justify-content: center; background: #000; }
-        .highlight-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .highlight-circle.add-new { border: 1px solid #262626; font-size: 22px; color: #fff; }
-        .highlight-name { font-size: 11px; color: #fff; }
-
-        .tabs { display: flex; border-top: 0.1px solid #262626; width: 100%; }
-        .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; cursor: pointer; }
-        .tab.active { color: #fff; border-bottom: 2px solid #fff; }
-
         .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; width: 100%; }
         .grid-item { aspect-ratio: 1/1; background: #121212; overflow: hidden; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
-
-        .bottom-nav { 
-            position: fixed; bottom: 0; width: 100%; height: 55px; 
-            background: #000; border-top: 0.1px solid #262626; 
-            display: flex; justify-content: space-around; 
-            align-items: center; z-index: 1000; 
-        }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
         .nav-item.active { opacity: 1; }
     </style>
@@ -76,127 +42,77 @@
 <body>
 
     <div class="header">
-        <div class="username-area">
-            <span id="headerUsername">mokibul_hassan</span>
-            <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i>
-        </div>
-        <div class="header-icons">
-            <a href="upload.html"><i class="far fa-plus-square"></i></a>
-            <a href="settings.html"><i class="fas fa-bars"></i></a>
-        </div>
+        <div class="username-area"><span id="headerUsername">Loading...</span> <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i></div>
+        <div class="header-icons"><a href="#"><i class="far fa-plus-square"></i></a> <a href="#"><i class="fas fa-bars"></i></a></div>
     </div>
 
     <div class="profile-container">
         <div class="top-row">
-            <div class="profile-pic">
-                <img id="profileImage" src="https://picsum.photos/id/64/200/200">
-            </div>
+            <div class="profile-pic"><img id="profileImage" src="https://via.placeholder.com/150"></div>
             <div class="stats-row">
-                <div class="stat-link">
-                    <span class="stat-val" id="countPosts">3</span><span class="stat-name">Posts</span>
-                </div>
-                <a href="followers.html" class="stat-link">
-                    <span class="stat-val" id="countFollowers">120</span><span class="stat-name">Followers</span>
-                </a>
-                <a href="following.html" class="stat-link">
-                    <span class="stat-val" id="countFollowing">150</span><span class="stat-name">Following</span>
-                </a>
+                <div class="stat-link"><span class="stat-val" id="countPosts">0</span><span class="stat-name">Posts</span></div>
+                <div class="stat-link"><span class="stat-val" id="countFollowers">0</span><span class="stat-name">Followers</span></div>
+                <div class="stat-link"><span class="stat-val" id="countFollowing">0</span><span class="stat-name">Following</span></div>
             </div>
         </div>
-
         <div class="bio-data">
-            <span class="full-name" id="displayFullName">Mokibul Hassan</span>
-            <div class="bio-text" id="displayBio">Android Developer | Max Ful Official App 🚀</div>
+            <span class="full-name" id="displayFullName">Loading Name...</span>
+            <div class="bio-text" id="displayBio">Loading Bio...</div>
         </div>
-
-        <div class="btns">
-            <a href="edit-profile.html" class="btn">Edit Profile</a>
-            <a href="share-profile.html" class="btn">Share profile</a>
-        </div>
-    </div>
-
-    <div class="highlights-container" id="highlightsList">
-        <div class="highlight-item">
-            <div class="highlight-circle add-new"><i class="fas fa-plus"></i></div>
-            <span class="highlight-name">New</span>
-        </div>
-        </div>
-
-    <div class="tabs">
-        <div class="tab active" data-type="posts"><i class="fas fa-table-cells"></i></div>
-        <div class="tab" data-type="reels"><i class="fas fa-film"></i></div> 
-        <div class="tab" data-type="tagged"><i class="far fa-id-badge"></i></div>
+        <div class="btns"><a href="#" class="btn">Edit Profile</a> <a href="#" class="btn">Share profile</a></div>
     </div>
 
     <div class="post-grid" id="profilePostGrid"></div>
 
     <div class="bottom-nav">
-        <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
-        <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
-        <a href="upload.html" class="nav-item"><i class="far fa-square-plus"></i></a> 
-        <a href="reels.html" class="nav-item"><i class="fas fa-clapperboard"></i></a> 
-        <a href="profile.html" class="nav-item active"><i class="fas fa-circle-user"></i></a> 
+        <a href="#" class="nav-item"><i class="fas fa-house"></i></a> 
+        <a href="#" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
+        <a href="#" class="nav-item"><i class="far fa-square-plus"></i></a> 
+        <a href="#" class="nav-item"><i class="fas fa-clapperboard"></i></a> 
+        <a href="#" class="nav-item active"><i class="fas fa-circle-user"></i></a> 
     </div>
 
-    <script>
-        // --- DATABASE HANDLING LOGIC ---
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // 1. पेज लोड होते ही डेटा सिंक करें
-        window.onload = function() {
-            loadProfileData();
-            loadPosts();
+        // तेरी असली Config चाबी
+        const firebaseConfig = {
+            apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
+            authDomain: "max-ful-apps-cce76.firebaseapp.com",
+            projectId: "max-ful-apps-cce76",
+            storageBucket: "max-ful-apps-cce76.firebasestorage.app",
+            messagingSenderId: "1097891042184",
+            appId: "1:1097891042184:web:23c2d391f35a008774603d"
         };
 
-        // 2. प्रोफाइल डेटा लोड करने का फंक्शन
-        function loadProfileData() {
-            // अभी के लिए लोकल डेटा, बाद में यहाँ Firebase Fetch आएगा
-            const userData = {
-                username: "mokibul_hassan",
-                fullName: "Mokibul Hassan",
-                bio: "Android Developer | Max Ful Official App 🚀",
-                posts: 3,
-                followers: "120",
-                following: "150",
-                img: "https://picsum.photos/id/64/200/200"
-            };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-            document.getElementById('headerUsername').innerText = userData.username;
-            document.getElementById('displayFullName').innerText = userData.fullName;
-            document.getElementById('displayBio').innerText = userData.bio;
-            document.getElementById('countPosts').innerText = userData.posts;
-            document.getElementById('countFollowers').innerText = userData.followers;
-            document.getElementById('countFollowing').innerText = userData.following;
-            document.getElementById('profileImage').src = userData.img;
+        // डेटाबेस से डेटा खींचने का फंक्शन
+        async function loadData() {
+            try {
+                // यहाँ तेरी Document ID 'doUhXEeb74tMl1d3FD6F' का इस्तेमाल किया है
+                const docRef = doc(db, "users", "doUhXEeb74tMl1d3FD6F");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('displayFullName').innerText = data.fullName;
+                    document.getElementById('displayBio').innerText = data.bio;
+                    document.getElementById('countFollowers').innerText = data.followers || 0;
+                    document.getElementById('countFollowing').innerText = data.following || 0;
+                    document.getElementById('profileImage').src = data.profilePicUrl;
+                    document.getElementById('headerUsername').innerText = data.fullName.toLowerCase().replace(" ", "_");
+                } else {
+                    console.log("No such document!");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         }
 
-        // 3. पोस्ट लोड करने का फंक्शन (Auto-Grid)
-        function loadPosts() {
-            const grid = document.getElementById('profilePostGrid');
-            const posts = [
-                "https://picsum.photos/300/300?random=1",
-                "https://picsum.photos/300/300?random=2",
-                "https://picsum.photos/300/300?random=3"
-            ];
-
-            grid.innerHTML = ""; // पुराना डेटा साफ करें
-            posts.forEach(url => {
-                const item = document.createElement('div');
-                item.classList.add('grid-item');
-                item.innerHTML = `<img src="${url}" loading="lazy">`;
-                grid.appendChild(item);
-            });
-        }
-
-        // 4. टैब स्विचिंग लॉजिक
-        const tabs = document.querySelectorAll('.tab');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelector('.tab.active').classList.remove('active');
-                tab.classList.add('active');
-                // यहाँ हम DB को बोल सकते हैं कि सिर्फ Reels दिखाओ
-                console.log("Loading " + tab.dataset.type);
-            });
-        });
+        window.onload = loadData;
     </script>
 </body>
 </html>
