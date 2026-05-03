@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* तेरा डिजाइन यहाँ है */
         html, body { 
             background-color: #000; color: #fff; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
@@ -71,7 +72,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // तेरी असली Config
+        // तेरी Config
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
             authDomain: "max-ful-apps-cce76.firebaseapp.com",
@@ -86,23 +87,31 @@
 
         async function loadData() {
             try {
-                // भाई, यहाँ मैंने तेरा वो लंबा रास्ता डाल दिया है जो स्क्रीनशॉट में था
-                const docRef = doc(db, "users", "Y6AnmPq78nUn9v9fM9Xv", "users", "doUhXEeb74tMl1d3FD6F");
+                // यहाँ सबसे सही रास्ता (Path) है
+                const docRef = doc(db, "logins", "Y6ANmmX7TiZuQBDibHDM", "users", "doUhXEeb74tMl1d3FD6F");
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    document.getElementById('displayFullName').innerText = data.fullName;
-                    document.getElementById('displayBio').innerText = data.bio;
+                    // डेटा को HTML में डालना
+                    document.getElementById('displayFullName').innerText = data.fullName || "No Name";
+                    document.getElementById('displayBio').innerText = data.bio || "No Bio";
                     document.getElementById('countFollowers').innerText = data.followers || 0;
                     document.getElementById('countFollowing').innerText = data.following || 0;
-                    document.getElementById('profileImage').src = data.profilePicUrl;
-                    document.getElementById('headerUsername').innerText = data.fullName.toLowerCase().replace(" ", "_");
+                    
+                    if(data.profilePicUrl) {
+                        document.getElementById('profileImage').src = data.profilePicUrl;
+                    }
+                    
+                    if(data.fullName) {
+                        document.getElementById('headerUsername').innerText = data.fullName.toLowerCase().replace(/\s+/g, '_');
+                    }
                 } else {
-                    console.log("No document found!");
+                    document.getElementById('displayFullName').innerText = "Data Not Found";
                 }
             } catch (error) {
                 console.error("Error:", error);
+                document.getElementById('displayFullName').innerText = "Database Error";
             }
         }
 
