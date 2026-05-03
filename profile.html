@@ -16,28 +16,28 @@
         * { box-sizing: border-box; }
 
         /* Header */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; }
-        .username-area { font-size: 22px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
-        .header-icons { display: flex; gap: 22px; font-size: 22px; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; border-bottom: 0.1px solid #262626; }
+        .username-area { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .header-icons { display: flex; gap: 20px; font-size: 20px; }
         .header-icons a { color: #fff; text-decoration: none; }
 
         /* Profile Info */
         .profile-container { padding: 10px 15px; }
-        .top-row { display: flex; align-items: center; gap: 30px; margin-bottom: 12px; }
-        .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 4px; }
+        .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 12px; }
+        .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; background: #121212; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
         .stat-link { text-decoration: none; color: inherit; }
         .stat-val { font-weight: bold; font-size: 18px; display: block; }
-        .stat-name { font-size: 13px; }
+        .stat-name { font-size: 13px; color: #a8a8a8; }
 
         /* Bio */
         .bio-data { padding: 0 5px; margin-bottom: 15px; }
-        .full-name { font-weight: 600; font-size: 14px; }
-        .bio-text { font-size: 14px; margin-top: 2px; line-height: 1.4; }
+        .full-name { font-weight: 600; font-size: 14px; display: block; }
+        .bio-text { font-size: 14px; margin-top: 2px; line-height: 1.4; color: #efefef; }
 
         /* Highlights */
-        .highlights { display: flex; gap: 18px; overflow-x: auto; padding: 5px 0 15px; scrollbar-width: none; }
+        .highlights { display: flex; gap: 15px; overflow-x: auto; padding: 5px 0 15px; scrollbar-width: none; }
         .highlights::-webkit-scrollbar { display: none; }
         .h-item { display: flex; flex-direction: column; align-items: center; min-width: 64px; gap: 5px; }
         .h-circle { width: 64px; height: 64px; border-radius: 50%; border: 1px solid #262626; padding: 3px; background: #121212; }
@@ -45,19 +45,18 @@
         .h-item span { font-size: 12px; color: #efefef; }
 
         /* Buttons */
-        .btns { display: flex; gap: 6px; margin-bottom: 20px; }
-        .btn { flex: 1; background: #1a1a1a; border-radius: 8px; padding: 8px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; }
+        .btns { display: flex; gap: 8px; margin-bottom: 20px; }
+        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; }
 
-        /* Real Post Grid Section */
-        .post-tabs { display: flex; border-top: 1px solid #262626; margin-top: 10px; }
-        .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; border-bottom: 1px solid transparent; }
+        /* Tabs & Grid */
+        .post-tabs { display: flex; border-top: 1px solid #262626; }
+        .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; }
         .tab.active { color: #fff; border-bottom: 2px solid #fff; }
-        
         .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
         .grid-item { aspect-ratio: 1 / 1; background: #1a1a1a; overflow: hidden; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Bottom Navigation */
+        /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 50px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-link { color: #fff; font-size: 24px; text-decoration: none; }
     </style>
@@ -65,7 +64,10 @@
 <body>
 
     <div class="header">
-        <div class="username-area"><span id="headerUsername">mokibul_hassan</span> <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i></div>
+        <div class="username-area">
+            <span id="headerUsername">loading...</span> 
+            <svg aria-label="Verified" fill="#0095f6" height="18" viewBox="0 0 40 40" width="18"><path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64l3.094 5.36L0 25.359l5.432 3.137v6.354h6.234l2.972 5.15 5.36-3.137 5.36 3.137 2.972-5.15h6.234v-6.354l5.432-3.137-3.094-5.36 3.094-5.36-5.432-3.137v-6.354h-6.234L25.359 0l-5.361 3.094Z"></path><path d="M16.816 27.253l-8.155-8.154 2.812-2.811 5.343 5.344 11.697-11.697 2.812 2.811-14.509 14.507z" fill="#fff"></path></svg>
+        </div>
         <div class="header-icons">
             <a href="upload.html"><i class="far fa-plus-square"></i></a> 
             <a href="settings.html"><i class="fa-solid fa-bars"></i></a>
@@ -74,17 +76,19 @@
 
     <div class="profile-container">
         <div class="top-row">
-            <div class="profile-pic"><img id="profileImage" src="https://via.placeholder.com/150"></div>
+            <div class="profile-pic">
+                <img id="profileImage" src="https://via.placeholder.com/150" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+            </div>
             <div class="stats-row">
-                <div class="stat-link"><span class="stat-val">0</span><span class="stat-name">Posts</span></div>
-                <a href="followers.html" class="stat-link"><span class="stat-val" id="countFollowers">120</span><span class="stat-name">Followers</span></a>
-                <a href="following.html" class="stat-link"><span class="stat-val" id="countFollowing">150</span><span class="stat-name">Following</span></a>
+                <div class="stat-link"><span class="stat-val" id="countPosts">0</span><span class="stat-name">Posts</span></div>
+                <a href="followers.html" class="stat-link"><span class="stat-val" id="countFollowers">0</span><span class="stat-name">Followers</span></a>
+                <a href="following.html" class="stat-link"><span class="stat-val" id="countFollowing">0</span><span class="stat-name">Following</span></a>
             </div>
         </div>
 
         <div class="bio-data">
-            <span class="full-name" id="displayFullName">Mokibul Hassan</span>
-            <div class="bio-text" id="displayBio">Android Developer</div>
+            <span class="full-name" id="displayFullName">Loading...</span>
+            <div class="bio-text" id="displayBio">Loading...</div>
         </div>
 
         <div class="btns">
@@ -95,7 +99,6 @@
         <div class="highlights">
             <div class="h-item"><div class="h-circle"><img src="https://via.placeholder.com/100"></div><span>New</span></div>
             <div class="h-item"><div class="h-circle"><img src="https://via.placeholder.com/100"></div><span>Memories</span></div>
-            <div class="h-item"><div class="h-circle"><img src="https://via.placeholder.com/100"></div><span>Work</span></div>
         </div>
 
         <div class="post-tabs">
@@ -104,7 +107,7 @@
             <div class="tab"><i class="fa-regular fa-user"></i></div>
         </div>
 
-        <div class="posts-grid">
+        <div class="posts-grid" id="postsGrid">
             <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
             <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
             <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
@@ -120,7 +123,45 @@
     </div>
 
     <script type="module">
-        // तेरा पिछला Firebase loadData() फंक्शन यहाँ डाल दे...
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
+            authDomain: "max-ful-apps-cce76.firebaseapp.com",
+            projectId: "max-ful-apps-cce76",
+            storageBucket: "max-ful-apps-cce76.firebasestorage.app",
+            messagingSenderId: "1097891042184",
+            appId: "1:1097891042184:web:23c2d391f35a008774603d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadData() {
+            try {
+                // तेरा पक्का डेटाबेस पाथ
+                const docRef = doc(db, "logins", "Y6ANmmX7TiZuQBDibHDM", "users", "doUhXEeb74tMl1d3FD6F");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('displayFullName').innerText = data.fullName || "Mokibul Hassan";
+                    document.getElementById('displayBio').innerText = data.bio || "No Bio";
+                    document.getElementById('countFollowers').innerText = data.followers || 0;
+                    document.getElementById('countFollowing').innerText = data.following || 0;
+                    document.getElementById('headerUsername').innerText = (data.fullName || "user").toLowerCase().replace(/\s+/g, '_');
+                    
+                    // फोटो लोड करने का पक्का तरीका
+                    if(data.profilePicUrl) {
+                        document.getElementById('profileImage').src = data.profilePicUrl;
+                    }
+                }
+            } catch (error) { 
+                console.error("Firebase Error:", error); 
+            }
+        }
+        window.onload = loadData;
     </script>
 </body>
 </html>
