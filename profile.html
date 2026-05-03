@@ -14,27 +14,41 @@
         }
         body { padding-bottom: 70px; } 
         * { box-sizing: border-box; }
+
+        /* Header Styling */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; border-bottom: 0.1px solid #262626; }
         .username-area { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         .header-icons { display: flex; gap: 20px; font-size: 20px; align-items: center; }
         .header-icons a { color: #fff; text-decoration: none; }
+
+        /* Profile Top Styling */
         .profile-container { padding: 15px; width: 100%; }
         .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 15px; }
         .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #262626; padding: 3px; flex-shrink: 0; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
-        
-        /* असली बटन की स्टाइल */
         .stat-link { text-decoration: none; color: inherit; cursor: pointer; display: block; }
         .stat-val { font-weight: bold; font-size: 17px; display: block; }
         .stat-name { font-size: 13px; color: #a8a8a8; }
 
+        /* Bio Styling */
         .bio-data { margin-bottom: 15px; padding: 0 5px; }
         .full-name { font-weight: 600; font-size: 14px; display: block; }
         .bio-text { font-size: 14px; white-space: pre-wrap; margin-top: 2px; }
+
+        /* Highlights Styling */
+        .highlights-container { display: flex; gap: 15px; padding: 10px 5px; overflow-x: auto; scrollbar-width: none; margin-bottom: 15px; }
+        .highlights-container::-webkit-scrollbar { display: none; }
+        .highlight-item { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 65px; }
+        .highlight-circle { width: 64px; height: 64px; border-radius: 50%; border: 1px solid #262626; padding: 3px; background: #000; }
+        .highlight-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .highlight-item span { font-size: 12px; color: #fff; max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* Buttons Styling */
         .btns { display: flex; gap: 8px; margin-bottom: 20px; padding: 0 5px; }
         .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; display: block; }
         
+        /* Bottom Nav Styling */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
         .nav-item.active { opacity: 1; }
@@ -66,10 +80,27 @@
                 </a>
             </div>
         </div>
+
         <div class="bio-data">
             <span class="full-name" id="displayFullName">Loading...</span>
             <div class="bio-text" id="displayBio">Loading...</div>
         </div>
+
+        <div class="highlights-container">
+            <div class="highlight-item">
+                <div class="highlight-circle"><img src="https://via.placeholder.com/150" alt="New"></div>
+                <span>New</span>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-circle"><img src="https://via.placeholder.com/150"></div>
+                <span>Memories</span>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-circle"><img src="https://via.placeholder.com/150"></div>
+                <span>Work</span>
+            </div>
+        </div>
+
         <div class="btns">
             <a href="edit-profile.html" class="btn">Edit Profile</a> 
             <a href="share-profile.html" class="btn">Share profile</a>
@@ -88,6 +119,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // तेरा Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
             authDomain: "max-ful-apps-cce76.firebaseapp.com",
@@ -102,7 +134,7 @@
 
         async function loadData() {
             try {
-                // तेरा डेटाबेस पाथ
+                // तेरा पक्का डेटाबेस पाथ
                 const docRef = doc(db, "logins", "Y6ANmmX7TiZuQBDibHDM", "users", "doUhXEeb74tMl1d3FD6F");
                 const docSnap = await getDoc(docRef);
 
@@ -115,7 +147,7 @@
                     if(data.profilePicUrl) document.getElementById('profileImage').src = data.profilePicUrl;
                     document.getElementById('headerUsername').innerText = (data.fullName || "user").toLowerCase().replace(/\s+/g, '_');
                 }
-            } catch (error) { console.error(error); }
+            } catch (error) { console.error("Data Load Error:", error); }
         }
         window.onload = loadData;
     </script>
