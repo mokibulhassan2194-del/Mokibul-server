@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* तेरा डिजाइन यहाँ है */
         html, body { 
             background-color: #000; color: #fff; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
@@ -21,27 +20,31 @@
         .header-icons a { color: #fff; text-decoration: none; }
         .profile-container { padding: 15px; width: 100%; }
         .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 15px; }
-        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #262626; padding: 3px; flex-shrink: 0; }
+        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #262626; padding: 3px; flex-shrink: 0; overflow: hidden; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
-        .stat-link { text-decoration: none; color: inherit; }
+        .stat-link { text-decoration: none; color: inherit; cursor: pointer; }
         .stat-val { font-weight: bold; font-size: 17px; display: block; }
         .stat-name { font-size: 13px; color: #a8a8a8; }
         .bio-data { margin-bottom: 15px; padding: 0 5px; }
         .full-name { font-weight: 600; font-size: 14px; display: block; }
-        .bio-text { font-size: 14px; white-space: pre-wrap; margin-top: 2px; }
+        .bio-text { font-size: 14px; white-wrap: pre-wrap; margin-top: 2px; }
         .btns { display: flex; gap: 8px; margin-bottom: 20px; padding: 0 5px; }
-        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; display: block; }
+        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; display: block; cursor: pointer; transition: 0.2s; }
+        .btn:active { background: #333; }
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
+        .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; cursor: pointer; }
         .nav-item.active { opacity: 1; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="username-area"><span id="headerUsername">Loading...</span> <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i></div>
-        <div class="header-icons"><a href="#"><i class="far fa-plus-square"></i></a> <a href="#"><i class="fas fa-bars"></i></a></div>
+        <div class="username-area"><span id="headerUsername">loading...</span> <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i></div>
+        <div class="header-icons">
+            <a href="javascript:location.reload()"><i class="fas fa-sync-alt" style="font-size: 18px;"></i></a>
+            <a href="#"><i class="fas fa-bars"></i></a>
+        </div>
     </div>
 
     <div class="profile-container">
@@ -49,30 +52,32 @@
             <div class="profile-pic"><img id="profileImage" src="https://via.placeholder.com/150"></div>
             <div class="stats-row">
                 <div class="stat-link"><span class="stat-val" id="countPosts">0</span><span class="stat-name">Posts</span></div>
-                <div class="stat-link"><span class="stat-val" id="countFollowers">0</span><span class="stat-name">Followers</span></div>
-                <div class="stat-link"><span class="stat-val" id="countFollowing">0</span><span class="stat-name">Following</span></div>
+                <div class="stat-link" onclick="alert('Followers list locked')"><span class="stat-val" id="countFollowers">0</span><span class="stat-name">Followers</span></div>
+                <div class="stat-link" onclick="alert('Following list locked')"><span class="stat-val" id="countFollowing">0</span><span class="stat-name">Following</span></div>
             </div>
         </div>
         <div class="bio-data">
             <span class="full-name" id="displayFullName">Loading Name...</span>
             <div class="bio-text" id="displayBio">Loading Bio...</div>
         </div>
-        <div class="btns"><a href="#" class="btn">Edit Profile</a> <a href="#" class="btn">Share profile</a></div>
+        <div class="btns">
+            <button class="btn" id="editProfileBtn">Edit Profile</button> 
+            <button class="btn" id="shareProfileBtn">Share profile</button>
+        </div>
     </div>
 
     <div class="bottom-nav">
-        <a href="#" class="nav-item"><i class="fas fa-house"></i></a> 
-        <a href="#" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
+        <a href="index.html" class="nav-item"><i class="fas fa-house"></i></a> 
+        <a href="#" class="nav-item" onclick="alert('Search coming soon!')"><i class="fas fa-magnifying-glass"></i></a> 
         <a href="#" class="nav-item"><i class="far fa-square-plus"></i></a> 
         <a href="#" class="nav-item"><i class="fas fa-clapperboard"></i></a> 
-        <a href="#" class="nav-item active"><i class="fas fa-circle-user"></i></a> 
+        <a href="profile.html" class="nav-item active"><i class="fas fa-circle-user"></i></a> 
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // तेरी Config
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
             authDomain: "max-ful-apps-cce76.firebaseapp.com",
@@ -84,36 +89,55 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const userDocPath = doc(db, "logins", "Y6ANmmX7TiZuQBDibHDM", "users", "doUhXEeb74tMl1d3FD6F");
 
+        // डेटा लोड करने का फंक्शन
         async function loadData() {
             try {
-                // यहाँ सबसे सही रास्ता (Path) है
-                const docRef = doc(db, "logins", "Y6ANmmX7TiZuQBDibHDM", "users", "doUhXEeb74tMl1d3FD6F");
-                const docSnap = await getDoc(docRef);
-
+                const docSnap = await getDoc(userDocPath);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    // डेटा को HTML में डालना
-                    document.getElementById('displayFullName').innerText = data.fullName || "No Name";
-                    document.getElementById('displayBio').innerText = data.bio || "No Bio";
-                    document.getElementById('countFollowers').innerText = data.followers || 0;
-                    document.getElementById('countFollowing').innerText = data.following || 0;
-                    
-                    if(data.profilePicUrl) {
-                        document.getElementById('profileImage').src = data.profilePicUrl;
-                    }
-                    
-                    if(data.fullName) {
-                        document.getElementById('headerUsername').innerText = data.fullName.toLowerCase().replace(/\s+/g, '_');
-                    }
-                } else {
-                    document.getElementById('displayFullName').innerText = "Data Not Found";
+                    document.getElementById('displayFullName').innerText = data.fullName || "Mokibul Hassan";
+                    document.getElementById('displayBio').innerText = data.bio || "Android Developer";
+                    document.getElementById('countFollowers').innerText = data.followers || 120;
+                    document.getElementById('countFollowing').innerText = data.following || 150;
+                    document.getElementById('profileImage').src = data.profilePicUrl || "https://via.placeholder.com/150";
+                    document.getElementById('headerUsername').innerText = (data.fullName || "user").toLowerCase().replace(/\s+/g, '_');
                 }
-            } catch (error) {
-                console.error("Error:", error);
-                document.getElementById('displayFullName').innerText = "Database Error";
-            }
+            } catch (e) { console.error("Load Error:", e); }
         }
+
+        // SHARE BUTTON FUNCTION
+        document.getElementById('shareProfileBtn').onclick = async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Max Ful Profile',
+                        text: 'Check out my Max Ful profile!',
+                        url: window.location.href
+                    });
+                } catch (err) { console.log("Share failed"); }
+            } else {
+                alert("Link Copied: " + window.location.href);
+            }
+        };
+
+        // EDIT PROFILE FUNCTION (डेटाबेस अपडेट करेगा)
+        document.getElementById('editProfileBtn').onclick = async () => {
+            const newName = prompt("Enter New Name:", document.getElementById('displayFullName').innerText);
+            const newBio = prompt("Enter New Bio:", document.getElementById('displayBio').innerText);
+            
+            if (newName && newBio) {
+                try {
+                    await updateDoc(userDocPath, {
+                        fullName: newName,
+                        bio: newBio
+                    });
+                    alert("Profile Updated!");
+                    loadData(); // डेटा दोबारा लोड करें
+                } catch (e) { alert("Update Failed!"); }
+            }
+        };
 
         window.onload = loadData;
     </script>
