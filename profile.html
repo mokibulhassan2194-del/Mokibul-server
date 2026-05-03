@@ -43,7 +43,7 @@
         .btns { display: flex; gap: 8px; margin-bottom: 20px; padding: 0 5px; }
         .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; display: block; }
 
-        /* Highlights Section */
+        /* Highlights */
         .highlights-container {
             display: flex; gap: 15px; padding: 0 15px 20px;
             overflow-x: auto; white-space: nowrap; scrollbar-width: none;
@@ -60,7 +60,7 @@
         .tab.active { color: #fff; border-bottom: 2px solid #fff; }
 
         .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; width: 100%; }
-        .grid-item { aspect-ratio: 1/1; background: #121212; }
+        .grid-item { aspect-ratio: 1/1; background: #121212; overflow: hidden; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
         .bottom-nav { 
@@ -77,7 +77,7 @@
 
     <div class="header">
         <div class="username-area">
-            <span>mokibul_hassan</span>
+            <span id="headerUsername">mokibul_hassan</span>
             <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i>
         </div>
         <div class="header-icons">
@@ -89,24 +89,24 @@
     <div class="profile-container">
         <div class="top-row">
             <div class="profile-pic">
-                <img src="https://picsum.photos/id/64/200/200">
+                <img id="profileImage" src="https://picsum.photos/id/64/200/200">
             </div>
             <div class="stats-row">
                 <div class="stat-link">
-                    <span class="stat-val">3</span><span class="stat-name">Posts</span>
+                    <span class="stat-val" id="countPosts">3</span><span class="stat-name">Posts</span>
                 </div>
                 <a href="followers.html" class="stat-link">
-                    <span class="stat-val">120</span><span class="stat-name">Followers</span>
+                    <span class="stat-val" id="countFollowers">120</span><span class="stat-name">Followers</span>
                 </a>
                 <a href="following.html" class="stat-link">
-                    <span class="stat-val">150</span><span class="stat-name">Following</span>
+                    <span class="stat-val" id="countFollowing">150</span><span class="stat-name">Following</span>
                 </a>
             </div>
         </div>
 
         <div class="bio-data">
-            <span class="full-name">Mokibul Hassan</span>
-            <div class="bio-text">Android Developer | Max Ful Official App 🚀</div>
+            <span class="full-name" id="displayFullName">Mokibul Hassan</span>
+            <div class="bio-text" id="displayBio">Android Developer | Max Ful Official App 🚀</div>
         </div>
 
         <div class="btns">
@@ -115,30 +115,20 @@
         </div>
     </div>
 
-    <div class="highlights-container">
+    <div class="highlights-container" id="highlightsList">
         <div class="highlight-item">
             <div class="highlight-circle add-new"><i class="fas fa-plus"></i></div>
             <span class="highlight-name">New</span>
         </div>
-        <div class="highlight-item">
-            <div class="highlight-circle">
-                <img src="https://picsum.photos/100/100?random=10">
-            </div>
-            <span class="highlight-name">Moments</span>
         </div>
-    </div>
 
     <div class="tabs">
-        <div class="tab active"><i class="fas fa-table-cells"></i></div>
-        <div class="tab"><i class="fas fa-film"></i></div> 
-        <div class="tab"><i class="far fa-id-badge"></i></div>
+        <div class="tab active" data-type="posts"><i class="fas fa-table-cells"></i></div>
+        <div class="tab" data-type="reels"><i class="fas fa-film"></i></div> 
+        <div class="tab" data-type="tagged"><i class="far fa-id-badge"></i></div>
     </div>
 
-    <div class="post-grid">
-        <div class="grid-item"><img src="https://picsum.photos/300/300?random=1"></div>
-        <div class="grid-item"><img src="https://picsum.photos/300/300?random=2"></div>
-        <div class="grid-item"><img src="https://picsum.photos/300/300?random=3"></div>
-    </div>
+    <div class="post-grid" id="profilePostGrid"></div>
 
     <div class="bottom-nav">
         <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
@@ -148,5 +138,65 @@
         <a href="profile.html" class="nav-item active"><i class="fas fa-circle-user"></i></a> 
     </div>
 
+    <script>
+        // --- DATABASE HANDLING LOGIC ---
+
+        // 1. पेज लोड होते ही डेटा सिंक करें
+        window.onload = function() {
+            loadProfileData();
+            loadPosts();
+        };
+
+        // 2. प्रोफाइल डेटा लोड करने का फंक्शन
+        function loadProfileData() {
+            // अभी के लिए लोकल डेटा, बाद में यहाँ Firebase Fetch आएगा
+            const userData = {
+                username: "mokibul_hassan",
+                fullName: "Mokibul Hassan",
+                bio: "Android Developer | Max Ful Official App 🚀",
+                posts: 3,
+                followers: "120",
+                following: "150",
+                img: "https://picsum.photos/id/64/200/200"
+            };
+
+            document.getElementById('headerUsername').innerText = userData.username;
+            document.getElementById('displayFullName').innerText = userData.fullName;
+            document.getElementById('displayBio').innerText = userData.bio;
+            document.getElementById('countPosts').innerText = userData.posts;
+            document.getElementById('countFollowers').innerText = userData.followers;
+            document.getElementById('countFollowing').innerText = userData.following;
+            document.getElementById('profileImage').src = userData.img;
+        }
+
+        // 3. पोस्ट लोड करने का फंक्शन (Auto-Grid)
+        function loadPosts() {
+            const grid = document.getElementById('profilePostGrid');
+            const posts = [
+                "https://picsum.photos/300/300?random=1",
+                "https://picsum.photos/300/300?random=2",
+                "https://picsum.photos/300/300?random=3"
+            ];
+
+            grid.innerHTML = ""; // पुराना डेटा साफ करें
+            posts.forEach(url => {
+                const item = document.createElement('div');
+                item.classList.add('grid-item');
+                item.innerHTML = `<img src="${url}" loading="lazy">`;
+                grid.appendChild(item);
+            });
+        }
+
+        // 4. टैब स्विचिंग लॉजिक
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelector('.tab.active').classList.remove('active');
+                tab.classList.add('active');
+                // यहाँ हम DB को बोल सकते हैं कि सिर्फ Reels दिखाओ
+                console.log("Loading " + tab.dataset.type);
+            });
+        });
+    </script>
 </body>
 </html>
