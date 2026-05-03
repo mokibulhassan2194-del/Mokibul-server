@@ -7,42 +7,89 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        body { background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding-bottom: 70px; overflow-x: hidden; }
+        body { 
+            background-color: #000; color: #fff; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            margin: 0; padding-bottom: 70px; overflow-x: hidden; 
+        }
         
-        /* Search Box Styling */
-        .search-box { padding: 15px; position: sticky; top: 0; background: #000; z-index: 100; }
-        .search-input { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #262626; color: #fff; outline: none; box-sizing: border-box; font-size: 16px; transition: 0.3s; }
-        .search-input:focus { border: 1px solid #FFD700; }
+        /* Search Box: Instagram जैसा गोल और आइकॉन के साथ */
+        .search-container { 
+            padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 100; 
+        }
+        .search-wrapper {
+            background: #262626; border-radius: 10px; display: flex; align-items: center; padding: 8px 12px; gap: 10px;
+        }
+        .search-wrapper i { color: #8e8e8e; font-size: 14px; }
+        .search-input { 
+            width: 100%; border: none; background: transparent; color: #fff; 
+            outline: none; font-size: 16px; 
+        }
 
-        /* Default Grid */
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; transition: 0.3s; }
-        .grid-item { aspect-ratio: 1/1; background: #1a1a1a; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        /* Explore Grid: रील और फोटो का मिक्सचर */
+        .explore-grid { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            grid-auto-rows: 130px; gap: 2px; padding: 2px; 
+        }
+        .grid-item { position: relative; background: #1a1a1a; overflow: hidden; }
+        .grid-item img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Tall Layout for Reels */
+        .grid-item.tall { grid-row: span 2; }
+        .video-icon { position: absolute; top: 8px; right: 8px; color: #fff; font-size: 14px; text-shadow: 0 0 4px rgba(0,0,0,0.5); }
 
-        /* Search Results List */
-        #search-results { display: none; padding: 10px; }
-        .user-row { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #111; animation: fadeIn 0.3s; cursor: pointer; }
-        .user-pic { width: 45px; height: 45px; border-radius: 50%; background: #333; margin-right: 15px; object-fit: cover; border: 1px solid #FFD700; }
-        .user-name { font-weight: bold; font-size: 15px; color: #fff; }
-        .user-followers { font-size: 12px; color: #888; }
+        /* Search Results: प्रोफेशनल लुक */
+        #search-results { display: none; padding: 5px 15px; }
+        .user-row { 
+            display: flex; align-items: center; padding: 10px 0; 
+            animation: fadeIn 0.2s ease-in; cursor: pointer; 
+        }
+        .user-pic { 
+            width: 50px; height: 50px; border-radius: 50%; 
+            margin-right: 12px; object-fit: cover; border: 0.1px solid #333; 
+        }
+        .user-info { display: flex; flex-direction: column; }
+        .user-name { font-weight: 600; font-size: 14px; }
+        .user-full-name { font-size: 13px; color: #a8a8a8; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* प्रोफेशनल बॉटम नेविगेशन */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { color: #fff; text-decoration: none; font-size: 24px; opacity: 0.7; transition: 0.2s; }
+        /* Bottom Navigation */
+        .bottom-nav { 
+            position: fixed; bottom: 0; width: 100%; height: 55px; 
+            background: #000; border-top: 0.1px solid #262626; 
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
+        }
+        .nav-item { color: #fff; text-decoration: none; font-size: 24px; opacity: 0.7; }
         .nav-item.active { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <div class="search-box">
-        <input type="text" class="search-input" id="mainSearch" placeholder="🔍 Search..." oninput="doSearch()">
+    <div class="search-container">
+        <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" class="search-input" id="mainSearch" placeholder="Search" oninput="doSearch()">
+        </div>
     </div>
 
-    <div class="grid" id="default-grid">
-        <div class="grid-item">🎬</div><div class="grid-item">📸</div><div class="grid-item">🔥</div>
-        <div class="grid-item">🌟</div><div class="grid-item">🎵</div><div class="grid-item">⚽</div>
-        <div class="grid-item">🎨</div><div class="grid-item">🎮</div><div class="grid-item">🍕</div>
+    <div class="explore-grid" id="explore-grid">
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=1"></div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=2"></div>
+        <div class="grid-item tall">
+            <img src="https://picsum.photos/300/600?random=3">
+            <i class="fas fa-play video-icon"></i>
+        </div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=4"></div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=5"></div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=6"></div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=7"></div>
+        <div class="grid-item tall">
+            <img src="https://picsum.photos/300/600?random=8">
+            <i class="fas fa-play video-icon"></i>
+        </div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=9"></div>
+        <div class="grid-item"><img src="https://picsum.photos/300/300?random=10"></div>
     </div>
 
     <div id="search-results"></div>
@@ -57,16 +104,15 @@
 
     <script>
         const allUsers = [
-            { name: "priya.art", followers: 150000, pic: "https://via.placeholder.com/150", link: "profile.html" },
-            { name: "makibul_islam", followers: 55000, pic: "https://via.placeholder.com/150", link: "profile.html" },
-            { name: "ankit_99", followers: 12000, pic: "https://via.placeholder.com/150", link: "profile.html" },
-            { name: "rahul_vlogs", followers: 8500, pic: "https://via.placeholder.com/150", link: "profile.html" },
-            { name: "mr_beast_fan", followers: 200000, pic: "https://via.placeholder.com/150", link: "mrbeast.html" }
+            { id: "mr_beast", name: "MrBeast", full: "Jimmy Donaldson", pic: "https://picsum.photos/150/150?random=50", link: "mrbeast.html" },
+            { id: "mokibul_hassan", name: "mokibul_hassan", full: "Mokibul Hassan", pic: "https://picsum.photos/150/150?random=51", link: "profile.html" },
+            { id: "priya_art", name: "priya.art", full: "Priya Sharma", pic: "https://picsum.photos/150/150?random=52", link: "profile.html" },
+            { id: "cristiano", name: "cristiano", full: "Cristiano Ronaldo", pic: "https://picsum.photos/150/150?random=53", link: "profile.html" }
         ];
 
         function doSearch() {
             let input = document.getElementById('mainSearch').value.toLowerCase();
-            let grid = document.getElementById('default-grid');
+            let grid = document.getElementById('explore-grid');
             let resultsDiv = document.getElementById('search-results');
 
             if (input.length > 0) {
@@ -74,17 +120,15 @@
                 resultsDiv.style.display = 'block';
                 resultsDiv.innerHTML = ""; 
 
-                let filteredUsers = allUsers
-                    .filter(u => u.name.toLowerCase().includes(input))
-                    .sort((a, b) => b.followers - a.followers);
+                let filtered = allUsers.filter(u => u.name.toLowerCase().includes(input) || u.full.toLowerCase().includes(input));
 
-                filteredUsers.forEach(user => {
+                filtered.forEach(user => {
                     resultsDiv.innerHTML += `
                         <div class="user-row" onclick="location.href='${user.link}'">
                             <img src="${user.pic}" class="user-pic">
-                            <div>
-                                <div class="user-name">${user.name}</div>
-                                <div class="user-followers">${(user.followers/1000).toFixed(1)}k followers</div>
+                            <div class="user-info">
+                                <span class="user-name">${user.name}</span>
+                                <span class="user-full-name">${user.full}</span>
                             </div>
                         </div>
                     `;
