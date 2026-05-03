@@ -4,63 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Official</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         html, body { 
             background-color: #000; color: #fff; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            margin: 0; padding: 0; width: 100%; overflow-x: hidden; touch-action: manipulation;
+            margin: 0; padding: 0; width: 100%; overflow-x: hidden;
         }
-        body { padding-bottom: 70px; } 
+        body { padding-bottom: 60px; } 
         * { box-sizing: border-box; }
 
-        /* Header Styling */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; border-bottom: 0.1px solid #262626; }
-        .username-area { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .header-icons { display: flex; gap: 20px; font-size: 20px; align-items: center; }
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; }
+        .username-area { font-size: 22px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+        .header-icons { display: flex; gap: 22px; font-size: 22px; }
         .header-icons a { color: #fff; text-decoration: none; }
 
-        /* Profile Top Styling */
-        .profile-container { padding: 15px; width: 100%; }
-        .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 15px; }
-        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #262626; padding: 3px; flex-shrink: 0; }
+        /* Profile Info */
+        .profile-container { padding: 10px 15px; }
+        .top-row { display: flex; align-items: center; gap: 30px; margin-bottom: 12px; }
+        .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 4px; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
-        .stat-link { text-decoration: none; color: inherit; cursor: pointer; display: block; }
-        .stat-val { font-weight: bold; font-size: 17px; display: block; }
-        .stat-name { font-size: 13px; color: #a8a8a8; }
+        .stat-link { text-decoration: none; color: inherit; }
+        .stat-val { font-weight: bold; font-size: 18px; display: block; }
+        .stat-name { font-size: 13px; }
 
-        /* Bio Styling */
-        .bio-data { margin-bottom: 15px; padding: 0 5px; }
-        .full-name { font-weight: 600; font-size: 14px; display: block; }
-        .bio-text { font-size: 14px; white-space: pre-wrap; margin-top: 2px; }
+        /* Bio */
+        .bio-data { padding: 0 5px; margin-bottom: 15px; }
+        .full-name { font-weight: 600; font-size: 14px; }
+        .bio-text { font-size: 14px; margin-top: 2px; line-height: 1.4; }
 
-        /* Highlights Styling */
-        .highlights-container { display: flex; gap: 15px; padding: 10px 5px; overflow-x: auto; scrollbar-width: none; margin-bottom: 15px; }
-        .highlights-container::-webkit-scrollbar { display: none; }
-        .highlight-item { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 65px; }
-        .highlight-circle { width: 64px; height: 64px; border-radius: 50%; border: 1px solid #262626; padding: 3px; background: #000; }
-        .highlight-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .highlight-item span { font-size: 12px; color: #fff; max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        /* Highlights */
+        .highlights { display: flex; gap: 18px; overflow-x: auto; padding: 5px 0 15px; scrollbar-width: none; }
+        .highlights::-webkit-scrollbar { display: none; }
+        .h-item { display: flex; flex-direction: column; align-items: center; min-width: 64px; gap: 5px; }
+        .h-circle { width: 64px; height: 64px; border-radius: 50%; border: 1px solid #262626; padding: 3px; background: #121212; }
+        .h-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .h-item span { font-size: 12px; color: #efefef; }
 
-        /* Buttons Styling */
-        .btns { display: flex; gap: 8px; margin-bottom: 20px; padding: 0 5px; }
-        .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; display: block; }
+        /* Buttons */
+        .btns { display: flex; gap: 6px; margin-bottom: 20px; }
+        .btn { flex: 1; background: #1a1a1a; border-radius: 8px; padding: 8px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; }
+
+        /* Real Post Grid Section */
+        .post-tabs { display: flex; border-top: 1px solid #262626; margin-top: 10px; }
+        .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; border-bottom: 1px solid transparent; }
+        .tab.active { color: #fff; border-bottom: 2px solid #fff; }
         
-        /* Bottom Nav Styling */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { color: #fff; font-size: 25px; text-decoration: none; opacity: 0.7; }
-        .nav-item.active { opacity: 1; }
+        .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .grid-item { aspect-ratio: 1 / 1; background: #1a1a1a; overflow: hidden; }
+        .grid-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Bottom Navigation */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 50px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+        .nav-link { color: #fff; font-size: 24px; text-decoration: none; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="username-area"><span id="headerUsername">loading...</span> <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i></div>
+        <div class="username-area"><span id="headerUsername">mokibul_hassan</span> <i class="fas fa-certificate" style="color: #0095f6; font-size: 14px;"></i></div>
         <div class="header-icons">
             <a href="upload.html"><i class="far fa-plus-square"></i></a> 
-            <a href="settings.html"><i class="fas fa-bars"></i></a>
+            <a href="settings.html"><i class="fa-solid fa-bars"></i></a>
         </div>
     </div>
 
@@ -68,88 +76,51 @@
         <div class="top-row">
             <div class="profile-pic"><img id="profileImage" src="https://via.placeholder.com/150"></div>
             <div class="stats-row">
-                <div class="stat-link"><span class="stat-val" id="countPosts">0</span><span class="stat-name">Posts</span></div>
-                
-                <a href="followers.html" class="stat-link">
-                    <span class="stat-val" id="countFollowers">0</span>
-                    <span class="stat-name">Followers</span>
-                </a>
-                <a href="following.html" class="stat-link">
-                    <span class="stat-val" id="countFollowing">0</span>
-                    <span class="stat-name">Following</span>
-                </a>
+                <div class="stat-link"><span class="stat-val">0</span><span class="stat-name">Posts</span></div>
+                <a href="followers.html" class="stat-link"><span class="stat-val" id="countFollowers">120</span><span class="stat-name">Followers</span></a>
+                <a href="following.html" class="stat-link"><span class="stat-val" id="countFollowing">150</span><span class="stat-name">Following</span></a>
             </div>
         </div>
 
         <div class="bio-data">
-            <span class="full-name" id="displayFullName">Loading...</span>
-            <div class="bio-text" id="displayBio">Loading...</div>
-        </div>
-
-        <div class="highlights-container">
-            <div class="highlight-item">
-                <div class="highlight-circle"><img src="https://via.placeholder.com/150" alt="New"></div>
-                <span>New</span>
-            </div>
-            <div class="highlight-item">
-                <div class="highlight-circle"><img src="https://via.placeholder.com/150"></div>
-                <span>Memories</span>
-            </div>
-            <div class="highlight-item">
-                <div class="highlight-circle"><img src="https://via.placeholder.com/150"></div>
-                <span>Work</span>
-            </div>
+            <span class="full-name" id="displayFullName">Mokibul Hassan</span>
+            <div class="bio-text" id="displayBio">Android Developer</div>
         </div>
 
         <div class="btns">
             <a href="edit-profile.html" class="btn">Edit Profile</a> 
             <a href="share-profile.html" class="btn">Share profile</a>
         </div>
+
+        <div class="highlights">
+            <div class="h-item"><div class="h-circle"><img src="https://via.placeholder.com/100"></div><span>New</span></div>
+            <div class="h-item"><div class="h-circle"><img src="https://via.placeholder.com/100"></div><span>Memories</span></div>
+            <div class="h-item"><div class="h-circle"><img src="https://via.placeholder.com/100"></div><span>Work</span></div>
+        </div>
+
+        <div class="post-tabs">
+            <div class="tab active"><i class="fa-solid fa-table-cells"></i></div>
+            <div class="tab"><i class="fa-solid fa-clapperboard"></i></div>
+            <div class="tab"><i class="fa-regular fa-user"></i></div>
+        </div>
+
+        <div class="posts-grid">
+            <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
+            <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
+            <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
+        </div>
     </div>
 
     <div class="bottom-nav">
-        <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
-        <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
-        <a href="upload.html" class="nav-item"><i class="far fa-square-plus"></i></a> 
-        <a href="reels.html" class="nav-item"><i class="fas fa-clapperboard"></i></a> 
-        <a href="profile.html" class="nav-item active"><i class="fas fa-circle-user"></i></a> 
+        <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i></a> 
+        <a href="search.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i></a> 
+        <a href="upload.html" class="nav-link"><i class="fa-regular fa-square-plus"></i></a> 
+        <a href="reels.html" class="nav-link"><i class="fa-solid fa-clapperboard"></i></a> 
+        <a href="profile.html" class="nav-link"><i class="fa-solid fa-circle-user"></i></a> 
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        // तेरा Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
-            authDomain: "max-ful-apps-cce76.firebaseapp.com",
-            projectId: "max-ful-apps-cce76",
-            storageBucket: "max-ful-apps-cce76.firebasestorage.app",
-            messagingSenderId: "1097891042184",
-            appId: "1:1097891042184:web:23c2d391f35a008774603d"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        async function loadData() {
-            try {
-                // तेरा पक्का डेटाबेस पाथ
-                const docRef = doc(db, "logins", "Y6ANmmX7TiZuQBDibHDM", "users", "doUhXEeb74tMl1d3FD6F");
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('displayFullName').innerText = data.fullName || "Mokibul Hassan";
-                    document.getElementById('displayBio').innerText = data.bio || "No Bio";
-                    document.getElementById('countFollowers').innerText = data.followers || 0;
-                    document.getElementById('countFollowing').innerText = data.following || 0;
-                    if(data.profilePicUrl) document.getElementById('profileImage').src = data.profilePicUrl;
-                    document.getElementById('headerUsername').innerText = (data.fullName || "user").toLowerCase().replace(/\s+/g, '_');
-                }
-            } catch (error) { console.error("Data Load Error:", error); }
-        }
-        window.onload = loadData;
+        // तेरा पिछला Firebase loadData() फंक्शन यहाँ डाल दे...
     </script>
 </body>
 </html>
