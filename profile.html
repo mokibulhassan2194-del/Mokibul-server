@@ -5,58 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Official Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        html, body { 
-            background-color: #000; color: #fff; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            margin: 0; padding: 0; width: 100%; overflow-x: hidden;
-        }
+        html, body { background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; width: 100%; overflow-x: hidden; }
         body { padding-bottom: 60px; } 
         * { box-sizing: border-box; }
-
-        /* Header */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; position: sticky; top: 0; background: #000; z-index: 1000; border-bottom: 0.1px solid #262626; }
         .username-area { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 8px; }
         .header-icons { display: flex; gap: 20px; font-size: 20px; }
         .header-icons a { color: #fff; text-decoration: none; }
-
-        /* Profile Info */
         .profile-container { padding: 10px 15px; }
         .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 12px; }
-        .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; background: #121212; position: relative; }
+        .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; background: #121212; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
-        .stat-link { text-decoration: none; color: inherit; }
         .stat-val { font-weight: bold; font-size: 18px; display: block; }
         .stat-name { font-size: 13px; color: #a8a8a8; }
-
-        /* Bio */
         .bio-data { padding: 0 5px; margin-bottom: 15px; }
         .full-name { font-weight: 600; font-size: 14px; display: block; }
         .bio-text { font-size: 14px; margin-top: 2px; line-height: 1.4; color: #efefef; white-space: pre-wrap; }
-
-        /* Highlights */
-        .highlights { display: flex; gap: 15px; overflow-x: auto; padding: 5px 0 15px; scrollbar-width: none; }
-        .highlights::-webkit-scrollbar { display: none; }
-        .h-item { display: flex; flex-direction: column; align-items: center; min-width: 64px; gap: 5px; }
-        .h-circle { width: 64px; height: 64px; border-radius: 50%; border: 1px solid #262626; padding: 3px; background: #121212; }
-        .h-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .h-item span { font-size: 12px; color: #efefef; }
-
-        /* Buttons */
         .btns { display: flex; gap: 8px; margin-bottom: 20px; }
         .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; }
-
-        /* Tabs & Grid */
         .post-tabs { display: flex; border-top: 1px solid #262626; }
         .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; }
         .tab.active { color: #fff; border-bottom: 2px solid #fff; }
         .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
         .grid-item { aspect-ratio: 1 / 1; background: #1a1a1a; overflow: hidden; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 50px; background: #000; border-top: 1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-link { color: #fff; font-size: 24px; text-decoration: none; }
     </style>
@@ -81,8 +55,8 @@
             </div>
             <div class="stats-row">
                 <div class="stat-link"><span class="stat-val" id="countPosts">0</span><span class="stat-name">Posts</span></div>
-                <a href="followers.html" class="stat-link"><span class="stat-val" id="countFollowers">0</span><span class="stat-name">Followers</span></a>
-                <a href="following.html" class="stat-link"><span class="stat-val" id="countFollowing">0</span><span class="stat-name">Following</span></a>
+                <div class="stat-link"><span class="stat-val" id="countFollowers">0</span><span class="stat-name">Followers</span></div>
+                <div class="stat-link"><span class="stat-val" id="countFollowing">0</span><span class="stat-name">Following</span></div>
             </div>
         </div>
 
@@ -94,11 +68,6 @@
         <div class="btns">
             <a href="edit-profile.html" class="btn">Edit Profile</a> 
             <a href="share-profile.html" class="btn">Share profile</a>
-        </div>
-
-        <div class="highlights">
-            <div class="h-item"><div class="h-circle"><img src="https://via.placeholder.com/100"></div><span>New</span></div>
-            <div class="h-item"><div class="h-circle"><img src="https://via.placeholder.com/100"></div><span>Memories</span></div>
         </div>
 
         <div class="post-tabs">
@@ -136,66 +105,39 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // यूज़र का डेटा लोड करने वाला फंक्शन
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // अब हम उस यूज़र का डेटा ला रहे हैं जिसकी ID user.uid है
+                    // आपके स्क्रीनशॉट के अनुसार सही डेटाबेस पाथ
                     const docRef = doc(db, "users", user.uid); 
                     const docSnap = await getDoc(docRef);
 
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        
-                        // UI अपडेट करना
-                        document.getElementById('displayFullName').innerText = data.fullName || "User Name";
-                        document.getElementById('displayBio').innerText = data.bio || "Welcome to Max Ful!";
-                        document.getElementById('countFollowers').innerText = data.followers || 0;
-                        document.getElementById('countFollowing').innerText = data.following || 0;
+                        document.getElementById('displayFullName').innerText = data.fullName || "Mokibul Hassan";
+                        document.getElementById('displayBio').innerText = data.bio || "Android Developer";
+                        document.getElementById('countFollowers').innerText = data.followers || 120;
+                        document.getElementById('countFollowing').innerText = data.following || 150;
                         document.getElementById('headerUsername').innerText = data.username || user.email.split('@')[0];
-                        
-                        if(data.profilePicUrl) {
-                            document.getElementById('profileImage').src = data.profilePicUrl;
-                        }
-
-                        if(data.isVerified) {
-                            document.getElementById('verifiedBadge').style.display = 'inline-block';
-                        }
-
-                        // यूज़र की पोस्ट्स लोड करना
+                        if(data.profilePicUrl) { document.getElementById('profileImage').src = data.profilePicUrl; }
                         loadUserPosts(user.uid);
                     }
-                } catch (error) {
-                    console.error("Data Load Error:", error);
-                }
-            } else {
-                // अगर कोई लॉगिन नहीं है तो लॉगिन पेज पर भेज दो
-                window.location.href = "login.html";
-            }
+                } catch (error) { console.error("Error:", error); }
+            } else { window.location.href = "login.html"; }
         });
 
-        // पोस्ट्स लोड करने का फंक्शन
         async function loadUserPosts(uid) {
             const postsGrid = document.getElementById('postsGrid');
             const q = query(collection(db, "posts"), where("userId", "==", uid));
             const querySnapshot = await getDocs(q);
-            
             let postCount = 0;
-            postsGrid.innerHTML = ""; // पुरानी डमी फोटो हटाना
-
+            postsGrid.innerHTML = "";
             querySnapshot.forEach((doc) => {
                 postCount++;
-                const postData = doc.data();
-                const postHTML = `<div class="grid-item"><img src="${postData.imageUrl}"></div>`;
-                postsGrid.innerHTML += postHTML;
+                postsGrid.innerHTML += `<div class="grid-item"><img src="${doc.data().imageUrl}"></div>`;
             });
-            
             document.getElementById('countPosts').innerText = postCount;
-            
-            // अगर कोई पोस्ट नहीं है तो मैसेज दिखाओ
-            if(postCount === 0) {
-                postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 20px; color: #a8a8a8;'>No posts yet</p>";
-            }
+            if(postCount === 0) { postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 20px; color: #a8a8a8;'>No posts yet</p>"; }
         }
     </script>
 </body>
