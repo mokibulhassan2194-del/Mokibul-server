@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Official</title>
+    <title>Max Ful | Official Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -24,7 +24,7 @@
         /* Profile Info */
         .profile-container { padding: 10px 15px; }
         .top-row { display: flex; align-items: center; gap: 25px; margin-bottom: 12px; }
-        .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; background: #121212; }
+        .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; background: #121212; position: relative; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
         .stat-link { text-decoration: none; color: inherit; }
@@ -34,7 +34,7 @@
         /* Bio */
         .bio-data { padding: 0 5px; margin-bottom: 15px; }
         .full-name { font-weight: 600; font-size: 14px; display: block; }
-        .bio-text { font-size: 14px; margin-top: 2px; line-height: 1.4; color: #efefef; }
+        .bio-text { font-size: 14px; margin-top: 2px; line-height: 1.4; color: #efefef; white-space: pre-wrap; }
 
         /* Highlights */
         .highlights { display: flex; gap: 15px; overflow-x: auto; padding: 5px 0 15px; scrollbar-width: none; }
@@ -66,7 +66,7 @@
     <div class="header">
         <div class="username-area">
             <span id="headerUsername">loading...</span> 
-            <svg aria-label="Verified" fill="#0095f6" height="18" viewBox="0 0 40 40" width="18"><path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64l3.094 5.36L0 25.359l5.432 3.137v6.354h6.234l2.972 5.15 5.36-3.137 5.36 3.137 2.972-5.15h6.234v-6.354l5.432-3.137-3.094-5.36 3.094-5.36-5.432-3.137v-6.354h-6.234L25.359 0l-5.361 3.094Z"></path><path d="M16.816 27.253l-8.155-8.154 2.812-2.811 5.343 5.344 11.697-11.697 2.812 2.811-14.509 14.507z" fill="#fff"></path></svg>
+            <svg id="verifiedBadge" style="display:none;" aria-label="Verified" fill="#0095f6" height="18" viewBox="0 0 40 40" width="18"><path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64l3.094 5.36L0 25.359l5.432 3.137v6.354h6.234l2.972 5.15 5.36-3.137 5.36 3.137 2.972-5.15h6.234v-6.354l5.432-3.137-3.094-5.36 3.094-5.36-5.432-3.137v-6.354h-6.234L25.359 0l-5.361 3.094Z"></path><path d="M16.816 27.253l-8.155-8.154 2.812-2.811 5.343 5.344 11.697-11.697 2.812 2.811-14.509 14.507z" fill="#fff"></path></svg>
         </div>
         <div class="header-icons">
             <a href="upload.html"><i class="far fa-plus-square"></i></a> 
@@ -77,7 +77,7 @@
     <div class="profile-container">
         <div class="top-row">
             <div class="profile-pic">
-                <img id="profileImage" src="https://via.placeholder.com/150" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                <img id="profileImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
             </div>
             <div class="stats-row">
                 <div class="stat-link"><span class="stat-val" id="countPosts">0</span><span class="stat-name">Posts</span></div>
@@ -88,7 +88,7 @@
 
         <div class="bio-data">
             <span class="full-name" id="displayFullName">Loading...</span>
-            <div class="bio-text" id="displayBio">Loading...</div>
+            <div class="bio-text" id="displayBio">Setting up your profile...</div>
         </div>
 
         <div class="btns">
@@ -107,11 +107,7 @@
             <div class="tab"><i class="fa-regular fa-user"></i></div>
         </div>
 
-        <div class="posts-grid" id="postsGrid">
-            <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
-            <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
-            <div class="grid-item"><img src="https://via.placeholder.com/300"></div>
-        </div>
+        <div class="posts-grid" id="postsGrid"></div>
     </div>
 
     <div class="bottom-nav">
@@ -124,7 +120,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
@@ -137,31 +134,69 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
-        async function loadData() {
-            try {
-                // तेरा पक्का डेटाबेस पाथ
-                const docRef = doc(db, "logins", "Y6ANmmX7TiZuQBDibHDM", "users", "doUhXEeb74tMl1d3FD6F");
-                const docSnap = await getDoc(docRef);
+        // यूज़र का डेटा लोड करने वाला फंक्शन
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // अब हम उस यूज़र का डेटा ला रहे हैं जिसकी ID user.uid है
+                    const docRef = doc(db, "users", user.uid); 
+                    const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('displayFullName').innerText = data.fullName || "Mokibul Hassan";
-                    document.getElementById('displayBio').innerText = data.bio || "No Bio";
-                    document.getElementById('countFollowers').innerText = data.followers || 0;
-                    document.getElementById('countFollowing').innerText = data.following || 0;
-                    document.getElementById('headerUsername').innerText = (data.fullName || "user").toLowerCase().replace(/\s+/g, '_');
-                    
-                    // फोटो लोड करने का पक्का तरीका
-                    if(data.profilePicUrl) {
-                        document.getElementById('profileImage').src = data.profilePicUrl;
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        
+                        // UI अपडेट करना
+                        document.getElementById('displayFullName').innerText = data.fullName || "User Name";
+                        document.getElementById('displayBio').innerText = data.bio || "Welcome to Max Ful!";
+                        document.getElementById('countFollowers').innerText = data.followers || 0;
+                        document.getElementById('countFollowing').innerText = data.following || 0;
+                        document.getElementById('headerUsername').innerText = data.username || user.email.split('@')[0];
+                        
+                        if(data.profilePicUrl) {
+                            document.getElementById('profileImage').src = data.profilePicUrl;
+                        }
+
+                        if(data.isVerified) {
+                            document.getElementById('verifiedBadge').style.display = 'inline-block';
+                        }
+
+                        // यूज़र की पोस्ट्स लोड करना
+                        loadUserPosts(user.uid);
                     }
+                } catch (error) {
+                    console.error("Data Load Error:", error);
                 }
-            } catch (error) { 
-                console.error("Firebase Error:", error); 
+            } else {
+                // अगर कोई लॉगिन नहीं है तो लॉगिन पेज पर भेज दो
+                window.location.href = "login.html";
+            }
+        });
+
+        // पोस्ट्स लोड करने का फंक्शन
+        async function loadUserPosts(uid) {
+            const postsGrid = document.getElementById('postsGrid');
+            const q = query(collection(db, "posts"), where("userId", "==", uid));
+            const querySnapshot = await getDocs(q);
+            
+            let postCount = 0;
+            postsGrid.innerHTML = ""; // पुरानी डमी फोटो हटाना
+
+            querySnapshot.forEach((doc) => {
+                postCount++;
+                const postData = doc.data();
+                const postHTML = `<div class="grid-item"><img src="${postData.imageUrl}"></div>`;
+                postsGrid.innerHTML += postHTML;
+            });
+            
+            document.getElementById('countPosts').innerText = postCount;
+            
+            // अगर कोई पोस्ट नहीं है तो मैसेज दिखाओ
+            if(postCount === 0) {
+                postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 20px; color: #a8a8a8;'>No posts yet</p>";
             }
         }
-        window.onload = loadData;
     </script>
 </body>
 </html>
