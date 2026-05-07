@@ -71,11 +71,11 @@
     <input type="file" id="fileInput" onchange="handleFile(event)">
 
     <script>
-        // Appwrite Setup (तेरी ID के साथ)
+        // Appwrite Setup
         const client = new Appwrite.Client();
         client
             .setEndpoint('https://cloud.appwrite.io/v1')
-            .setProject('69fa47ed003661be4940'); // तेरी Project ID
+            .setProject('69fa47ed003661be4940'); 
 
         const databases = new Appwrite.Databases(client);
 
@@ -85,7 +85,7 @@
         window.openGallery = (mode) => {
             currentMode = mode;
             const input = document.getElementById('fileInput');
-            input.accept = "image/*"; // अभी सिर्फ फोटो के लिए
+            input.accept = "image/*"; 
             input.click();
         };
 
@@ -111,7 +111,7 @@
             loader.style.display = 'flex';
 
             try {
-                // 1. ImgBB पर फोटो अपलोड करना
+                // 1. ImgBB par photo upload
                 loaderText.innerText = "ImgBB Pe Photo Ja Rahi Hai...";
                 const formData = new FormData();
                 formData.append("image", selectedFile);
@@ -127,11 +127,11 @@
                 if (result.success) {
                     const downloadURL = result.data.url;
 
-                    // 2. Appwrite Database में लिंक सेव करना
+                    // 2. Appwrite Database mein link save karna
                     loaderText.innerText = "Appwrite DB Mein Save Ho Raha Hai...";
                     await databases.createDocument(
-                        '69fa4b47000781702580', // तेरी Database ID
-                        'posts',                // तेरी Collection ID
+                        '69fa4b16003d89d1cec6', // Sahi Database ID
+                        'posts',                // Collection ID
                         'unique()', 
                         {
                             imageUrl: downloadURL,
@@ -147,7 +147,7 @@
 
             } catch (error) {
                 console.error(error);
-                alert("Galti ho gayi bhai! Appwrite Permissions check kar.");
+                alert("Bhai abhi bhi error hai: " + error.message);
             } finally {
                 loader.style.display = 'none';
             }
