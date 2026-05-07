@@ -18,6 +18,11 @@
         .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; background: #121212; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
+        
+        /* क्लिक करने के लिए स्टाइल */
+        .stat-link { text-decoration: none; color: white; cursor: pointer; }
+        .stat-link:active { opacity: 0.6; }
+        
         .stat-val { font-weight: bold; font-size: 18px; display: block; }
         .stat-name { font-size: 13px; color: #a8a8a8; }
         .bio-data { padding: 0 5px; margin-bottom: 15px; }
@@ -54,9 +59,18 @@
                 <img id="profileImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
             </div>
             <div class="stats-row">
-                <div class="stat-link"><span class="stat-val" id="countPosts">0</span><span class="stat-name">Posts</span></div>
-                <div class="stat-link"><span class="stat-val" id="countFollowers">0</span><span class="stat-name">Followers</span></div>
-                <div class="stat-link"><span class="stat-val" id="countFollowing">0</span><span class="stat-name">Following</span></div>
+                <div class="stat-link">
+                    <span class="stat-val" id="countPosts">0</span>
+                    <span class="stat-name">Posts</span>
+                </div>
+                <a href="followers.html" class="stat-link">
+                    <span class="stat-val" id="countFollowers">0</span>
+                    <span class="stat-name">Followers</span>
+                </a>
+                <a href="following.html" class="stat-link">
+                    <span class="stat-val" id="countFollowing">0</span>
+                    <span class="stat-name">Following</span>
+                </a>
             </div>
         </div>
 
@@ -108,7 +122,6 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // आपके स्क्रीनशॉट के अनुसार सही डेटाबेस पाथ
                     const docRef = doc(db, "users", user.uid); 
                     const docSnap = await getDoc(docRef);
 
@@ -116,8 +129,8 @@
                         const data = docSnap.data();
                         document.getElementById('displayFullName').innerText = data.fullName || "Mokibul Hassan";
                         document.getElementById('displayBio').innerText = data.bio || "Android Developer";
-                        document.getElementById('countFollowers').innerText = data.followers || 120;
-                        document.getElementById('countFollowing').innerText = data.following || 150;
+                        document.getElementById('countFollowers').innerText = data.followers || 0;
+                        document.getElementById('countFollowing').innerText = data.following || 0;
                         document.getElementById('headerUsername').innerText = data.username || user.email.split('@')[0];
                         if(data.profilePicUrl) { document.getElementById('profileImage').src = data.profilePicUrl; }
                         loadUserPosts(user.uid);
