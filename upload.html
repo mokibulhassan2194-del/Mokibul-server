@@ -75,7 +75,7 @@
     <input type="file" id="fileInput" onchange="handleFile(event)">
 
     <script>
-        // --- FIREBASE CONFIG (Bhai apni original details hi rehne dena) ---
+        // --- 1. FIREBASE CONFIG (Bhai yahan apni details sahi se dalo) ---
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -85,24 +85,26 @@
             appId: "YOUR_APP_ID"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
 
         let currentMode = 'POST';
         let selectedFile = null;
-        let userUID = null;
+        let userUID = "Guest_User"; // Default ID ताकि आप बाहर न फेंके जाओ
 
-        // Check if User is Logged In
+        // लॉगिन चेक (सिर्फ ID अपडेट करेगा, बाहर नहीं निकालेगा)
         auth.onAuthStateChanged((user) => {
             if (user) {
                 userUID = user.uid;
+                console.log("Logged in as:", userUID);
             } else {
-                alert("Bhai, pehle login kar lo! 😂");
-                window.location.href = "signup.html";
+                console.log("Using Guest Mode");
             }
         });
 
+        // गैलरी खोलना
         window.openGallery = (mode) => {
             currentMode = mode;
             const input = document.getElementById('fileInput');
@@ -110,6 +112,7 @@
             input.click();
         };
 
+        // फाइल सिलेक्ट होने पर प्रिव्यू दिखाना
         window.handleFile = (event) => {
             const file = event.target.files[0];
             if (!file) return;
@@ -130,13 +133,10 @@
             }
         };
 
+        // 'Next' बटन दबाने पर अपलोड शुरू करना
         window.handleNext = async () => {
             if (!selectedFile) {
-                alert("Bhai, file toh select kar lo!");
-                return;
-            }
-            if (!userUID) {
-                alert("Login missing!");
+                alert("Bhai, pehle photo/video toh select kar lo! 😂");
                 return;
             }
 
@@ -145,6 +145,7 @@
             loader.style.display = 'flex';
 
             try {
+                // Step 1: ImgBB पर फाइल भेजना
                 loaderText.innerText = "Hosting Pe File Ja Rahi Hai...";
                 const formData = new FormData();
                 formData.append("image", selectedFile);
@@ -159,25 +160,26 @@
 
                 if (result.success) {
                     const downloadURL = result.data.url;
+
+                    // Step 2: Firebase Firestore में डेटा सेव करना
                     loaderText.innerText = "Max Ful DB Mein Save Ho Raha Hai...";
                     
-                    // डेटा को यूजर के फोल्डर में सेव करना (Private Logic)
                     await db.collection("users").doc(userUID).collection("myPosts").add({
                         imageUrl: downloadURL,
                         type: currentMode,
-                        caption: "Uploaded via Max Ful",
+                        caption: "Uploaded via Max Ful App",
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
-                    alert("Bhai, Upload Ho Gaya! 🔥");
-                    window.location.href = "profile.html"; // अपलोड के बाद सीधे प्रोफाइल पर भेजो
+                    alert("Bhai, " + currentMode + " Upload Ho Gayi! 🔥");
+                    window.location.href = "profile.html"; 
                 } else {
-                    throw new Error("ImgBB Error");
+                    throw new Error("ImgBB Upload Fail Ho Gaya");
                 }
 
             } catch (error) {
-                console.error(error);
-                alert("Error: " + error.message);
+                console.error("Error details:", error);
+                alert("Bhai abhi bhi error hai: " + error.message);
             } finally {
                 loader.style.display = 'none';
             }
