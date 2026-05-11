@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Upload | Max Ful</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
+    
+    <!-- Firebase SDKs (v9+ Compat mode for easier integration) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
     <style>
         body { 
             margin: 0; background: #000; color: white; font-family: sans-serif; 
@@ -71,13 +75,19 @@
     <input type="file" id="fileInput" onchange="handleFile(event)">
 
     <script>
-        // Appwrite Setup
-        const client = new Appwrite.Client();
-        client
-            .setEndpoint('https://cloud.appwrite.io/v1')
-            .setProject('69fa47ed003661be4940'); 
+        // --- 1. FIREBASE CONFIG (Bhai yahan apni details dalo) ---
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-        const databases = new Appwrite.Databases(client);
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         let currentMode = 'POST';
         let selectedFile = null;
@@ -85,7 +95,7 @@
         window.openGallery = (mode) => {
             currentMode = mode;
             const input = document.getElementById('fileInput');
-            input.accept = "image/*"; 
+            input.accept = mode === 'REEL' ? "video/*" : "image/*"; 
             input.click();
         };
 
@@ -96,13 +106,22 @@
 
             document.getElementById('placeholder').style.display = 'none';
             const iPrev = document.getElementById('imagePreview');
-            iPrev.src = URL.createObjectURL(file);
-            iPrev.style.display = 'block';
+            const vPrev = document.getElementById('videoPreview');
+
+            if (file.type.startsWith('image/')) {
+                iPrev.src = URL.createObjectURL(file);
+                iPrev.style.display = 'block';
+                vPrev.style.display = 'none';
+            } else {
+                vPrev.src = URL.createObjectURL(file);
+                vPrev.style.display = 'block';
+                iPrev.style.display = 'none';
+            }
         };
 
         window.handleNext = async () => {
             if (!selectedFile) {
-                alert("Bhai, pehle photo select toh kar! 😂");
+                alert("Bhai, pehle photo/video select toh kar! 😂");
                 return;
             }
 
@@ -111,8 +130,8 @@
             loader.style.display = 'flex';
 
             try {
-                // 1. ImgBB par photo upload
-                loaderText.innerText = "ImgBB Pe Photo Ja Rahi Hai...";
+                // Step 1: ImgBB पर अपलोड (क्योंकि यह आसान है और Storage सेटअप की झंझट नहीं देता)
+                loaderText.innerText = "Hosting Pe File Ja Rahi Hai...";
                 const formData = new FormData();
                 formData.append("image", selectedFile);
                 const imgbbApiKey = "65799ddf574b2b2b142acf338241c1bc";
@@ -127,27 +146,25 @@
                 if (result.success) {
                     const downloadURL = result.data.url;
 
-                    // 2. Appwrite Database mein link save karna
-                    loaderText.innerText = "Appwrite DB Mein Save Ho Raha Hai...";
-                    await databases.createDocument(
-                        '69fa4b16003d89d1cec6', // Sahi Database ID
-                        'posts',                // Collection ID
-                        'unique()', 
-                        {
-                            imageUrl: downloadURL,
-                            caption: "Uploaded via Max Ful App"
-                        }
-                    );
+                    // Step 2: Firebase Firestore में डेटा सेव करना
+                    loaderText.innerText = "Firebase DB Mein Save Ho Raha Hai...";
+                    
+                    await db.collection("posts").add({
+                        imageUrl: downloadURL,
+                        type: currentMode,
+                        caption: "Uploaded via Max Ful App",
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
 
-                    alert("Bhai, Post Upload Ho Gayi! 🔥");
+                    alert("Bhai, " + currentMode + " Upload Ho Gayi! 🔥");
                     window.location.href = "home.html";
                 } else {
-                    throw new Error("ImgBB Fail Ho Gaya");
+                    throw new Error("ImgBB Upload Fail Ho Gaya");
                 }
 
             } catch (error) {
-                console.error(error);
-                alert("Bhai abhi bhi error hai: " + error.message);
+                console.error("Error details:", error);
+                alert("Bhai error aa gaya: " + error.message);
             } finally {
                 loader.style.display = 'none';
             }
