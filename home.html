@@ -6,6 +6,9 @@
     <title>Max Ful | Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
     <style>
         body { 
             background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
@@ -76,24 +79,7 @@
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/20/100/100"></div><div class="story-label">ankit_99</div></div>
     </div>
 
-    <div class="post-card">
-        <div class="post-header">
-            <div class="user-info">
-                <img src="https://picsum.photos/id/64/100/100" class="post-user-pic">
-                <span style="font-weight: 600; font-size: 14px;">makibul_islam</span>
-            </div>
-            <i class="fas fa-ellipsis-vertical"></i>
-        </div>
-        <div class="post-img-container" id="post1" ondblclick="doLike('post1')">
-            <span class="big-heart"><i class="fas fa-heart"></i></span>
-            <img src="https://picsum.photos/id/26/500/500" style="width:100%; height:100%; object-fit:cover;">
-        </div>
-        <div class="post-actions">
-            <i class="far fa-heart action-btn" id="like-icon" onclick="toggleLike()"></i>
-            <i class="far fa-comment action-btn"></i>
-            <i class="far fa-paper-plane action-btn"></i>
-        </div>
-    </div>
+    <div id="posts-feed"></div>
 
     <div class="bottom-nav">
         <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a>
@@ -104,12 +90,66 @@
     </div>
 
     <script>
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
+            authDomain: "max-ful-apps-cce76.firebaseapp.com",
+            projectId: "max-ful-apps-cce76",
+            storageBucket: "max-ful-apps-cce76.firebasestorage.app",
+            messagingSenderId: "1097891042184",
+            appId: "1:1097891042184:web:23c2d391f35a008774603d"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // 1. DATABASE SE POST FETCH KARNA
+        function loadFeed() {
+            const feed = document.getElementById('posts-feed');
+            
+            db.collection("allPosts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+                feed.innerHTML = ""; // Purana clear karo
+                snapshot.forEach((doc) => {
+                    const post = doc.data();
+                    const postId = doc.id;
+
+                    const postHTML = `
+                        <div class="post-card">
+                            <div class="post-header">
+                                <div class="user-info">
+                                    <img src="https://picsum.photos/id/64/100/100" class="post-user-pic">
+                                    <span style="font-weight: 600; font-size: 14px;">User_${postId.substring(0,4)}</span>
+                                </div>
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </div>
+                            <div class="post-img-container" id="${postId}" ondblclick="doLike('${postId}')">
+                                <span class="big-heart"><i class="fas fa-heart"></i></span>
+                                <img src="${post.imageUrl}" style="width:100%; height:100%; object-fit:cover;">
+                            </div>
+                            <div class="post-actions">
+                                <i class="far fa-heart action-btn" onclick="toggleLike(this)"></i>
+                                <i class="far fa-comment action-btn"></i>
+                                <i class="far fa-paper-plane action-btn"></i>
+                            </div>
+                            <div style="padding: 0 12px 12px 12px; font-size: 14px;">
+                                <span style="font-weight: bold;">User_${postId.substring(0,4)}</span> ${post.caption || ''}
+                            </div>
+                        </div>
+                    `;
+                    feed.innerHTML += postHTML;
+                });
+            });
+        }
+
+        // 2. LIKE ANIMATION
         function doLike(postId) {
             const container = document.getElementById(postId);
             const heart = container.querySelector('.big-heart');
-            const likeIcon = document.getElementById('like-icon');
             heart.classList.add('animate-heart');
             
+            // Like icon ko red karna (Niche wala icon)
+            const card = container.parentElement;
+            const likeIcon = card.querySelector('.fa-heart');
             likeIcon.classList.remove('far');
             likeIcon.classList.add('fas');
             likeIcon.style.color = '#ff3040';
@@ -117,18 +157,21 @@
             setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
 
-        function toggleLike() {
-            const likeIcon = document.getElementById('like-icon');
-            if (likeIcon.classList.contains('far')) {
-                likeIcon.classList.remove('far');
-                likeIcon.classList.add('fas');
-                likeIcon.style.color = '#ff3040';
+        // 3. LIKE TOGGLE
+        function toggleLike(btn) {
+            if (btn.classList.contains('far')) {
+                btn.classList.remove('far');
+                btn.classList.add('fas');
+                btn.style.color = '#ff3040';
             } else {
-                likeIcon.classList.remove('fas');
-                likeIcon.classList.add('far');
-                likeIcon.style.color = '#fff';
+                btn.classList.remove('fas');
+                btn.classList.add('far');
+                btn.style.color = '#fff';
             }
         }
+
+        // PAGE LOAD HOTE HI FEED CHALAO
+        window.onload = loadFeed;
     </script>
 </body>
 </html>
