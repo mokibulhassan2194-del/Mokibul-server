@@ -99,7 +99,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -118,9 +118,7 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // Header में ईमेल का नाम दिखाना (अगर डेटाबेस में यूजर नहीं है तो)
                     document.getElementById('headerUsername').innerText = user.email.split('@')[0];
-
                     const docRef = doc(db, "users", user.uid); 
                     const docSnap = await getDoc(docRef);
 
@@ -131,20 +129,17 @@
                         document.getElementById('headerUsername').innerText = data.username || user.email.split('@')[0];
                         if(data.profilePicUrl) { document.getElementById('profileImage').src = data.profilePicUrl; }
                     }
-                    
-                    // आपकी पोस्ट लोड करना
                     loadUserPosts(user.uid);
                 } catch (error) { console.error("Error:", error); }
             } else { 
-                // अगर लॉगिन नहीं है तो Guest यूजर की पोस्ट दिखाएं
                 loadUserPosts("Guest_User"); 
             }
         });
 
         async function loadUserPosts(uid) {
             const postsGrid = document.getElementById('postsGrid');
-            // 'allPosts' कलेक्शन का इस्तेमाल किया है क्योंकि upload.html इसी में डेटा भेज रहा है
-            const q = query(collection(db, "allPosts"), where("userId", "==", uid), orderBy("timestamp", "desc"));
+            // 'orderBy' हटा दिया गया है ताकि बिना इंडेक्स के भी डेटा लोड हो सके
+            const q = query(collection(db, "allPosts"), where("userId", "==", uid));
             
             try {
                 const querySnapshot = await getDocs(q);
