@@ -6,9 +6,9 @@
     <title>Upload | Max Ful</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase SDKs (v9+ Compat mode for easier integration) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
     <style>
         body { 
@@ -25,7 +25,7 @@
             width: 100%; flex: 1; background: #111; display: flex; 
             align-items: center; justify-content: center; position: relative; 
         }
-        #videoPreview, #imagePreview { width: 100%; height: 100%; object-fit: cover; display: none; }
+        #videoPreview, #imagePreview { width: 100%; height: 100%; object-fit: contain; display: none; }
         .upload-options { text-align: center; display: flex; gap: 40px; }
         .icon-circle { 
             width: 70px; height: 70px; border: 2px solid #FFD700; 
@@ -75,7 +75,7 @@
     <input type="file" id="fileInput" onchange="handleFile(event)">
 
     <script>
-        // --- 1. FIREBASE CONFIG (Bhai yahan apni details dalo) ---
+        // --- FIREBASE CONFIG (Bhai apni original details hi rehne dena) ---
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -85,12 +85,23 @@
             appId: "YOUR_APP_ID"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
         let currentMode = 'POST';
         let selectedFile = null;
+        let userUID = null;
+
+        // Check if User is Logged In
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                userUID = user.uid;
+            } else {
+                alert("Bhai, pehle login kar lo! 😂");
+                window.location.href = "signup.html";
+            }
+        });
 
         window.openGallery = (mode) => {
             currentMode = mode;
@@ -121,7 +132,11 @@
 
         window.handleNext = async () => {
             if (!selectedFile) {
-                alert("Bhai, pehle photo/video select toh kar! 😂");
+                alert("Bhai, file toh select kar lo!");
+                return;
+            }
+            if (!userUID) {
+                alert("Login missing!");
                 return;
             }
 
@@ -130,7 +145,6 @@
             loader.style.display = 'flex';
 
             try {
-                // Step 1: ImgBB पर अपलोड (क्योंकि यह आसान है और Storage सेटअप की झंझट नहीं देता)
                 loaderText.innerText = "Hosting Pe File Ja Rahi Hai...";
                 const formData = new FormData();
                 formData.append("image", selectedFile);
@@ -145,26 +159,25 @@
 
                 if (result.success) {
                     const downloadURL = result.data.url;
-
-                    // Step 2: Firebase Firestore में डेटा सेव करना
-                    loaderText.innerText = "Firebase DB Mein Save Ho Raha Hai...";
+                    loaderText.innerText = "Max Ful DB Mein Save Ho Raha Hai...";
                     
-                    await db.collection("posts").add({
+                    // डेटा को यूजर के फोल्डर में सेव करना (Private Logic)
+                    await db.collection("users").doc(userUID).collection("myPosts").add({
                         imageUrl: downloadURL,
                         type: currentMode,
-                        caption: "Uploaded via Max Ful App",
+                        caption: "Uploaded via Max Ful",
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
-                    alert("Bhai, " + currentMode + " Upload Ho Gayi! 🔥");
-                    window.location.href = "home.html";
+                    alert("Bhai, Upload Ho Gaya! 🔥");
+                    window.location.href = "profile.html"; // अपलोड के बाद सीधे प्रोफाइल पर भेजो
                 } else {
-                    throw new Error("ImgBB Upload Fail Ho Gaya");
+                    throw new Error("ImgBB Error");
                 }
 
             } catch (error) {
-                console.error("Error details:", error);
-                alert("Bhai error aa gaya: " + error.message);
+                console.error(error);
+                alert("Error: " + error.message);
             } finally {
                 loader.style.display = 'none';
             }
