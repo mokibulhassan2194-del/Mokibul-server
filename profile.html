@@ -18,11 +18,7 @@
         .profile-pic { width: 86px; height: 86px; border-radius: 50%; border: 1.5px solid #262626; padding: 3px; background: #121212; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .stats-row { display: flex; flex: 1; justify-content: space-around; text-align: center; }
-        
-        /* क्लिक करने के लिए स्टाइल */
         .stat-link { text-decoration: none; color: white; cursor: pointer; }
-        .stat-link:active { opacity: 0.6; }
-        
         .stat-val { font-weight: bold; font-size: 18px; display: block; }
         .stat-name { font-size: 13px; color: #a8a8a8; }
         .bio-data { padding: 0 5px; margin-bottom: 15px; }
@@ -45,7 +41,7 @@
     <div class="header">
         <div class="username-area">
             <span id="headerUsername">loading...</span> 
-            <svg id="verifiedBadge" style="display:none;" aria-label="Verified" fill="#0095f6" height="18" viewBox="0 0 40 40" width="18"><path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64l3.094 5.36L0 25.359l5.432 3.137v6.354h6.234l2.972 5.15 5.36-3.137 5.36 3.137 2.972-5.15h6.234v-6.354l5.432-3.137-3.094-5.36 3.094-5.36-5.432-3.137v-6.354h-6.234L25.359 0l-5.361 3.094Z"></path><path d="M16.816 27.253l-8.155-8.154 2.812-2.811 5.343 5.344 11.697-11.697 2.812 2.811-14.509 14.507z" fill="#fff"></path></svg>
+            <svg id="verifiedBadge" style="display:none;" fill="#0095f6" height="18" viewBox="0 0 40 40" width="18"><path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64l3.094 5.36L0 25.359l5.432 3.137v6.354h6.234l2.972 5.15 5.36-3.137 5.36 3.137 2.972-5.15h6.234v-6.354l5.432-3.137-3.094-5.36 3.094-5.36-5.432-3.137v-6.354h-6.234L25.359 0l-5.361 3.094Z"></path><path d="M16.816 27.253l-8.155-8.154 2.812-2.811 5.343 5.344 11.697-11.697 2.812 2.811-14.509 14.507z" fill="#fff"></path></svg>
         </div>
         <div class="header-icons">
             <a href="upload.html"><i class="far fa-plus-square"></i></a> 
@@ -63,20 +59,20 @@
                     <span class="stat-val" id="countPosts">0</span>
                     <span class="stat-name">Posts</span>
                 </div>
-                <a href="followers.html" class="stat-link">
+                <div class="stat-link">
                     <span class="stat-val" id="countFollowers">0</span>
                     <span class="stat-name">Followers</span>
-                </a>
-                <a href="following.html" class="stat-link">
+                </div>
+                <div class="stat-link">
                     <span class="stat-val" id="countFollowing">0</span>
                     <span class="stat-name">Following</span>
-                </a>
+                </div>
             </div>
         </div>
 
         <div class="bio-data">
-            <span class="full-name" id="displayFullName">Loading...</span>
-            <div class="bio-text" id="displayBio">Setting up your profile...</div>
+            <span class="full-name" id="displayFullName">Mokibul Hassan</span>
+            <div class="bio-text" id="displayBio">Android Developer</div>
         </div>
 
         <div class="btns">
@@ -103,7 +99,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -122,6 +118,9 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
+                    // Header में ईमेल का नाम दिखाना (अगर डेटाबेस में यूजर नहीं है तो)
+                    document.getElementById('headerUsername').innerText = user.email.split('@')[0];
+
                     const docRef = doc(db, "users", user.uid); 
                     const docSnap = await getDoc(docRef);
 
@@ -129,28 +128,42 @@
                         const data = docSnap.data();
                         document.getElementById('displayFullName').innerText = data.fullName || "Mokibul Hassan";
                         document.getElementById('displayBio').innerText = data.bio || "Android Developer";
-                        document.getElementById('countFollowers').innerText = data.followers || 0;
-                        document.getElementById('countFollowing').innerText = data.following || 0;
                         document.getElementById('headerUsername').innerText = data.username || user.email.split('@')[0];
                         if(data.profilePicUrl) { document.getElementById('profileImage').src = data.profilePicUrl; }
-                        loadUserPosts(user.uid);
                     }
+                    
+                    // आपकी पोस्ट लोड करना
+                    loadUserPosts(user.uid);
                 } catch (error) { console.error("Error:", error); }
-            } else { window.location.href = "login.html"; }
+            } else { 
+                // अगर लॉगिन नहीं है तो Guest यूजर की पोस्ट दिखाएं
+                loadUserPosts("Guest_User"); 
+            }
         });
 
         async function loadUserPosts(uid) {
             const postsGrid = document.getElementById('postsGrid');
-            const q = query(collection(db, "posts"), where("userId", "==", uid));
-            const querySnapshot = await getDocs(q);
-            let postCount = 0;
-            postsGrid.innerHTML = "";
-            querySnapshot.forEach((doc) => {
-                postCount++;
-                postsGrid.innerHTML += `<div class="grid-item"><img src="${doc.data().imageUrl}"></div>`;
-            });
-            document.getElementById('countPosts').innerText = postCount;
-            if(postCount === 0) { postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 20px; color: #a8a8a8;'>No posts yet</p>"; }
+            // 'allPosts' कलेक्शन का इस्तेमाल किया है क्योंकि upload.html इसी में डेटा भेज रहा है
+            const q = query(collection(db, "allPosts"), where("userId", "==", uid), orderBy("timestamp", "desc"));
+            
+            try {
+                const querySnapshot = await getDocs(q);
+                let postCount = 0;
+                postsGrid.innerHTML = "";
+                
+                querySnapshot.forEach((doc) => {
+                    postCount++;
+                    postsGrid.innerHTML += `<div class="grid-item"><img src="${doc.data().imageUrl}"></div>`;
+                });
+                
+                document.getElementById('countPosts').innerText = postCount;
+                if(postCount === 0) { 
+                    postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 20px; color: #a8a8a8;'>No posts yet</p>"; 
+                }
+            } catch (err) {
+                console.error("Posts Load Error:", err);
+                postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 20px; color: red;'>Database Error</p>";
+            }
         }
     </script>
 </body>
