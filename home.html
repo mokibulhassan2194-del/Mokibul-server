@@ -33,25 +33,14 @@
         .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; }
         .story-label { font-size: 12px; margin-top: 6px; color: #fff; }
 
-        /* POSTS - यहाँ सुधारा गया है ताकि फोटो बड़ी दिखे और कटे नहीं */
+        /* POSTS */
         .post-card { margin-bottom: 15px; border-bottom: 0.1px solid #1a1a1a; }
         .post-header { display: flex; align-items: center; padding: 12px; justify-content: space-between; }
         .user-info { display: flex; align-items: center; gap: 10px; }
         .post-user-pic { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
         
-        .post-img-container { 
-            width: 100%; 
-            background: #000; 
-            position: relative; 
-            display: block; 
-            overflow: hidden;
-        }
-        .post-img-container img { 
-            width: 100%; 
-            height: auto;   /* फोटो की असली लंबाई के हिसाब से एडजस्ट होगा */
-            display: block;
-            object-fit: contain; 
-        }
+        .post-img-container { width: 100%; background: #000; position: relative; display: block; overflow: hidden; }
+        .post-img-container img { width: 100%; height: auto; display: block; object-fit: contain; }
 
         .big-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 90px; color: #fff; opacity: 0; pointer-events: none; z-index: 10; }
         .animate-heart { animation: heartPop 0.8s ease-out; }
@@ -60,6 +49,21 @@
         .post-actions { padding: 12px; display: flex; gap: 18px; font-size: 24px; }
         .action-btn { cursor: pointer; transition: transform 0.1s; }
         .action-btn:active { transform: scale(1.2); }
+
+        /* COMMENT MODAL STYLE */
+        .comment-modal {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 75%; 
+            background: #121212; border-top-left-radius: 15px; border-top-right-radius: 15px; 
+            transition: bottom 0.3s ease-out; z-index: 2000; display: flex; flex-direction: column;
+        }
+        .comment-modal.active { bottom: 0; }
+        .modal-handle { width: 40px; height: 4px; background: #333; border-radius: 2px; margin: 10px auto; }
+        .comment-header { text-align: center; padding: 10px; font-weight: bold; border-bottom: 0.1px solid #262626; font-size: 14px; }
+        .comment-list { flex: 1; overflow-y: auto; padding: 15px; }
+        .comment-input-area { padding: 10px 15px; border-top: 0.1px solid #262626; display: flex; align-items: center; gap: 10px; background: #000; padding-bottom: 20px; }
+        .comment-input-area input { flex: 1; background: none; border: none; color: #fff; outline: none; font-size: 14px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 1500; }
+        .overlay.active { display: block; }
 
         /* BOTTOM NAV */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
@@ -87,13 +91,26 @@
             </label>
             <input type="file" id="direct-story-upload" accept="image/*,video/*" style="display: none;">
         </div>
-        
-        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/20/100/100"></div><div class="story-label">ankit_99</div></div>
+        <div class="story-wrapper"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
+        <div class="story-wrapper"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
     </div>
 
     <div id="posts-feed"></div>
+
+    <!-- Bottom Sheet for Comments -->
+    <div class="overlay" id="overlay" onclick="closeComments()"></div>
+    <div class="comment-modal" id="commentModal">
+        <div class="modal-handle"></div>
+        <div class="comment-header">Comments</div>
+        <div class="comment-list" id="commentList">
+            <p style="color: #8e8e8e; text-align: center; font-size: 13px; margin-top: 20px;">No comments yet.</p>
+        </div>
+        <div class="comment-input-area">
+            <img src="https://picsum.photos/id/64/100/100" style="width: 30px; height: 30px; border-radius: 50%;">
+            <input type="text" placeholder="Add a comment...">
+            <button style="background: none; border: none; color: #0095f6; font-weight: 600;">Post</button>
+        </div>
+    </div>
 
     <div class="bottom-nav">
         <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a>
@@ -118,13 +135,11 @@
 
         function loadFeed() {
             const feed = document.getElementById('posts-feed');
-            
             db.collection("allPosts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
                 feed.innerHTML = ""; 
                 snapshot.forEach((doc) => {
                     const post = doc.data();
                     const postId = doc.id;
-
                     const postHTML = `
                         <div class="post-card">
                             <div class="post-header">
@@ -140,7 +155,7 @@
                             </div>
                             <div class="post-actions">
                                 <i class="far fa-heart action-btn" onclick="toggleLike(this)"></i>
-                                <i class="far fa-comment action-btn"></i>
+                                <i class="far fa-comment action-btn" onclick="openComments()"></i>
                                 <i class="far fa-paper-plane action-btn"></i>
                             </div>
                             <div style="padding: 0 12px 12px 12px; font-size: 14px;">
@@ -153,29 +168,33 @@
             });
         }
 
+        function openComments() {
+            document.getElementById('commentModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeComments() {
+            document.getElementById('commentModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
         function doLike(postId) {
             const container = document.getElementById(postId);
             const heart = container.querySelector('.big-heart');
             heart.classList.add('animate-heart');
-            
             const card = container.parentElement;
             const likeIcon = card.querySelector('.fa-heart');
             likeIcon.classList.remove('far');
             likeIcon.classList.add('fas');
             likeIcon.style.color = '#ff3040';
-            
             setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
 
         function toggleLike(btn) {
             if (btn.classList.contains('far')) {
-                btn.classList.remove('far');
-                btn.classList.add('fas');
-                btn.style.color = '#ff3040';
+                btn.classList.remove('far'); btn.classList.add('fas'); btn.style.color = '#ff3040';
             } else {
-                btn.classList.remove('fas');
-                btn.classList.add('far');
-                btn.style.color = '#fff';
+                btn.classList.remove('fas'); btn.classList.add('far'); btn.style.color = '#fff';
             }
         }
 
