@@ -33,34 +33,29 @@
         .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; }
         .story-label { font-size: 12px; margin-top: 6px; color: #fff; }
 
-        /* POSTS - सुधारा हुआ हिस्सा */
+        /* POSTS - यहाँ सुधारा गया है ताकि फोटो बड़ी दिखे और कटे नहीं */
         .post-card { margin-bottom: 15px; border-bottom: 0.1px solid #1a1a1a; }
         .post-header { display: flex; align-items: center; padding: 12px; justify-content: space-between; }
         .user-info { display: flex; align-items: center; gap: 10px; }
         .post-user-pic { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
         
-        /* यहाँ बदलाव किया है: aspect-ratio और object-fit बदला गया है */
         .post-img-container { 
             width: 100%; 
-            min-height: 300px; 
-            max-height: 580px; 
             background: #000; 
             position: relative; 
-            overflow: hidden; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            display: block; 
+            overflow: hidden;
         }
         .post-img-container img { 
             width: 100%; 
-            height: auto; 
-            max-height: 580px; 
-            object-fit: contain; /* इससे पूरी फोटो दिखेगी */
+            height: auto;   /* फोटो की असली लंबाई के हिसाब से एडजस्ट होगा */
+            display: block;
+            object-fit: contain; 
         }
 
-        .big-heart { position: absolute; font-size: 90px; color: #fff; opacity: 0; transform: scale(0); pointer-events: none; z-index: 10; }
+        .big-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 90px; color: #fff; opacity: 0; pointer-events: none; z-index: 10; }
         .animate-heart { animation: heartPop 0.8s ease-out; }
-        @keyframes heartPop { 0% { transform: scale(0); opacity: 0; } 40% { transform: scale(1.2); opacity: 0.9; } 100% { transform: scale(1); opacity: 0; } }
+        @keyframes heartPop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 40% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
         
         .post-actions { padding: 12px; display: flex; gap: 18px; font-size: 24px; }
         .action-btn { cursor: pointer; transition: transform 0.1s; }
