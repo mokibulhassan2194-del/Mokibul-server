@@ -10,23 +10,58 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
     <style>
-        body { background-color: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding-bottom: 70px; touch-action: manipulation; }
-        .header { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 0.1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100; }
-        .header .logo { font-size: 24px; font-weight: 800; color: #FFD700; }
-        .header-icons { font-size: 22px; display: flex; gap: 20px; }
-        .stories-container { display: flex; padding: 15px 10px; gap: 15px; overflow-x: auto; border-bottom: 0.1px solid #262626; }
+        body { 
+            background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            margin: 0; padding-bottom: 70px; 
+            touch-action: manipulation; 
+        }
+        
+        /* HEADER */
+        .header { 
+            padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 0.1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100; 
+        }
+        .header .logo { font-size: 24px; font-weight: 800; color: #FFD700; letter-spacing: -1px; }
+        .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; display: flex; gap: 20px; }
+
+        /* STORIES */
+        .stories-container { display: flex; padding: 15px 10px; gap: 15px; overflow-x: auto; white-space: nowrap; border-bottom: 0.1px solid #262626; -webkit-overflow-scrolling: touch; }
         .stories-container::-webkit-scrollbar { display: none; }
-        .story-circle { width: 68px; height: 68px; border-radius: 50%; padding: 3px; border: 2px solid #FFD700; position: relative; }
+        .story-wrapper { min-width: 75px; text-align: center; cursor: pointer; flex-shrink: 0; }
+        .story-circle { width: 68px; height: 68px; border-radius: 50%; padding: 3px; border: 2px solid #FFD700; position: relative; margin: 0 auto; }
         .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; }
-        .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; }
+        .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; }
+        .story-label { font-size: 12px; margin-top: 6px; color: #fff; }
+
+        /* POSTS */
         .post-card { margin-bottom: 15px; border-bottom: 0.1px solid #1a1a1a; }
         .post-header { display: flex; align-items: center; padding: 12px; justify-content: space-between; }
-        .post-img-container { width: 100%; background: #000; position: relative; }
-        .post-img-container img { width: 100%; height: auto; display: block; }
-        .big-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 90px; color: #fff; opacity: 0; pointer-events: none; }
-        .animate-heart { animation: heartPop 0.8s; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .post-user-pic { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+        
+        .post-img-container { 
+            width: 100%; 
+            background: #000; 
+            position: relative; 
+            display: block; 
+            overflow: hidden;
+        }
+        .post-img-container img { 
+            width: 100%; 
+            height: auto;
+            display: block;
+            object-fit: contain; 
+        }
+
+        .big-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 90px; color: #fff; opacity: 0; pointer-events: none; z-index: 10; }
+        .animate-heart { animation: heartPop 0.8s ease-out; }
         @keyframes heartPop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 40% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+        
         .post-actions { padding: 12px; display: flex; gap: 18px; font-size: 24px; }
+        .action-btn { cursor: pointer; transition: transform 0.1s; }
+        .action-btn:active { transform: scale(1.2); }
+
+        /* BOTTOM NAV */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-item { color: #fff; text-decoration: none; font-size: 24px; }
     </style>
@@ -44,11 +79,18 @@
     <div class="stories-container">
         <div class="story-wrapper">
             <label for="direct-story-upload" style="cursor: pointer;">
-                <div class="story-circle"><img src="https://picsum.photos/id/64/100/100"><div class="plus-icon"><i class="fas fa-plus"></i></div></div>
+                <div class="story-circle">
+                    <img src="https://picsum.photos/id/64/100/100">
+                    <div class="plus-icon"><i class="fas fa-plus"></i></div>
+                </div>
+                <div class="story-label">Your Story</div>
             </label>
-            <input type="file" id="direct-story-upload" style="display: none;">
+            <input type="file" id="direct-story-upload" accept="image/*,video/*" style="display: none;">
         </div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div></div>
+        
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/20/100/100"></div><div class="story-label">ankit_99</div></div>
     </div>
 
     <div id="posts-feed"></div>
@@ -56,7 +98,7 @@
     <div class="bottom-nav">
         <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a>
         <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a>
-        <a href="upload.html" class="nav-item" style="color: #FFD700;"><i class="far fa-square-plus"></i></a>
+        <a href="upload.html" class="nav-item" style="color: #FFD700; font-size: 28px;"><i class="far fa-square-plus"></i></a>
         <a href="reels.html" class="nav-item"><i class="fas fa-clapperboard"></i></a>
         <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a>
     </div>
@@ -70,45 +112,74 @@
             messagingSenderId: "1097891042184",
             appId: "1:1097891042184:web:23c2d391f35a008774603d"
         };
+
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         function loadFeed() {
             const feed = document.getElementById('posts-feed');
+            
             db.collection("allPosts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
                 feed.innerHTML = ""; 
                 snapshot.forEach((doc) => {
                     const post = doc.data();
                     const postId = doc.id;
-                    feed.innerHTML += `
+
+                    const postHTML = `
                         <div class="post-card">
-                            <div class="post-header"><span style="font-weight: 600;">User_${postId.substring(0,4)}</span></div>
+                            <div class="post-header">
+                                <div class="user-info">
+                                    <img src="https://picsum.photos/id/64/100/100" class="post-user-pic">
+                                    <span style="font-weight: 600; font-size: 14px;">User_${postId.substring(0,4)}</span>
+                                </div>
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </div>
                             <div class="post-img-container" id="${postId}" ondblclick="doLike('${postId}')">
                                 <span class="big-heart"><i class="fas fa-heart"></i></span>
                                 <img src="${post.imageUrl}">
                             </div>
                             <div class="post-actions">
-                                <i class="far fa-heart" onclick="toggleLike(this)"></i>
-                                <i class="far fa-comment" onclick="location.href='comments.html'"></i>
-                                <i class="far fa-paper-plane"></i>
+                                <i class="far fa-heart action-btn" onclick="toggleLike(this)"></i>
+                                <!-- यहाँ कमेंट बटन पर लिंक लगा दिया गया है -->
+                                <i class="far fa-comment action-btn" onclick="location.href='comments.html'"></i>
+                                <i class="far fa-paper-plane action-btn"></i>
                             </div>
-                            <div style="padding: 0 12px 12px; font-size: 14px;"><b>User_${postId.substring(0,4)}</b> ${post.caption || ''}</div>
-                        </div>`;
+                            <div style="padding: 0 12px 12px 12px; font-size: 14px;">
+                                <span style="font-weight: bold;">User_${postId.substring(0,4)}</span> ${post.caption || ''}
+                            </div>
+                        </div>
+                    `;
+                    feed.innerHTML += postHTML;
                 });
             });
         }
 
         function doLike(postId) {
-            const heart = document.getElementById(postId).querySelector('.big-heart');
+            const container = document.getElementById(postId);
+            const heart = container.querySelector('.big-heart');
             heart.classList.add('animate-heart');
-            setTimeout(() => heart.classList.remove('animate-heart'), 800);
+            
+            const card = container.parentElement;
+            const likeIcon = card.querySelector('.fa-heart');
+            likeIcon.classList.remove('far');
+            likeIcon.classList.add('fas');
+            likeIcon.style.color = '#ff3040';
+            
+            setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
 
         function toggleLike(btn) {
-            btn.classList.toggle('fas');
-            btn.classList.toggle('far');
-            btn.style.color = btn.classList.contains('fas') ? '#ff3040' : '#fff';
+            if (btn.classList.contains('far')) {
+                btn.classList.remove('far');
+                btn.classList.add('fas');
+                btn.style.color = '#ff3040';
+            } else {
+                btn.classList.remove('fas');
+                btn.classList.add('far');
+                btn.style.color = '#fff';
+            }
         }
+
         window.onload = loadFeed;
     </script>
 </body>
