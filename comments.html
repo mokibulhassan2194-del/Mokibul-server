@@ -3,31 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comments</title>
+    <title>Comments Section</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; }
         
-        /* Header */
         .comment-header {
             padding: 15px;
             display: flex;
             align-items: center;
-            border-bottom: 0.1px solid #262626;
+            border-bottom: 1px solid #262626;
             position: sticky;
             top: 0;
             background: #000;
+            z-index: 10;
         }
         .comment-header i { font-size: 20px; margin-right: 20px; cursor: pointer; }
 
-        /* Comments List */
         .comments-list { padding: 15px; padding-bottom: 80px; }
-        .comment-item { display: flex; gap: 12px; margin-bottom: 20px; }
-        .user-pic { width: 35px; height: 35px; border-radius: 50%; }
-        .comment-content { font-size: 14px; }
+        .comment-item { display: flex; gap: 12px; margin-bottom: 20px; align-items: flex-start; }
+        .user-pic { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+        .comment-content { font-size: 14px; line-height: 1.4; }
         .user-name { font-weight: bold; margin-right: 5px; }
 
-        /* Input Area */
         .comment-input-area {
             position: fixed;
             bottom: 0;
@@ -36,12 +34,12 @@
             padding: 10px;
             display: flex;
             align-items: center;
-            border-top: 0.1px solid #262626;
+            border-top: 1px solid #262626;
             box-sizing: border-box;
         }
         .comment-input-area input {
             background: #121212;
-            border: 0.1px solid #363636;
+            border: 1px solid #363636;
             color: #fff;
             padding: 10px 15px;
             border-radius: 20px;
@@ -55,18 +53,20 @@
             cursor: pointer;
             background: none;
             border: none;
+            font-size: 14px;
         }
+        .post-btn:disabled { color: #004a77; cursor: default; }
     </style>
 </head>
 <body>
 
     <div class="comment-header">
-        <i class="fas fa-arrow-left" onclick="history.back()"></i>
+        <i class="fas fa-arrow-left" onclick="window.history.back()"></i>
         <span style="font-weight: bold;">Comments</span>
     </div>
 
     <div class="comments-list" id="comments-container">
-        <!-- यहाँ कमेंट्स लोड होंगे -->
+        <!-- पुराने कमेंट्स -->
         <div class="comment-item">
             <img src="https://picsum.photos/id/10/50/50" class="user-pic">
             <div class="comment-content">
@@ -77,32 +77,48 @@
 
     <div class="comment-input-area">
         <img src="https://picsum.photos/id/64/50/50" class="user-pic" style="margin-right: 10px;">
-        <input type="text" id="comment-text" placeholder="Add a comment...">
-        <button class="post-btn" onclick="addComment()">Post</button>
+        <input type="text" id="comment-text" placeholder="Add a comment..." autocomplete="off">
+        <button class="post-btn" id="post-button">Post</button>
     </div>
 
     <script>
-        // यहाँ आप अपना Firebase लॉजिक जोड़ सकते हैं 
-        // ताकि हर पोस्ट के हिसाब से कमेंट्स लोड और सेव हों।
-        function addComment() {
-            const input = document.getElementById('comment-text');
-            const container = document.getElementById('comments-container');
+        const input = document.getElementById('comment-text');
+        const postBtn = document.getElementById('post-button');
+        const container = document.getElementById('comments-container');
 
-            if(input.value.trim() !== "") {
-                const newComment = `
-                    <div class="comment-item">
-                        <img src="https://picsum.photos/id/64/50/50" class="user-pic">
-                        <div class="comment-content">
-                            <span class="user-name">You</span> ${input.value}
-                        </div>
+        // कमेंट जोड़ने का फंक्शन
+        function addComment() {
+            const text = input.value.trim();
+            
+            if(text !== "") {
+                const div = document.createElement('div');
+                div.className = 'comment-item';
+                div.innerHTML = `
+                    <img src="https://picsum.photos/id/64/50/50" class="user-pic">
+                    <div class="comment-content">
+                        <span class="user-name">You</span> ${text}
                     </div>
                 `;
-                container.innerHTML += newComment;
-                input.value = "";
-                window.scrollTo(0, document.body.scrollHeight);
+                container.appendChild(div);
+                input.value = ""; // इनपुट साफ़ करें
+                
+                // सबसे नीचे स्क्रॉल करें
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
             }
         }
+
+        // बटन क्लिक पर कमेंट पोस्ट करें
+        postBtn.addEventListener('click', addComment);
+
+        // 'Enter' की (key) दबाने पर कमेंट पोस्ट करें
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                addComment();
+            }
+        });
     </script>
 </body>
 </html>
-
