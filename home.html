@@ -33,12 +33,31 @@
         .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; }
         .story-label { font-size: 12px; margin-top: 6px; color: #fff; }
 
-        /* POSTS */
+        /* POSTS - सुधारा हुआ हिस्सा */
         .post-card { margin-bottom: 15px; border-bottom: 0.1px solid #1a1a1a; }
         .post-header { display: flex; align-items: center; padding: 12px; justify-content: space-between; }
         .user-info { display: flex; align-items: center; gap: 10px; }
         .post-user-pic { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
-        .post-img-container { width: 100%; aspect-ratio: 1/1; background: #1a1a1a; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        
+        /* यहाँ बदलाव किया है: aspect-ratio और object-fit बदला गया है */
+        .post-img-container { 
+            width: 100%; 
+            min-height: 300px; 
+            max-height: 580px; 
+            background: #000; 
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .post-img-container img { 
+            width: 100%; 
+            height: auto; 
+            max-height: 580px; 
+            object-fit: contain; /* इससे पूरी फोटो दिखेगी */
+        }
+
         .big-heart { position: absolute; font-size: 90px; color: #fff; opacity: 0; transform: scale(0); pointer-events: none; z-index: 10; }
         .animate-heart { animation: heartPop 0.8s ease-out; }
         @keyframes heartPop { 0% { transform: scale(0); opacity: 0; } 40% { transform: scale(1.2); opacity: 0.9; } 100% { transform: scale(1); opacity: 0; } }
@@ -90,7 +109,6 @@
     </div>
 
     <script>
-        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
             authDomain: "max-ful-apps-cce76.firebaseapp.com",
@@ -103,12 +121,11 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 1. DATABASE SE POST FETCH KARNA
         function loadFeed() {
             const feed = document.getElementById('posts-feed');
             
             db.collection("allPosts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                feed.innerHTML = ""; // Purana clear karo
+                feed.innerHTML = ""; 
                 snapshot.forEach((doc) => {
                     const post = doc.data();
                     const postId = doc.id;
@@ -124,7 +141,7 @@
                             </div>
                             <div class="post-img-container" id="${postId}" ondblclick="doLike('${postId}')">
                                 <span class="big-heart"><i class="fas fa-heart"></i></span>
-                                <img src="${post.imageUrl}" style="width:100%; height:100%; object-fit:cover;">
+                                <img src="${post.imageUrl}">
                             </div>
                             <div class="post-actions">
                                 <i class="far fa-heart action-btn" onclick="toggleLike(this)"></i>
@@ -141,13 +158,11 @@
             });
         }
 
-        // 2. LIKE ANIMATION
         function doLike(postId) {
             const container = document.getElementById(postId);
             const heart = container.querySelector('.big-heart');
             heart.classList.add('animate-heart');
             
-            // Like icon ko red karna (Niche wala icon)
             const card = container.parentElement;
             const likeIcon = card.querySelector('.fa-heart');
             likeIcon.classList.remove('far');
@@ -157,7 +172,6 @@
             setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
 
-        // 3. LIKE TOGGLE
         function toggleLike(btn) {
             if (btn.classList.contains('far')) {
                 btn.classList.remove('far');
@@ -170,7 +184,6 @@
             }
         }
 
-        // PAGE LOAD HOTE HI FEED CHALAO
         window.onload = loadFeed;
     </script>
 </body>
