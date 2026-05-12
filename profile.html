@@ -26,9 +26,11 @@
         .bio-text { font-size: 14px; margin-top: 2px; line-height: 1.4; color: #efefef; white-space: pre-wrap; }
         .btns { display: flex; gap: 8px; margin-bottom: 20px; }
         .btn { flex: 1; background: #1a1a1a; border: 1px solid #363636; border-radius: 8px; padding: 7px; font-size: 14px; font-weight: 600; text-align: center; color: white; text-decoration: none; }
+        
         .post-tabs { display: flex; border-top: 1px solid #262626; }
-        .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; }
+        .tab { flex: 1; text-align: center; padding: 12px; font-size: 20px; color: #a8a8a8; cursor: pointer; transition: 0.3s; }
         .tab.active { color: #fff; border-bottom: 2px solid #fff; }
+        
         .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
         .grid-item { aspect-ratio: 1 / 1; background: #1a1a1a; overflow: hidden; }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
@@ -81,9 +83,9 @@
         </div>
 
         <div class="post-tabs">
-            <div class="tab active"><i class="fa-solid fa-table-cells"></i></div>
-            <div class="tab"><i class="fa-solid fa-clapperboard"></i></div>
-            <div class="tab"><i class="fa-regular fa-user"></i></div>
+            <div class="tab active" id="tabPosts"><i class="fa-solid fa-table-cells"></i></div>
+            <div class="tab" id="tabReels"><i class="fa-solid fa-clapperboard"></i></div>
+            <div class="tab" id="tabTagged"><i class="fa-regular fa-user"></i></div>
         </div>
 
         <div class="posts-grid" id="postsGrid"></div>
@@ -138,7 +140,6 @@
 
         async function loadUserPosts(uid) {
             const postsGrid = document.getElementById('postsGrid');
-            // 'orderBy' हटा दिया गया है ताकि बिना इंडेक्स के भी डेटा लोड हो सके
             const q = query(collection(db, "allPosts"), where("userId", "==", uid));
             
             try {
@@ -153,13 +154,43 @@
                 
                 document.getElementById('countPosts').innerText = postCount;
                 if(postCount === 0) { 
-                    postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 20px; color: #a8a8a8;'>No posts yet</p>"; 
+                    postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 40px; color: #a8a8a8;'>No posts yet</p>"; 
                 }
             } catch (err) {
                 console.error("Posts Load Error:", err);
                 postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 20px; color: red;'>Database Error</p>";
             }
         }
+
+        // --- टैब स्विचिंग लॉजिक (क्लिक करने पर) ---
+        const tabPosts = document.getElementById('tabPosts');
+        const tabReels = document.getElementById('tabReels');
+        const tabTagged = document.getElementById('tabTagged');
+        const postsGrid = document.getElementById('postsGrid');
+
+        function clearActiveTabs() {
+            [tabPosts, tabReels, tabTagged].forEach(t => t.classList.remove('active'));
+        }
+
+        tabPosts.onclick = () => {
+            clearActiveTabs();
+            tabPosts.classList.add('active');
+            const user = auth.currentUser;
+            if(user) loadUserPosts(user.uid);
+            else loadUserPosts("Guest_User");
+        };
+
+        tabReels.onclick = () => {
+            clearActiveTabs();
+            tabReels.classList.add('active');
+            postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 40px; color: #a8a8a8;'>No Reels available</p>";
+        };
+
+        tabTagged.onclick = () => {
+            clearActiveTabs();
+            tabTagged.classList.add('active');
+            postsGrid.innerHTML = "<p style='grid-column: span 3; text-align: center; padding: 40px; color: #a8a8a8;'>No tagged posts</p>";
+        };
     </script>
 </body>
 </html>
