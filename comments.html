@@ -8,20 +8,19 @@
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
         
-        /* ऊपर की पट्टी */
+        /* Header */
         .header { padding: 15px; border-bottom: 0.1px solid #262626; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; background: #000; z-index: 100; }
         .header a { color: #fff; text-decoration: none; font-size: 22px; }
         .header b { font-size: 18px; }
 
-        /* कमेंट लिस्ट */
+        /* Comment List */
         #list { padding: 15px; }
-        .c-item { display: flex; gap: 12px; margin-bottom: 18px; align-items: flex-start; }
-        .img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+        .c-item { display: flex; gap: 12px; margin-bottom: 18px; }
+        .img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
         .c-body { font-size: 14px; }
         .name { font-weight: bold; margin-right: 5px; }
-        .time { color: #8e8e8e; font-size: 12px; margin-top: 5px; display: block; }
 
-        /* नीचे वाला कमेंट बॉक्स - जो गायब था */
+        /* Bottom Input Bar - Fix for Post button */
         .input-bar { 
             position: fixed; 
             bottom: 0; 
@@ -29,25 +28,41 @@
             width: 100%; 
             background: #000; 
             border-top: 0.1px solid #262626; 
-            padding: 10px 15px; 
+            padding: 8px 12px; 
             display: flex; 
             align-items: center; 
-            gap: 12px; 
+            gap: 10px; 
             z-index: 1000;
+            box-sizing: border-box; /* ये बटन को बाहर जाने से रोकेगा */
         }
         
+        .input-wrapper {
+            flex: 1; /* ये इनपुट को बाकी बची जगह में फैला देगा */
+            display: flex;
+            align-items: center;
+        }
+
         input { 
-            flex: 1; 
+            width: 100%; 
             background: #000; 
             border: 1px solid #363636; 
-            border-radius: 25px; 
+            border-radius: 20px; 
             padding: 10px 15px; 
             color: #fff; 
             outline: none; 
-            font-size: 16px; /* 16px से ज़ूम नहीं होगा */
+            font-size: 16px; 
         }
         
-        #postBtn { color: #0095f6; font-weight: bold; background: none; border: none; font-size: 15px; cursor: pointer; }
+        #postBtn { 
+            color: #0095f6; 
+            font-weight: bold; 
+            background: none; 
+            border: none; 
+            font-size: 15px; 
+            cursor: pointer;
+            padding: 5px;
+            flex-shrink: 0; /* ये बटन को दबने या बाहर भागने से रोकेगा */
+        }
     </style>
 </head>
 <body>
@@ -58,20 +73,21 @@
     </div>
 
     <div id="list">
+        <!-- डमी कमेंट -->
         <div class="c-item">
             <img src="https://picsum.photos/id/64/50/50" class="img">
             <div class="c-body">
                 <span class="name">max_ful_dev</span>
                 <span>Bhai ab styling ekdam kadak hai! 🔥</span>
-                <span class="time">2m</span>
             </div>
         </div>
     </div>
 
-    <!-- अब यह बॉक्स हमेशा दिखेगा -->
     <div class="input-bar">
         <img src="https://picsum.photos/id/64/50/50" class="img" style="width: 30px; height: 30px;">
-        <input type="text" id="inp" placeholder="Add a comment...">
+        <div class="input-wrapper">
+            <input type="text" id="inp" placeholder="Add a comment...">
+        </div>
         <button id="postBtn" onclick="send()">Post</button>
     </div>
 
@@ -86,7 +102,6 @@
                         <div class="c-body">
                             <span class="name">You</span>
                             <span>${i.value}</span>
-                            <span class="time">now</span>
                         </div>
                     </div>`;
                 i.value = "";
