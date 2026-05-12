@@ -6,85 +6,91 @@
     <title>Comments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; }
-        body { background: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
         
-        /* इंस्टाग्राम स्टाइल हेडर */
-        .header { padding: 12px 16px; border-bottom: 0.1px solid #262626; display: flex; align-items: center; background: #000; position: sticky; top: 0; z-index: 10; }
-        .header a { color: #fff; text-decoration: none; font-size: 22px; margin-right: 25px; }
-        .header span { font-weight: 700; font-size: 18px; }
+        /* ऊपर की पट्टी */
+        .header { padding: 15px; border-bottom: 0.1px solid #262626; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; background: #000; z-index: 100; }
+        .header a { color: #fff; text-decoration: none; font-size: 22px; }
+        .header b { font-size: 18px; }
 
-        /* कमेंट सेक्शन */
-        #comment-list { flex: 1; overflow-y: auto; padding: 16px; }
-        .comment-item { display: flex; gap: 12px; margin-bottom: 18px; align-items: flex-start; }
-        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #333; object-fit: cover; }
-        .comment-text { font-size: 14px; line-height: 1.4; }
-        .user-name { font-weight: 700; margin-right: 6px; font-size: 14px; }
-        .time { color: #a8a8a8; font-size: 12px; margin-top: 4px; display: block; }
+        /* कमेंट लिस्ट */
+        #list { padding: 15px; }
+        .c-item { display: flex; gap: 12px; margin-bottom: 18px; align-items: flex-start; }
+        .img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+        .c-body { font-size: 14px; }
+        .name { font-weight: bold; margin-right: 5px; }
+        .time { color: #8e8e8e; font-size: 12px; margin-top: 5px; display: block; }
 
-        /* नीचे का इनपुट एरिया (Instagram जैसा) */
-        .input-container { border-top: 0.1px solid #262626; padding: 10px 16px; display: flex; align-items: center; gap: 12px; background: #000; padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
-        .my-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
-        .input-wrapper { flex: 1; position: relative; display: flex; align-items: center; }
+        /* नीचे वाला कमेंट बॉक्स - जो गायब था */
+        .input-bar { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: #000; 
+            border-top: 0.1px solid #262626; 
+            padding: 10px 15px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            z-index: 1000;
+        }
         
-        /* font-size 16px रखने से ऑटो-ज़ूम बंद हो जाता है */
-        input { width: 100%; background: #000; border: 1px solid #363636; border-radius: 20px; padding: 10px 15px; color: #fff; outline: none; font-size: 16px; }
+        input { 
+            flex: 1; 
+            background: #000; 
+            border: 1px solid #363636; 
+            border-radius: 25px; 
+            padding: 10px 15px; 
+            color: #fff; 
+            outline: none; 
+            font-size: 16px; /* 16px से ज़ूम नहीं होगा */
+        }
         
-        button { background: none; border: none; color: #0095f6; font-weight: 700; cursor: pointer; font-size: 14px; padding: 5px; }
-        button:disabled { opacity: 0.5; }
+        #postBtn { color: #0095f6; font-weight: bold; background: none; border: none; font-size: 15px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="home.html"><i class="fas fa-arrow-left"></i></a>
-        <span>Comments</span>
+        <b>Comments</b>
     </div>
 
-    <div id="comment-list">
-        <!-- डमी कमेंट इंस्टाग्राम स्टाइल में -->
-        <div class="comment-item">
-            <img src="https://picsum.photos/id/64/100/100" class="user-avatar">
-            <div class="comment-text">
-                <span class="user-name">max_ful_dev</span>
+    <div id="list">
+        <div class="c-item">
+            <img src="https://picsum.photos/id/64/50/50" class="img">
+            <div class="c-body">
+                <span class="name">max_ful_dev</span>
                 <span>Bhai ab styling ekdam kadak hai! 🔥</span>
                 <span class="time">2m</span>
             </div>
         </div>
     </div>
 
-    <div class="input-container">
-        <img src="https://picsum.photos/id/64/100/100" class="my-avatar">
-        <div class="input-wrapper">
-            <input type="text" id="cInput" placeholder="Add a comment..." oninput="checkInput()">
-        </div>
-        <button id="postBtn" onclick="addC()" disabled>Post</button>
+    <!-- अब यह बॉक्स हमेशा दिखेगा -->
+    <div class="input-bar">
+        <img src="https://picsum.photos/id/64/50/50" class="img" style="width: 30px; height: 30px;">
+        <input type="text" id="inp" placeholder="Add a comment...">
+        <button id="postBtn" onclick="send()">Post</button>
     </div>
 
     <script>
-        const input = document.getElementById('cInput');
-        const btn = document.getElementById('postBtn');
-        const list = document.getElementById('comment-list');
-
-        function checkInput() {
-            btn.disabled = input.value.trim() === "";
-        }
-
-        function addC() {
-            if(input.value.trim() !== "") {
-                const html = `
-                    <div class="comment-item">
-                        <img src="https://picsum.photos/id/64/100/100" class="user-avatar">
-                        <div class="comment-text">
-                            <span class="user-name">You</span>
-                            <span>${input.value}</span>
+        function send() {
+            let i = document.getElementById('inp');
+            let l = document.getElementById('list');
+            if(i.value.trim()){
+                l.innerHTML += `
+                    <div class="c-item">
+                        <img src="https://picsum.photos/id/64/50/50" class="img">
+                        <div class="c-body">
+                            <span class="name">You</span>
+                            <span>${i.value}</span>
                             <span class="time">now</span>
                         </div>
                     </div>`;
-                list.innerHTML += html;
-                input.value = "";
-                btn.disabled = true;
-                list.scrollTop = list.scrollHeight;
+                i.value = "";
+                window.scrollTo(0, document.body.scrollHeight);
             }
         }
     </script>
