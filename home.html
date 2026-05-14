@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- यहाँ हमने तुम्हारी नई CSS फाइल लिंक कर दी है -->
     <link rel="stylesheet" href="style.css">
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -31,11 +32,11 @@
             </label>
             <input type="file" id="direct-story-upload" accept="image/*,video/*" style="display: none;">
         </div>
-        <div class="story-wrapper"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
-        <div class="story-wrapper"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
+        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/20/100/100"></div><div class="story-label">ankit_99</div></div>
     </div>
 
-    <!-- पोस्ट्स यहाँ आएँगी -->
     <div id="posts-feed"></div>
 
     <div class="bottom-nav">
@@ -61,43 +62,38 @@
 
         function loadFeed() {
             const feed = document.getElementById('posts-feed');
-            
             db.collection("allPosts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
                 feed.innerHTML = ""; 
                 snapshot.forEach((doc) => {
                     const post = doc.data();
                     const postId = doc.id;
-                    
-                    // अगर डेटाबेस में नाम नहीं है तो रैंडम ID दिखाएगा, वरना असली नाम
-                    const displayUser = post.username ? post.username : "User_" + postId.substring(0,4);
-
                     const postHTML = `
                         <div class="post-card">
                             <div class="post-header">
                                 <div class="user-info">
                                     <img src="https://picsum.photos/id/64/100/100" class="post-user-pic">
-                                    <span style="font-weight: 600; font-size: 14px;">${displayUser}</span>
+                                    <span style="font-weight: 600; font-size: 14px;">User_${postId.substring(0,4)}</span>
                                 </div>
                                 <div class="dot-menu-wrap">
                                     <i class="fas fa-ellipsis-vertical" onclick="toggleMenu('${postId}')" style="padding: 10px; cursor: pointer;"></i>
                                     <div id="menu-${postId}" class="delete-dropdown">
                                         <div class="delete-btn" onclick="deletePost('${postId}')">
-                                            <i class="fas fa-trash"></i> Delete
+                                            <i class="fas fa-trash"></i> Delete Post
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="post-img-container" id="${postId}" ondblclick="doLike('${postId}')">
                                 <span class="big-heart"><i class="fas fa-heart"></i></span>
-                                <img src="${post.imageUrl}" style="width: 100%; display: block;" onload="this.style.opacity=1" style="opacity:0;">
+                                <img src="${post.imageUrl}">
                             </div>
                             <div class="post-actions">
                                 <i class="far fa-heart action-btn" onclick="toggleLike(this)"></i>
-                                <i class="far fa-comment action-btn"></i>
+                                <i class="far fa-comment action-btn" onclick="location.href='comments.html'"></i>
                                 <i class="far fa-paper-plane action-btn"></i>
                             </div>
                             <div style="padding: 0 12px 12px 12px; font-size: 14px;">
-                                <span style="font-weight: bold;">${displayUser}</span> ${post.caption || ''}
+                                <span style="font-weight: bold;">User_${postId.substring(0,4)}</span> ${post.caption || ''}
                             </div>
                         </div>
                     `;
@@ -108,14 +104,21 @@
 
         function toggleMenu(postId) {
             const menu = document.getElementById('menu-' + postId);
-            const allMenus = document.querySelectorAll('.delete-dropdown');
-            allMenus.forEach(m => { if(m !== menu) m.style.display = 'none'; });
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
+                menu.style.display = "block";
+            }
         }
 
         function deletePost(postId) {
-            if (confirm("Bhai, delete kar du kya?")) {
-                db.collection("allPosts").doc(postId).delete();
+            if (confirm("Bhai, kya sach me delete karna hai?")) {
+                db.collection("allPosts").doc(postId).delete().then(() => {
+                    console.log("Post deleted");
+                }).catch((error) => {
+                    alert("Error: " + error.message);
+                });
             }
         }
 
@@ -125,24 +128,25 @@
             heart.classList.add('animate-heart');
             const card = container.parentElement;
             const likeIcon = card.querySelector('.fa-heart');
-            likeIcon.classList.replace('far', 'fas');
+            likeIcon.classList.remove('far');
+            likeIcon.classList.add('fas');
             likeIcon.style.color = '#ff3040';
             setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
 
         function toggleLike(btn) {
             if (btn.classList.contains('far')) {
-                btn.classList.replace('far', 'fas');
+                btn.classList.remove('far');
+                btn.classList.add('fas');
                 btn.style.color = '#ff3040';
             } else {
-                btn.classList.replace('fas', 'far');
+                btn.classList.remove('fas');
+                btn.classList.add('far');
                 btn.style.color = '#fff';
             }
         }
 
         window.onload = loadFeed;
-        
-        // स्क्रीन पर कहीं भी क्लिक करने से खुला हुआ डिलीट मेन्यू बंद हो जाएगा
         window.onclick = function(event) {
             if (!event.target.matches('.fa-ellipsis-vertical')) {
                 document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
