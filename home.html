@@ -5,66 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- यहाँ हमने तुम्हारी नई CSS फाइल लिंक कर दी है -->
+    <link rel="stylesheet" href="style.css">
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
-    <style>
-        body { 
-            background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            margin: 0; padding-bottom: 70px; 
-            touch-action: manipulation; 
-        }
-        
-        /* HEADER */
-        .header { 
-            padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 0.1px solid #262626; position: sticky; top: 0; background: #000; z-index: 100; 
-        }
-        .header .logo { font-size: 24px; font-weight: 800; color: #FFD700; letter-spacing: -1px; }
-        .header-icons { font-size: 22px; cursor: pointer; text-decoration: none; color: #fff; display: flex; gap: 20px; }
-
-        /* STORIES */
-        .stories-container { display: flex; padding: 15px 10px; gap: 15px; overflow-x: auto; white-space: nowrap; border-bottom: 0.1px solid #262626; -webkit-overflow-scrolling: touch; }
-        .stories-container::-webkit-scrollbar { display: none; }
-        .story-wrapper { min-width: 75px; text-align: center; cursor: pointer; flex-shrink: 0; }
-        .story-circle { width: 68px; height: 68px; border-radius: 50%; padding: 3px; border: 2px solid #FFD700; position: relative; margin: 0 auto; }
-        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; }
-        .plus-icon { position: absolute; bottom: 2px; right: 2px; background: #0095f6; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; border: 2px solid #000; font-size: 12px; color: white; }
-        .story-label { font-size: 12px; margin-top: 6px; color: #fff; }
-
-        /* POSTS */
-        .post-card { margin-bottom: 15px; border-bottom: 0.1px solid #1a1a1a; }
-        .post-header { display: flex; align-items: center; padding: 12px; justify-content: space-between; }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .post-user-pic { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
-        
-        .post-img-container { 
-            width: 100%; 
-            background: #000; 
-            position: relative; 
-            display: block; 
-            overflow: hidden;
-        }
-        .post-img-container img { 
-            width: 100%; 
-            height: auto;
-            display: block;
-            object-fit: contain; 
-        }
-
-        .big-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 90px; color: #fff; opacity: 0; pointer-events: none; z-index: 10; }
-        .animate-heart { animation: heartPop 0.8s ease-out; }
-        @keyframes heartPop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 40% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
-        
-        .post-actions { padding: 12px; display: flex; gap: 18px; font-size: 24px; }
-        .action-btn { cursor: pointer; transition: transform 0.1s; }
-        .action-btn:active { transform: scale(1.2); }
-
-        /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { color: #fff; text-decoration: none; font-size: 24px; }
-    </style>
 </head>
 <body>
 
@@ -87,7 +32,6 @@
             </label>
             <input type="file" id="direct-story-upload" accept="image/*,video/*" style="display: none;">
         </div>
-        
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/20/100/100"></div><div class="story-label">ankit_99</div></div>
@@ -118,13 +62,11 @@
 
         function loadFeed() {
             const feed = document.getElementById('posts-feed');
-            
             db.collection("allPosts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
                 feed.innerHTML = ""; 
                 snapshot.forEach((doc) => {
                     const post = doc.data();
                     const postId = doc.id;
-
                     const postHTML = `
                         <div class="post-card">
                             <div class="post-header">
@@ -132,7 +74,14 @@
                                     <img src="https://picsum.photos/id/64/100/100" class="post-user-pic">
                                     <span style="font-weight: 600; font-size: 14px;">User_${postId.substring(0,4)}</span>
                                 </div>
-                                <i class="fas fa-ellipsis-vertical"></i>
+                                <div class="dot-menu-wrap">
+                                    <i class="fas fa-ellipsis-vertical" onclick="toggleMenu('${postId}')" style="padding: 10px; cursor: pointer;"></i>
+                                    <div id="menu-${postId}" class="delete-dropdown">
+                                        <div class="delete-btn" onclick="deletePost('${postId}')">
+                                            <i class="fas fa-trash"></i> Delete Post
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="post-img-container" id="${postId}" ondblclick="doLike('${postId}')">
                                 <span class="big-heart"><i class="fas fa-heart"></i></span>
@@ -140,7 +89,6 @@
                             </div>
                             <div class="post-actions">
                                 <i class="far fa-heart action-btn" onclick="toggleLike(this)"></i>
-                                <!-- यहाँ कमेंट बटन पर लिंक लगा दिया गया है -->
                                 <i class="far fa-comment action-btn" onclick="location.href='comments.html'"></i>
                                 <i class="far fa-paper-plane action-btn"></i>
                             </div>
@@ -154,17 +102,35 @@
             });
         }
 
+        function toggleMenu(postId) {
+            const menu = document.getElementById('menu-' + postId);
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
+                menu.style.display = "block";
+            }
+        }
+
+        function deletePost(postId) {
+            if (confirm("Bhai, kya sach me delete karna hai?")) {
+                db.collection("allPosts").doc(postId).delete().then(() => {
+                    console.log("Post deleted");
+                }).catch((error) => {
+                    alert("Error: " + error.message);
+                });
+            }
+        }
+
         function doLike(postId) {
             const container = document.getElementById(postId);
             const heart = container.querySelector('.big-heart');
             heart.classList.add('animate-heart');
-            
             const card = container.parentElement;
             const likeIcon = card.querySelector('.fa-heart');
             likeIcon.classList.remove('far');
             likeIcon.classList.add('fas');
             likeIcon.style.color = '#ff3040';
-            
             setTimeout(() => { heart.classList.remove('animate-heart'); }, 800);
         }
 
@@ -181,6 +147,11 @@
         }
 
         window.onload = loadFeed;
+        window.onclick = function(event) {
+            if (!event.target.matches('.fa-ellipsis-vertical')) {
+                document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
+            }
+        }
     </script>
 </body>
 </html>
