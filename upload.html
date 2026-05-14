@@ -75,7 +75,6 @@
     <input type="file" id="fileInput" onchange="handleFile(event)">
 
     <script>
-        // --- FIREBASE CONFIG UPDATED BY GEMINI ---
         const firebaseConfig = {
             apiKey: "AIzaSyA4Z92DUiG6bJi8JEn4CoE6j03B8cF1dWE",
             authDomain: "max-ful-apps-cce76.firebaseapp.com",
@@ -146,17 +145,18 @@
                     const downloadURL = result.data.url;
                     loaderText.innerText = "Max Ful DB Mein Save Ho Raha Hai...";
                     
-                    // Sabki posts ek hi collection mein jayengi taaki home page par dikh sakein
+                    // --- GEMINI UPDATE: USERNAME ADDED ---
                     await db.collection("allPosts").add({
                         imageUrl: downloadURL,
                         userId: userUID,
+                        username: "Mokibul_Hassan", // <-- यहाँ अपना मनपसंद नाम बदल सकता है भाई
                         type: currentMode,
                         caption: "Uploaded via Max Ful App",
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
                     alert("Bhai, " + currentMode + " Upload Ho Gayi! 🔥");
-                    window.location.href = "profile.html"; 
+                    window.location.href = "home.html"; // अपलोड के बाद सीधे होम पर भेज दिया
                 } else {
                     throw new Error("ImgBB Upload Fail Ho Gaya");
                 }
