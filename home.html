@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Max Ful | Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- यहाँ हमने तुम्हारी नई CSS फाइल लिंक कर दी है -->
     <link rel="stylesheet" href="style.css">
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -34,10 +33,23 @@
         </div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/1/100/100"></div><div class="story-label">mr_beast</div></div>
         <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/10/100/100"></div><div class="story-label">rahul_vlogs</div></div>
-        <div class="story-wrapper" onclick="location.href='view-story.html'"><div class="story-circle"><img src="https://picsum.photos/id/20/100/100"></div><div class="story-label">ankit_99</div></div>
     </div>
 
     <div id="posts-feed"></div>
+
+    <!-- Instagram Style Professional Delete Modal -->
+    <div id="deleteModal" class="custom-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Delete Post?</h3>
+                <p>Are you sure you want to delete this post?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmDeleteBtn" class="modal-btn btn-delete">Delete</button>
+                <button onclick="closeModal()" class="modal-btn btn-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <div class="bottom-nav">
         <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a>
@@ -59,6 +71,7 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        let currentDeleteId = ""; // डिलीट के लिए ID स्टोर करने के लिए
 
         function loadFeed() {
             const feed = document.getElementById('posts-feed');
@@ -67,17 +80,21 @@
                 snapshot.forEach((doc) => {
                     const post = doc.data();
                     const postId = doc.id;
+                    
+                    // अगर डेटाबेस में नाम है तो वो दिखाओ, नहीं तो रैंडम ID (User_66Er वाला लफड़ा खत्म)
+                    const username = post.username || "MaxUser_" + postId.substring(0,4);
+
                     const postHTML = `
                         <div class="post-card">
                             <div class="post-header">
                                 <div class="user-info">
                                     <img src="https://picsum.photos/id/64/100/100" class="post-user-pic">
-                                    <span style="font-weight: 600; font-size: 14px;">User_${postId.substring(0,4)}</span>
+                                    <span style="font-weight: 600; font-size: 14px;">${username}</span>
                                 </div>
                                 <div class="dot-menu-wrap">
                                     <i class="fas fa-ellipsis-vertical" onclick="toggleMenu('${postId}')" style="padding: 10px; cursor: pointer;"></i>
                                     <div id="menu-${postId}" class="delete-dropdown">
-                                        <div class="delete-btn" onclick="deletePost('${postId}')">
+                                        <div class="delete-btn" onclick="openDeleteModal('${postId}')">
                                             <i class="fas fa-trash"></i> Delete Post
                                         </div>
                                     </div>
@@ -85,7 +102,7 @@
                             </div>
                             <div class="post-img-container" id="${postId}" ondblclick="doLike('${postId}')">
                                 <span class="big-heart"><i class="fas fa-heart"></i></span>
-                                <img src="${post.imageUrl}">
+                                <img src="${post.imageUrl}" style="width: 100%; display: block;" onload="this.style.opacity=1" style="opacity:0; transition:0.3s;">
                             </div>
                             <div class="post-actions">
                                 <i class="far fa-heart action-btn" onclick="toggleLike(this)"></i>
@@ -93,7 +110,7 @@
                                 <i class="far fa-paper-plane action-btn"></i>
                             </div>
                             <div style="padding: 0 12px 12px 12px; font-size: 14px;">
-                                <span style="font-weight: bold;">User_${postId.substring(0,4)}</span> ${post.caption || ''}
+                                <span style="font-weight: bold;">${username}</span> ${post.caption || ''}
                             </div>
                         </div>
                     `;
@@ -102,6 +119,30 @@
             });
         }
 
+        // नया डिलीट मॉडल खोलने के लिए
+        function openDeleteModal(postId) {
+            currentDeleteId = postId;
+            document.getElementById('deleteModal').style.display = 'flex';
+            document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
+        }
+
+        // मॉडल बंद करने के लिए
+        function closeModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            currentDeleteId = "";
+        }
+
+        // असली डिलीट फंक्शन
+        document.getElementById('confirmDeleteBtn').onclick = function() {
+            if (currentDeleteId) {
+                db.collection("allPosts").doc(currentDeleteId).delete().then(() => {
+                    closeModal();
+                }).catch((error) => {
+                    alert("Error: " + error.message);
+                });
+            }
+        };
+
         function toggleMenu(postId) {
             const menu = document.getElementById('menu-' + postId);
             if (menu.style.display === "block") {
@@ -109,16 +150,6 @@
             } else {
                 document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
                 menu.style.display = "block";
-            }
-        }
-
-        function deletePost(postId) {
-            if (confirm("Bhai, kya sach me delete karna hai?")) {
-                db.collection("allPosts").doc(postId).delete().then(() => {
-                    console.log("Post deleted");
-                }).catch((error) => {
-                    alert("Error: " + error.message);
-                });
             }
         }
 
@@ -150,6 +181,10 @@
         window.onclick = function(event) {
             if (!event.target.matches('.fa-ellipsis-vertical')) {
                 document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
+            }
+            // अगर बाहर क्लिक करे तो मॉडल बंद हो जाए
+            if (event.target.className === 'custom-modal') {
+                closeModal();
             }
         }
     </script>
