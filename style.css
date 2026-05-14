@@ -36,6 +36,29 @@ body {
 }
 .delete-btn { color: #ff3040; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 14px; display: flex; align-items: center; gap: 8px; }
 
+/* --- PROFESSIONAL DELETE MODAL (NEW) --- */
+.custom-modal {
+    display: none; position: fixed; top: 0; left: 0; 
+    width: 100%; height: 100%; background: rgba(0,0,0,0.8); 
+    z-index: 2000; align-items: center; justify-content: center;
+}
+.modal-content {
+    background: #262626; width: 280px; border-radius: 12px; 
+    text-align: center; overflow: hidden;
+}
+.modal-body { padding: 25px 20px; border-bottom: 0.1px solid #444; }
+.modal-body h3 { margin: 0; font-size: 18px; color: #fff; }
+.modal-body p { margin: 10px 0 0; font-size: 14px; color: #a8a8a8; }
+.modal-footer { display: flex; flex-direction: column; }
+.modal-btn { 
+    padding: 14px; border: none; background: none; cursor: pointer; 
+    font-size: 14px; border-bottom: 0.1px solid #444; 
+}
+.modal-btn:last-child { border-bottom: none; }
+.btn-delete { color: #ed4956; font-weight: bold; }
+.btn-cancel { color: #fff; }
+/* -------------------------------------- */
+
 .post-img-container { width: 100%; background: #000; position: relative; display: block; overflow: hidden; }
 .post-img-container img { width: 100%; height: auto; display: block; object-fit: contain; }
 
@@ -50,4 +73,3 @@ body {
 /* BOTTOM NAV */
 .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; background: #000; border-top: 0.1px solid #262626; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
 .nav-item { color: #fff; text-decoration: none; font-size: 24px; }
-             
