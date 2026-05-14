@@ -34,24 +34,22 @@
         .story-label { font-size: 12px; margin-top: 6px; color: #fff; }
 
         /* POSTS */
-        .post-card { margin-bottom: 15px; border-bottom: 0.1px solid #1a1a1a; }
+        .post-card { margin-bottom: 15px; border-bottom: 0.1px solid #1a1a1a; position: relative; }
         .post-header { display: flex; align-items: center; padding: 12px; justify-content: space-between; }
         .user-info { display: flex; align-items: center; gap: 10px; }
         .post-user-pic { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
         
-        .post-img-container { 
-            width: 100%; 
-            background: #000; 
-            position: relative; 
-            display: block; 
-            overflow: hidden;
+        /* DELETE MENU STYLE */
+        .dot-menu-wrap { position: relative; }
+        .delete-dropdown { 
+            display: none; position: absolute; right: 0; top: 30px; 
+            background: #262626; border: 0.5px solid #444; border-radius: 8px; 
+            padding: 10px; z-index: 200; box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
         }
-        .post-img-container img { 
-            width: 100%; 
-            height: auto;
-            display: block;
-            object-fit: contain; 
-        }
+        .delete-btn { color: #ff3040; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+
+        .post-img-container { width: 100%; background: #000; position: relative; display: block; overflow: hidden; }
+        .post-img-container img { width: 100%; height: auto; display: block; object-fit: contain; }
 
         .big-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 90px; color: #fff; opacity: 0; pointer-events: none; z-index: 10; }
         .animate-heart { animation: heartPop 0.8s ease-out; }
@@ -132,7 +130,14 @@
                                     <img src="https://picsum.photos/id/64/100/100" class="post-user-pic">
                                     <span style="font-weight: 600; font-size: 14px;">User_${postId.substring(0,4)}</span>
                                 </div>
-                                <i class="fas fa-ellipsis-vertical"></i>
+                                <div class="dot-menu-wrap">
+                                    <i class="fas fa-ellipsis-vertical" onclick="toggleMenu('${postId}')" style="padding: 10px; cursor: pointer;"></i>
+                                    <div id="menu-${postId}" class="delete-dropdown">
+                                        <div class="delete-btn" onclick="deletePost('${postId}')">
+                                            <i class="fas fa-trash"></i> Delete Post
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="post-img-container" id="${postId}" ondblclick="doLike('${postId}')">
                                 <span class="big-heart"><i class="fas fa-heart"></i></span>
@@ -140,7 +145,6 @@
                             </div>
                             <div class="post-actions">
                                 <i class="far fa-heart action-btn" onclick="toggleLike(this)"></i>
-                                <!-- यहाँ कमेंट बटन पर लिंक लगा दिया गया है -->
                                 <i class="far fa-comment action-btn" onclick="location.href='comments.html'"></i>
                                 <i class="far fa-paper-plane action-btn"></i>
                             </div>
@@ -152,6 +156,27 @@
                     feed.innerHTML += postHTML;
                 });
             });
+        }
+
+        function toggleMenu(postId) {
+            const menu = document.getElementById(`menu-${postId}`);
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                // पहले बाकी सब खुले हुए मेनू बंद करें (Optional but good)
+                document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
+                menu.style.display = "block";
+            }
+        }
+
+        function deletePost(postId) {
+            if (confirm("Bhai, kya sach me delete karna hai?")) {
+                db.collection("allPosts").doc(postId).delete().then(() => {
+                    console.log("Deleted successfully");
+                }).catch((error) => {
+                    alert("Error: " + error.message);
+                });
+            }
         }
 
         function doLike(postId) {
@@ -181,6 +206,13 @@
         }
 
         window.onload = loadFeed;
+
+        // स्क्रीन पर कहीं भी क्लिक करने पर मेनू बंद हो जाए
+        window.onclick = function(event) {
+            if (!event.target.matches('.fa-ellipsis-vertical')) {
+                document.querySelectorAll('.delete-dropdown').forEach(m => m.style.display = 'none');
+            }
+        }
     </script>
 </body>
 </html>
