@@ -1,218 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Max Ful | Reels Final Fix</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
-        html, body { 
-            background-color: #000; color: #fff; margin: 0; padding: 0; 
-            width: 100%; height: 100%; overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        .reels-container {
-            height: 100vh; 
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        .reels-container::-webkit-scrollbar { display: none; }
-        
-        .reel-video {
-            height: 100vh; 
-            width: 100%; 
-            position: relative;
-            scroll-snap-align: start; 
-            scroll-snap-stop: always;
-            background: #000;
-        }
-        
-        video { width: 100%; height: 100%; object-fit: cover; }
+<title>Max Ful Reels</title>
 
-        .reel-actions {
-            position: absolute; right: 15px;
-            bottom: 130px; 
-            display: flex; flex-direction: column; gap: 24px; align-items: center;
-            z-index: 10;
-        }
-        .action-item { text-align: center; font-size: 28px; cursor: pointer; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
-        .action-item span { display: block; font-size: 12px; margin-top: 5px; font-weight: 500; }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-        .music-disc {
-            width: 35px; height: 35px; border-radius: 50%;
-            border: 2px solid #fff; animation: rotate 4s linear infinite;
-        }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+<style>
 
-        .reel-info { 
-            position: absolute; left: 15px; 
-            bottom: 130px; 
-            max-width: 75%; z-index: 10; 
-        }
-        .user-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .user-meta img { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #fff; }
-        .user-name { font-weight: bold; font-size: 15px; }
-        .follow-btn { border: 1.5px solid #fff; padding: 4px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:sans-serif;
+}
 
-        .caption { font-size: 14px; line-height: 1.5; text-shadow: 1px 1px 4px rgba(0,0,0,1); }
+body{
+background:#000;
+overflow:hidden;
+color:white;
+}
 
-        .bottom-nav { 
-            position: fixed; bottom: 0; width: 100%; height: 60px; 
-            background: rgba(0,0,0,0.9); border-top: 0.5px solid #262626; 
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
-        }
-        .nav-item { color: #fff; font-size: 24px; text-decoration: none; opacity: 0.6; }
-        .nav-item.active { opacity: 1; }
+.reels-container{
+height:100vh;
+overflow-y:scroll;
+scroll-snap-type:y mandatory;
+scrollbar-width:none;
+}
 
-        .share-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; z-index: 2000;
-        }
-        .share-menu {
-            position: fixed; bottom: -100%; left: 0; width: 100%;
-            background: #262626; border-radius: 15px 15px 0 0;
-            padding: 20px 0; transition: bottom 0.3s ease-out; z-index: 2001;
-            max-height: 50vh; overflow-y: auto;
-        }
-        .share-menu.active { bottom: 0; }
-        .share-header { text-align: center; font-weight: bold; padding-bottom: 15px; border-bottom: 0.5px solid #444; }
-        
-        /* बदलाव यहाँ किया है: More को लाइन में लाने के लिए */
-        .share-options { 
-            display: flex; 
-            flex-wrap: nowrap; 
-            padding: 20px 10px; 
-            justify-content: space-around; 
-            gap: 10px; 
-            overflow-x: auto; 
-        }
-        .share-option { 
-            text-align: center; 
-            min-width: 75px; 
-            flex-shrink: 0; 
-            cursor: pointer; 
-        }
-        .share-option i { width: 50px; height: 50px; background: #333; border-radius: 50%; line-height: 50px; font-size: 20px; margin-bottom: 8px; }
-        .share-option.whatsapp i { background: #25D366; }
-        .share-option.copy i { background: #555; }
-        .close-share { padding: 10px; text-align: center; color: #ff3b3b; font-weight: bold; cursor: pointer; }
-    </style>
+.reels-container::-webkit-scrollbar{
+display:none;
+}
+
+.reel{
+height:100vh;
+width:100%;
+position:relative;
+scroll-snap-align:start;
+background:black;
+}
+
+video{
+width:100%;
+height:100%;
+object-fit:cover;
+background:black;
+}
+
+.overlay{
+position:absolute;
+bottom:90px;
+left:15px;
+z-index:5;
+}
+
+.username{
+font-size:17px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.caption{
+font-size:14px;
+opacity:.9;
+max-width:80%;
+line-height:1.4;
+}
+
+.actions{
+position:absolute;
+right:15px;
+bottom:120px;
+display:flex;
+flex-direction:column;
+gap:22px;
+z-index:5;
+align-items:center;
+}
+
+.action{
+text-align:center;
+font-size:28px;
+cursor:pointer;
+}
+
+.action span{
+display:block;
+font-size:12px;
+margin-top:5px;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:60px;
+background:#000;
+border-top:1px solid #222;
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:100;
+}
+
+.bottom-nav i{
+font-size:24px;
+color:white;
+}
+
+.like{
+color:#ff0050 !important;
+}
+
+</style>
 </head>
+
 <body>
 
-    <div class="reels-container">
-        <div class="reel-video">
-            <video src="reel1.mp4" loop playsinline autoplay muted></video>
-            <div class="reel-actions">
-                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>2.1k</span></div>
-                <div class="action-item"><i class="far fa-comment"></i><span>120</span></div>
-                <div class="action-item" onclick="openShare()"><i class="fa-regular fa-paper-plane"></i><span>Share</span></div>
-                <img src="https://picsum.photos/60/60" class="music-disc">
-            </div>
-            <div class="reel-info">
-                <div class="user-meta">
-                    <img src="https://picsum.photos/100/100">
-                    <span class="user-name">@makibul_vlogs</span>
-                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
-                </div>
-                <div class="caption">सफलता एक यात्रा है! 🚀🔥</div>
-            </div>
-        </div>
+<div class="reels-container" id="reelsContainer"></div>
 
-        <div class="reel-video">
-            <video src="reel2.mp4" loop playsinline muted></video>
-            <div class="reel-actions">
-                <div class="action-item" onclick="toggleLike(this)"><i class="far fa-heart"></i><span>5k</span></div>
-                <div class="action-item"><i class="far fa-comment"></i><span>300</span></div>
-                <div class="action-item" onclick="openShare()"><i class="fa-regular fa-paper-plane"></i><span>Share</span></div>
-                <img src="https://picsum.photos/61/61" class="music-disc">
-            </div>
-            <div class="reel-info">
-                <div class="user-meta">
-                    <img src="https://picsum.photos/101/101">
-                    <span class="user-name">@max_ful_dev</span>
-                    <div class="follow-btn" onclick="toggleFollow(this)">Follow</div>
-                </div>
-                <div class="caption">Coding is life! 💻✨</div>
-            </div>
-        </div>
-    </div>
+<div class="bottom-nav">
+<i class="fas fa-house"></i>
+<i class="fas fa-search"></i>
+<i class="fas fa-plus-square"></i>
+<i class="fas fa-clapperboard"></i>
+<i class="fas fa-user"></i>
+</div>
 
-    <div class="share-overlay" id="overlay" onclick="closeShare()"></div>
-    <div class="share-menu" id="shareMenu">
-        <div class="share-header">Share to</div>
-        <div class="share-options">
-            <div class="share-option whatsapp" onclick="shareTo('whatsapp')">
-                <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
-            </div>
-            <div class="share-option" onclick="shareTo('insta')">
-                <i class="fab fa-instagram"></i><span>Stories</span>
-            </div>
-            <div class="share-option copy" onclick="shareTo('copy')">
-                <i class="fas fa-link"></i><span>Copy Link</span>
-            </div>
-            <div class="share-option" onclick="shareTo('system')">
-                <i class="fas fa-share-nodes"></i><span>More</span>
-            </div>
-        </div>
-        <div class="close-share" onclick="closeShare()">Cancel</div>
-    </div>
+<script>
 
-    <div class="bottom-nav">
-        <a href="home.html" class="nav-item"><i class="fas fa-house"></i></a> 
-        <a href="search.html" class="nav-item"><i class="fas fa-magnifying-glass"></i></a> 
-        <a href="upload.html" class="nav-item" style="color: #FFD700; font-size: 28px;"><i class="far fa-square-plus"></i></a> 
-        <a href="reels.html" class="nav-item active"><i class="fas fa-clapperboard"></i></a> 
-        <a href="profile.html" class="nav-item"><i class="fas fa-circle-user"></i></a> 
-    </div>
+const reelsContainer = document.getElementById("reelsContainer");
 
-    <script>
-        function toggleLike(element) {
-            const heart = element.querySelector('i');
-            heart.classList.toggle('fas');
-            heart.classList.toggle('far');
-            heart.style.color = heart.classList.contains('fas') ? "#ff0050" : "#fff";
-        }
+const videos = [
 
-        function toggleFollow(btn) {
-            btn.innerText = (btn.innerText === "Follow") ? "Following" : "Follow";
-            btn.style.opacity = (btn.innerText === "Following") ? "0.6" : "1";
-        }
+"https://cdn.coverr.co/videos/coverr-man-riding-a-bike-1560081171596?download=1080p",
+"https://cdn.coverr.co/videos/coverr-young-woman-using-smartphone-1573493641087?download=1080p",
+"https://cdn.coverr.co/videos/coverr-working-on-laptop-5176?download=1080p",
+"https://cdn.coverr.co/videos/coverr-girl-walking-in-city-1566977137798?download=1080p",
+"https://cdn.coverr.co/videos/coverr-skateboarding-1566977271361?download=1080p",
+"https://cdn.coverr.co/videos/coverr-coding-on-screen-1573493641087?download=1080p"
 
-        function openShare() {
-            document.getElementById('overlay').style.display = 'block';
-            setTimeout(() => { document.getElementById('shareMenu').classList.add('active'); }, 10);
-        }
+];
 
-        function closeShare() {
-            document.getElementById('shareMenu').classList.remove('active');
-            setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 300);
-        }
+function createReel(videoUrl,index){
 
-        function shareTo(platform) {
-            const url = window.location.href;
-            if(platform === 'whatsapp') { window.open(`https://api.whatsapp.com/send?text=${url}`); }
-            else if(platform === 'copy') { navigator.clipboard.writeText(url); alert("Link Copied!"); }
-            else if(platform === 'system') { if(navigator.share) { navigator.share({title: 'Max Ful', url: url}); } }
-            closeShare();
-        }
+const reel = document.createElement("div");
+reel.className = "reel";
 
-        const videos = document.querySelectorAll('video');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.play();
-                } else {
-                    entry.target.pause();
-                    entry.target.currentTime = 0;
-                }
-            });
-        }, { threshold: 0.7 });
-        videos.forEach(video => observer.observe(video));
-    </script>
+reel.innerHTML = `
+
+<video
+src="${videoUrl}"
+loop
+playsinline
+autoplay
+muted
+></video>
+
+<div class="overlay">
+<div class="username">@max_ful_${index}</div>
+<div class="caption">
+🔥 Unlimited Reels Mode Active 🚀
+</div>
+</div>
+
+<div class="actions">
+
+<div class="action like-btn">
+<i class="far fa-heart"></i>
+<span>${Math.floor(Math.random()*9000)}</span>
+</div>
+
+<div class="action">
+<i class="far fa-comment"></i>
+<span>${Math.floor(Math.random()*1000)}</span>
+</div>
+
+<div class="action">
+<i class="fas fa-share"></i>
+<span>Share</span>
+</div>
+
+</div>
+
+`;
+
+reelsContainer.appendChild(reel);
+
+const likeBtn = reel.querySelector(".like-btn");
+
+likeBtn.addEventListener("click",()=>{
+
+const icon = likeBtn.querySelector("i");
+
+icon.classList.toggle("far");
+icon.classList.toggle("fas");
+icon.classList.toggle("like");
+
+});
+
+}
+
+function loadMoreReels(){
+
+for(let i=0;i<videos.length;i++){
+
+createReel(
+videos[Math.floor(Math.random()*videos.length)],
+document.querySelectorAll(".reel").length+1
+);
+
+}
+
+observeVideos();
+
+}
+
+function observeVideos(){
+
+const allVideos = document.querySelectorAll("video");
+
+const observer = new IntersectionObserver((entries)=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.play();
+
+}else{
+
+entry.target.pause();
+
+}
+
+});
+
+},{threshold:0.7});
+
+allVideos.forEach(video=>observer.observe(video));
+
+}
+
+loadMoreReels();
+
+reelsContainer.addEventListener("scroll",()=>{
+
+const scrollTop = reelsContainer.scrollTop;
+const scrollHeight = reelsContainer.scrollHeight;
+const clientHeight = reelsContainer.clientHeight;
+
+if(scrollTop + clientHeight >= scrollHeight - 500){
+
+loadMoreReels();
+
+}
+
+});
+
+</script>
+
 </body>
 </html>
