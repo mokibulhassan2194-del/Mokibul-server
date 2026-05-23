@@ -1,44 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Unlimited Reels</title>
+<title>Max Ful Reels</title>
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 
-*{
+body{
 margin:0;
-padding:0;
-box-sizing:border-box;
+background:black;
+overflow:hidden;
 font-family:sans-serif;
 }
 
-body{
-background:black;
-overflow:hidden;
-color:white;
-}
-
-.reels-container{
+.reels{
 height:100vh;
 overflow-y:scroll;
 scroll-snap-type:y mandatory;
-scrollbar-width:none;
-}
-
-.reels-container::-webkit-scrollbar{
-display:none;
 }
 
 .reel{
 height:100vh;
-width:100%;
 position:relative;
 scroll-snap-align:start;
 background:black;
@@ -48,71 +35,53 @@ video{
 width:100%;
 height:100%;
 object-fit:cover;
+background:black;
 }
 
-.overlay{
+.info{
 position:absolute;
-bottom:90px;
+bottom:100px;
 left:15px;
+color:white;
 z-index:10;
-}
-
-.username{
-font-size:18px;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.caption{
-font-size:14px;
-max-width:80%;
-line-height:1.5;
 }
 
 .actions{
 position:absolute;
 right:15px;
 bottom:120px;
+color:white;
+z-index:10;
 display:flex;
 flex-direction:column;
-gap:22px;
-align-items:center;
-z-index:10;
-}
-
-.action{
+gap:20px;
 font-size:28px;
 text-align:center;
-cursor:pointer;
 }
 
-.action span{
-display:block;
+.actions span{
 font-size:12px;
+display:block;
 margin-top:5px;
 }
 
-.like{
-color:#ff0050;
-}
-
-.bottom-nav{
+.bottom{
 position:fixed;
 bottom:0;
 left:0;
 width:100%;
 height:60px;
-background:#000;
-border-top:1px solid #222;
+background:black;
 display:flex;
 justify-content:space-around;
 align-items:center;
+border-top:1px solid #222;
 z-index:100;
 }
 
-.bottom-nav i{
-font-size:24px;
+.bottom i{
 color:white;
+font-size:24px;
 }
 
 </style>
@@ -120,9 +89,9 @@ color:white;
 
 <body>
 
-<div class="reels-container" id="reelsContainer"></div>
+<div class="reels" id="reels"></div>
 
-<div class="bottom-nav">
+<div class="bottom">
 <i class="fas fa-house"></i>
 <i class="fas fa-search"></i>
 <i class="fas fa-plus-square"></i>
@@ -132,54 +101,58 @@ color:white;
 
 <script>
 
-const reelsContainer = document.getElementById("reelsContainer");
+const reelBox = document.getElementById("reels");
 
-const videos = [
+const videoList = [
 
-"https://www.w3schools.com/html/mov_bbb.mp4",
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
 
-"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
 
-"https://media.w3.org/2010/05/sintel/trailer.mp4"
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
 
 ];
 
-function createReel(videoUrl,index){
+function addReel(){
+
+const randomVideo =
+videoList[Math.floor(Math.random()*videoList.length)];
 
 const reel = document.createElement("div");
+
 reel.className = "reel";
 
 reel.innerHTML = `
 
 <video
-src="${videoUrl}"
-loop
+src="${randomVideo}"
 muted
-playsinline
 autoplay
+loop
+playsinline
+webkit-playsinline
 ></video>
 
-<div class="overlay">
-<div class="username">@max_ful_${index}</div>
-
-<div class="caption">
-🔥 Unlimited Reels Mode Active 🚀
-</div>
+<div class="info">
+<h3>@max_ful_48</h3>
+<p>🔥 Unlimited Reels Mode 🚀</p>
 </div>
 
 <div class="actions">
 
-<div class="action like-btn">
+<div onclick="like(this)">
 <i class="far fa-heart"></i>
-<span>${Math.floor(Math.random()*9000)}</span>
+<span>5429</span>
 </div>
 
-<div class="action">
+<div>
 <i class="far fa-comment"></i>
-<span>${Math.floor(Math.random()*1000)}</span>
+<span>982</span>
 </div>
 
-<div class="action">
+<div>
 <i class="fas fa-share"></i>
 <span>Share</span>
 </div>
@@ -188,55 +161,62 @@ autoplay
 
 `;
 
-reelsContainer.appendChild(reel);
-
-const likeBtn = reel.querySelector(".like-btn");
-
-likeBtn.addEventListener("click",()=>{
-
-const icon = likeBtn.querySelector("i");
-
-icon.classList.toggle("far");
-icon.classList.toggle("fas");
-icon.classList.toggle("like");
-
-});
+reelBox.appendChild(reel);
 
 }
 
-function loadMoreReels(){
+function like(el){
+
+const icon = el.querySelector("i");
+
+if(icon.classList.contains("far")){
+
+icon.classList.remove("far");
+icon.classList.add("fas");
+icon.style.color = "red";
+
+}else{
+
+icon.classList.remove("fas");
+icon.classList.add("far");
+icon.style.color = "white";
+
+}
+
+}
 
 for(let i=0;i<5;i++){
+addReel();
+}
 
-const randomVideo =
-videos[Math.floor(Math.random()*videos.length)];
+reelBox.addEventListener("scroll",()=>{
 
-createReel(
-randomVideo,
-document.querySelectorAll(".reel").length+1
-);
+if(
+reelBox.scrollTop + reelBox.clientHeight >=
+reelBox.scrollHeight - 300
+){
+
+for(let i=0;i<3;i++){
+addReel();
+}
 
 }
 
-setupVideos();
-
-}
-
-function setupVideos(){
-
-const allVideos = document.querySelectorAll("video");
+});
 
 const observer = new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
 
+const video = entry.target;
+
 if(entry.isIntersecting){
 
-entry.target.play();
+video.play();
 
 }else{
 
-entry.target.pause();
+video.pause();
 
 }
 
@@ -244,31 +224,15 @@ entry.target.pause();
 
 },{threshold:0.6});
 
-allVideos.forEach(video=>{
+setInterval(()=>{
+
+document.querySelectorAll("video").forEach(video=>{
 
 observer.observe(video);
 
 });
 
-}
-
-loadMoreReels();
-
-reelsContainer.addEventListener("scroll",()=>{
-
-const scrollTop = reelsContainer.scrollTop;
-
-const scrollHeight = reelsContainer.scrollHeight;
-
-const clientHeight = reelsContainer.clientHeight;
-
-if(scrollTop + clientHeight >= scrollHeight - 500){
-
-loadMoreReels();
-
-}
-
-});
+},1000);
 
 </script>
 
