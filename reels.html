@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-<title>Max Ful Reels</title>
+<title>Unlimited Reels</title>
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
@@ -20,7 +20,7 @@ font-family:sans-serif;
 }
 
 body{
-background:#000;
+background:black;
 overflow:hidden;
 color:white;
 }
@@ -48,27 +48,25 @@ video{
 width:100%;
 height:100%;
 object-fit:cover;
-background:black;
 }
 
 .overlay{
 position:absolute;
 bottom:90px;
 left:15px;
-z-index:5;
+z-index:10;
 }
 
 .username{
-font-size:17px;
+font-size:18px;
 font-weight:bold;
 margin-bottom:10px;
 }
 
 .caption{
 font-size:14px;
-opacity:.9;
 max-width:80%;
-line-height:1.4;
+line-height:1.5;
 }
 
 .actions{
@@ -78,13 +76,13 @@ bottom:120px;
 display:flex;
 flex-direction:column;
 gap:22px;
-z-index:5;
 align-items:center;
+z-index:10;
 }
 
 .action{
-text-align:center;
 font-size:28px;
+text-align:center;
 cursor:pointer;
 }
 
@@ -92,6 +90,10 @@ cursor:pointer;
 display:block;
 font-size:12px;
 margin-top:5px;
+}
+
+.like{
+color:#ff0050;
 }
 
 .bottom-nav{
@@ -111,10 +113,6 @@ z-index:100;
 .bottom-nav i{
 font-size:24px;
 color:white;
-}
-
-.like{
-color:#ff0050 !important;
 }
 
 </style>
@@ -138,12 +136,11 @@ const reelsContainer = document.getElementById("reelsContainer");
 
 const videos = [
 
-"https://cdn.coverr.co/videos/coverr-man-riding-a-bike-1560081171596?download=1080p",
-"https://cdn.coverr.co/videos/coverr-young-woman-using-smartphone-1573493641087?download=1080p",
-"https://cdn.coverr.co/videos/coverr-working-on-laptop-5176?download=1080p",
-"https://cdn.coverr.co/videos/coverr-girl-walking-in-city-1566977137798?download=1080p",
-"https://cdn.coverr.co/videos/coverr-skateboarding-1566977271361?download=1080p",
-"https://cdn.coverr.co/videos/coverr-coding-on-screen-1573493641087?download=1080p"
+"https://www.w3schools.com/html/mov_bbb.mp4",
+
+"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+
+"https://media.w3.org/2010/05/sintel/trailer.mp4"
 
 ];
 
@@ -157,13 +154,14 @@ reel.innerHTML = `
 <video
 src="${videoUrl}"
 loop
+muted
 playsinline
 autoplay
-muted
 ></video>
 
 <div class="overlay">
 <div class="username">@max_ful_${index}</div>
+
 <div class="caption">
 🔥 Unlimited Reels Mode Active 🚀
 </div>
@@ -208,20 +206,23 @@ icon.classList.toggle("like");
 
 function loadMoreReels(){
 
-for(let i=0;i<videos.length;i++){
+for(let i=0;i<5;i++){
+
+const randomVideo =
+videos[Math.floor(Math.random()*videos.length)];
 
 createReel(
-videos[Math.floor(Math.random()*videos.length)],
+randomVideo,
 document.querySelectorAll(".reel").length+1
 );
 
 }
 
-observeVideos();
+setupVideos();
 
 }
 
-function observeVideos(){
+function setupVideos(){
 
 const allVideos = document.querySelectorAll("video");
 
@@ -241,9 +242,13 @@ entry.target.pause();
 
 });
 
-},{threshold:0.7});
+},{threshold:0.6});
 
-allVideos.forEach(video=>observer.observe(video));
+allVideos.forEach(video=>{
+
+observer.observe(video);
+
+});
 
 }
 
@@ -252,7 +257,9 @@ loadMoreReels();
 reelsContainer.addEventListener("scroll",()=>{
 
 const scrollTop = reelsContainer.scrollTop;
+
 const scrollHeight = reelsContainer.scrollHeight;
+
 const clientHeight = reelsContainer.clientHeight;
 
 if(scrollTop + clientHeight >= scrollHeight - 500){
