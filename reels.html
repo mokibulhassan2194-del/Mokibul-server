@@ -8,11 +8,11 @@
     <style>
         body { margin: 0; background: black; overflow: hidden; font-family: sans-serif; }
         .reels { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
-        .reel { height: 100vh; position: relative; scroll-snap-align: start; background: black; }
+        .reel { height: 100vh; position: relative; scroll-snap-align: start; background: black; display: flex; align-items: center; justify-content: center; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        .info { position: absolute; bottom: 100px; left: 15px; color: white; z-index: 10; }
+        .info { position: absolute; bottom: 80px; left: 15px; color: white; z-index: 10; text-shadow: 1px 1px 2px black; }
         .actions { position: absolute; right: 15px; bottom: 120px; color: white; z-index: 10; display: flex; flex-direction: column; gap: 20px; font-size: 28px; }
-        .actions span { font-size: 12px; display: block; margin-top: 5px; }
+        .actions span { font-size: 12px; display: block; margin-top: 5px; text-align: center; }
     </style>
 </head>
 <body>
@@ -28,20 +28,26 @@
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
         ];
 
+        // Intersection Observer for autoplay
+        const observerOptions = { threshold: 0.7 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const video = entry.target;
-                if (entry.isIntersecting) { video.play(); } 
-                else { video.pause(); }
+                if (entry.isIntersecting) {
+                    video.play().catch(e => console.log("Autoplay prevented:", e));
+                } else {
+                    video.pause();
+                    video.currentTime = 0; // Reset to start
+                }
             });
-        }, { threshold: 0.6 });
+        }, observerOptions);
 
         function addReel() {
             const randomVideo = videoList[Math.floor(Math.random() * videoList.length)];
             const reel = document.createElement("div");
             reel.className = "reel";
             reel.innerHTML = `
-                <video src="${randomVideo}" muted loop playsinline></video>
+                <video src="${randomVideo}" playsinline muted loop></video>
                 <div class="info"><h3>@max_ful_48</h3><p>🔥 Unlimited Reels Mode 🚀</p></div>
                 <div class="actions">
                     <div onclick="like(this)"><i class="far fa-heart"></i><span>5429</span></div>
@@ -53,11 +59,13 @@
             observer.observe(reel.querySelector("video"));
         }
 
+        // Initial Load
         for(let i=0; i<5; i++) { addReel(); }
 
+        // Infinite Scroll
         reelBox.addEventListener("scroll", () => {
-            if (reelBox.scrollTop + reelBox.clientHeight >= reelBox.scrollHeight - 500) {
-                for(let i=0; i<3; i++) { addReel(); }
+            if (reelBox.scrollTop + reelBox.clientHeight >= reelBox.scrollHeight - 200) {
+                for(let i=0; i<2; i++) { addReel(); }
             }
         });
 
