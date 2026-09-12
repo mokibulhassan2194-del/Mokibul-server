@@ -21,11 +21,19 @@
 
     <script>
         const reelBox = document.getElementById("reels");
+        
+        // यहाँ हमने बहुत सारे वीडियो के लिंक की सूची बना दी है ताकि रील्स कभी खत्म न हों
         const videoList = [
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackSeeTheWorld.mp4",
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4",
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
         ];
 
         // Intersection Observer for autoplay
@@ -43,6 +51,7 @@
         }, observerOptions);
 
         function addReel() {
+            // सूची में से यादृच्छिक (random) वीडियो उठाया जाएगा
             const randomVideo = videoList[Math.floor(Math.random() * videoList.length)];
             const reel = document.createElement("div");
             reel.className = "reel";
@@ -59,13 +68,13 @@
             observer.observe(reel.querySelector("video"));
         }
 
-        // Initial Load
+        // Initial Load (शुरुआत में 5 रील्स लोड होंगी)
         for(let i=0; i<5; i++) { addReel(); }
 
-        // Infinite Scroll
+        // Infinite Scroll (जैसे ही नीचे पहुँचेंगे, नए वीडियो जुड़ते जाएंगे)
         reelBox.addEventListener("scroll", () => {
             if (reelBox.scrollTop + reelBox.clientHeight >= reelBox.scrollHeight - 200) {
-                for(let i=0; i<2; i++) { addReel(); }
+                for(let i=0; i<3; i++) { addReel(); }
             }
         });
 
