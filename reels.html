@@ -22,7 +22,6 @@
     <script>
         const reelBox = document.getElementById("reels");
         
-        // यहाँ हमने बहुत सारे वीडियो के लिंक की सूची बना दी है ताकि रील्स कभी खत्म न हों
         const videoList = [
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
@@ -36,27 +35,31 @@
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
         ];
 
-        // Intersection Observer for autoplay
-        const observerOptions = { threshold: 0.7 };
+        const observerOptions = { threshold: 0.6 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const video = entry.target;
                 if (entry.isIntersecting) {
-                    video.play().catch(e => console.log("Autoplay prevented:", e));
+                    // वीडियो को जबरदस्ती प्ले करने का प्रयास
+                    let playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.log("Autoplay blocked, waiting for user interaction");
+                        });
+                    }
                 } else {
                     video.pause();
-                    video.currentTime = 0; // Reset to start
+                    video.currentTime = 0;
                 }
             });
         }, observerOptions);
 
         function addReel() {
-            // सूची में से यादृच्छिक (random) वीडियो उठाया जाएगा
             const randomVideo = videoList[Math.floor(Math.random() * videoList.length)];
             const reel = document.createElement("div");
             reel.className = "reel";
             reel.innerHTML = `
-                <video src="${randomVideo}" playsinline muted loop></video>
+                <video src="${randomVideo}" playsinline muted loop preload="auto"></video>
                 <div class="info"><h3>@max_ful_48</h3><p>🔥 Unlimited Reels Mode 🚀</p></div>
                 <div class="actions">
                     <div onclick="like(this)"><i class="far fa-heart"></i><span>5429</span></div>
@@ -64,14 +67,23 @@
                     <div><i class="fas fa-share"></i><span>Share</span></div>
                 </div>
             `;
+            
+            // स्क्रीन पर कहीं भी टच करने पर वीडियो तुरंत चलने लगेगा (ব্রাউज़र की पाबंदी हटाने के लिए)
+            reel.addEventListener('click', () => {
+                const vid = reel.querySelector('video');
+                if (vid.paused) {
+                    vid.play();
+                } else {
+                    vid.pause();
+                }
+            });
+
             reelBox.appendChild(reel);
             observer.observe(reel.querySelector("video"));
         }
 
-        // Initial Load (शुरुआत में 5 रील्स लोड होंगी)
         for(let i=0; i<5; i++) { addReel(); }
 
-        // Infinite Scroll (जैसे ही नीचे पहुँचेंगे, नए वीडियो जुड़ते जाएंगे)
         reelBox.addEventListener("scroll", () => {
             if (reelBox.scrollTop + reelBox.clientHeight >= reelBox.scrollHeight - 200) {
                 for(let i=0; i<3; i++) { addReel(); }
